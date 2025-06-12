@@ -99,51 +99,6 @@ export default function RomaniaWedding() {
         bgColor="from-slate-50 to-slate-100"
         submitText="Submit RSVP"
       />
-
-      {/* Additional Info */}
-      <div className="bg-white py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-serif text-slate-800 mb-8">Travel Information</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">Accommodation</h3>
-              <p className="text-slate-600 mb-2">
-                We recommend staying at Casa Wagner or Ana Hotels in Brașov&apos;s historic center.
-              </p>
-              <p className="text-slate-600">
-                Special group rates available - contact us for details.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">Transportation</h3>
-              <p className="text-slate-600 mb-2">
-                Fly into Henri Coandă International Airport (OTP) in Bucharest, then 2.5-hour drive to Brașov.
-              </p>
-              <p className="text-slate-600">
-                We&apos;ll arrange group transportation from Bucharest airport.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-8 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-lg">
-            <h3 className="text-xl font-semibold text-slate-800 mb-4">Traditional Romanian Wedding Customs</h3>
-            <div className="grid md:grid-cols-2 gap-4 text-sm text-slate-600">
-              <div>
-                <strong>Hora:</strong> Traditional circular dance
-              </div>
-              <div>
-                <strong>Mărțișor:</strong> Spring celebration symbols
-              </div>
-              <div>
-                <strong>Breaking of Bread:</strong> Symbol of unity
-              </div>
-              <div>
-                <strong>Traditional Music:</strong> Live folk ensemble
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
