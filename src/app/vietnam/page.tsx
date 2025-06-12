@@ -19,9 +19,23 @@ export default function VietnamWedding() {
     alert('Thank you for your RSVP! We will contact you soon.');
   };
 
-  const day1Events = [];
+  const day1Events = [
+    {
+      time: '8:00',
+      title: 'Placeholder',
+      location: 'Placeholder',
+      description: 'Placeholder'
+    }
+  ];
 
-  const day2Events = [];
+  const day2Events = [
+       {
+      time: '8:00',
+      title: 'Placeholder',
+      location: 'Placeholder',
+      description: 'Placeholder'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
