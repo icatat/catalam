@@ -1,33 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { RSVPFormData, RSVPOption } from '@/types/wedding';
 
 interface RSVPFormProps {
   title: string;
   subtitle: string;
   submitText?: string;
   onSubmit?: (data: RSVPFormData) => void;
-  attendanceOptions?: Array<{ value: string; label: string }>;
+  rsvpOptions?: RSVPOption[];
   placeholderMessage?: string;
   bgColor?: string;
 }
 
-interface RSVPFormData {
-  name: string;
-  email: string;
-  phone: string;
-  attendance: string;
-  guestCount: string;
-  dietaryRestrictions: string;
-  message: string;
-}
+export type { RSVPFormData };
 
 export default function RSVPForm({
   title,
   subtitle,
   submitText = 'Submit RSVP',
   onSubmit,
-  attendanceOptions = [
+  rsvpOptions = [
     { value: 'yes', label: 'Yes, I\'ll be there!' },
     { value: 'no', label: 'Sorry, I can\'t make it' },
     { value: 'maybe', label: 'Maybe' }
@@ -39,7 +32,7 @@ export default function RSVPForm({
     name: '',
     email: '',
     phone: '',
-    attendance: '',
+    rsvp: '',
     guestCount: '1',
     dietaryRestrictions: '',
     message: ''
@@ -110,14 +103,14 @@ export default function RSVPForm({
             <div>
               <label className="block text-slate-700 font-medium mb-2">Will you attend? *</label>
               <select
-                name="attendance"
-                value={formData.attendance}
+                name="rsvp"
+                value={formData.rsvp}
                 onChange={handleInputChange}
                 required
                 className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Please select</option>
-                {attendanceOptions.map((option) => (
+                {rsvpOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>

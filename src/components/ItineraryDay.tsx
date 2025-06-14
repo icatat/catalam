@@ -1,10 +1,4 @@
-interface ItineraryEvent {
-  time: string;
-  title: string;
-  subtitle?: string;
-  location: string;
-  description?: string;
-}
+import { ItineraryEvent } from '@/types/wedding';
 
 interface ItineraryDayProps {
   title: string;

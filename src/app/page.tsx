@@ -13,7 +13,9 @@ export default function Home() {
     '/photo_0.png',
     '/photo_1.jpeg',
     '/photo_4.png',
-    '/photo_7.png'
+    '/photo_7.png',
+    '/photo_3.png',
+    '/photo_5.png',
   ]
   ;
 
@@ -104,7 +106,7 @@ export default function Home() {
                 href="/romania"
                 className="relative bg-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-full transition-colors shadow-lg overflow-hidden"
                 style={{
-                  backgroundImage: 'url(/photo_5.png)',
+                  backgroundImage: 'url(/photo_3.png)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}

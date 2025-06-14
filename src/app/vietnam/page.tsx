@@ -3,39 +3,41 @@
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import ItineraryDay from '@/components/ItineraryDay';
-import RSVPForm from '@/components/RSVPForm';
+import RSVPForm, { RSVPFormData } from '@/components/RSVPForm';
+import { WeddingItineraryFactory } from '@/models/Itinerary';
+import { ItineraryDayData, RSVPSubmissionData, RSVPApiResponse } from '@/types/wedding';
 
 export default function VietnamWedding() {
-  const handleRSVP = (data: {
-    name: string;
-    email: string;
-    phone: string;
-    attendance: string;
-    guestCount: string;
-    dietaryRestrictions: string;
-    message: string;
-  }) => {
-    console.log('Vietnam RSVP:', data);
-    alert('Thank you for your RSVP! We will contact you soon.');
+  const handleRSVP = async (data: RSVPFormData): Promise<void> => {
+    try {
+      const submissionData: RSVPSubmissionData = {
+        ...data,
+        wedding: 'vietnam',
+        timestamp: new Date().toISOString()
+      };
+
+      const res = await fetch('/api/server/backend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData),
+      });
+      
+      const result: RSVPApiResponse = await res.json();
+      
+      if (result.success) {
+        alert('Thank you for your RSVP! We will contact you soon.');
+      } else {
+        alert('Sorry, there was an error submitting your RSVP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting RSVP:', error);
+      alert('Sorry, there was an error submitting your RSVP. Please try again.');
+    }
   };
 
-  const day1Events = [
-    {
-      time: '8:00',
-      title: 'Placeholder',
-      location: 'Placeholder',
-      description: 'Placeholder'
-    }
-  ];
-
-  const day2Events = [
-       {
-      time: '8:00',
-      title: 'Placeholder',
-      location: 'Placeholder',
-      description: 'Placeholder'
-    }
-  ];
+  // Create itinerary using the factory
+  const itinerary = WeddingItineraryFactory.createVietnameseWedding();
+  const days: ItineraryDayData[] = itinerary.getDaysForComponent();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -52,22 +54,19 @@ export default function VietnamWedding() {
       {/* Itinerary Section */}
       <div className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-serif text-slate-800 mb-12 text-center">Wedding Itinerary</h2>
+          <h2 className="text-4xl font-serif text-slate-800 mb-12 text-center">{itinerary.title}</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
-            <ItineraryDay
-              title="Saturday, September 26th, 2026"
-              events={day1Events}
-              bgColor="from-blue-50 to-blue-100"
-              timeColor="bg-blue-500"
-            />
-            
-            <ItineraryDay
-              title="Sunday, September 27th, 2026 (Optional)"
-              events={day2Events}
-              bgColor="from-slate-50 to-slate-100"
-              timeColor="bg-slate-500"
-            />
+            {days.map((day, index) => (
+              <ItineraryDay
+                key={index}
+                title={day.title}
+                subtitle={day.subtitle}
+                events={day.events}
+                bgColor={day.bgColor}
+                timeColor={day.timeColor}
+              />
+            ))}
           </div>
         </div>
       </div>
