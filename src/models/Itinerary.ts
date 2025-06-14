@@ -173,38 +173,6 @@ export class WeddingItineraryFactory {
       'bg-blue-500'
     );
 
-    day1.addEvent(new Event(
-      '8:00',
-      'Traditional Tea Ceremony (Lễ ăn hỏi)',
-      'Bride\'s Family Home',
-      undefined,
-      'Traditional Vietnamese engagement ceremony with family'
-    ));
-
-    day1.addEvent(new Event(
-      '11:00',
-      'Wedding Ceremony',
-      'Sacred Heart Church, District 3',
-      undefined,
-      'Catholic wedding ceremony'
-    ));
-
-    day1.addEvent(new Event(
-      '13:00',
-      'Wedding Reception',
-      'Park Hyatt Saigon',
-      undefined,
-      'Traditional Vietnamese wedding banquet with live music and dancing'
-    ));
-
-    day1.addEvent(new Event(
-      '18:00',
-      'Evening Celebration',
-      'Rooftop Bar - Chill Skybar',
-      undefined,
-      'Cocktails and dancing with city views'
-    ));
-
     // Day 2 - Optional Activities
     const day2 = new ItineraryDay(
       'Sunday, September 27th, 2026 (Optional)',
@@ -213,38 +181,6 @@ export class WeddingItineraryFactory {
       'from-slate-50 to-slate-100',
       'bg-slate-500'
     );
-
-    day2.addEvent(new Event(
-      '9:00',
-      'City Tour',
-      'Ho Chi Minh City',
-      undefined,
-      'Visit Cu Chi Tunnels and local markets'
-    ));
-
-    day2.addEvent(new Event(
-      '12:30',
-      'Traditional Lunch',
-      'Local Vietnamese Restaurant',
-      undefined,
-      'Authentic Vietnamese cuisine experience'
-    ));
-
-    day2.addEvent(new Event(
-      '15:00',
-      'Mekong Delta Trip',
-      'Day trip to Mekong Delta',
-      undefined,
-      'Boat rides and local culture'
-    ));
-
-    day2.addEvent(new Event(
-      '19:00',
-      'Farewell Dinner',
-      'Riverside Restaurant',
-      undefined,
-      'Final celebration by the Saigon River'
-    ));
 
     itinerary.addDay(day1);
     itinerary.addDay(day2);
