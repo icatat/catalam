@@ -5,8 +5,8 @@ import { Location } from '@/models/RSVP';
 // Email template functions
 function getPositiveEmailTemplate(name: string, location: Location): string {
   const isRomania = location === Location.ROMANIA;
-  const heroImage = isRomania ? '/photo_3.png' : '/photo_0.png';
   const locationName = isRomania ? 'Romania' : 'Vietnam';
+  const headerImage = isRomania ? "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_3.png" : "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_0.png"
   const date = isRomania ? 'September 11-12, 2026' : 'September 26, 2026';
   const city = isRomania ? 'Oradea, Romania' : 'Hanoi, Vietnam';
 
@@ -21,7 +21,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
         <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <!-- Header Image -->
             <div style="height: 250px; position: relative; overflow: hidden;">
-                <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.vercel.app'}${heroImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                <img src="${headerImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3));"></div>
                 <div style="position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
                     <h1 style="margin: 0; font-size: 28px; font-weight: bold;">✨ You're Coming! ✨</h1>
@@ -81,7 +81,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
 
 function getNegativeEmailTemplate(name: string, location: Location): string {
   const isRomania = location === Location.ROMANIA;
-  const heroImage = isRomania ? '/photo_3.png' : '/photo_0.png';
+  const headerImage = isRomania ? "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_3.png" : "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_0.png"
   const locationName = isRomania ? 'Romania' : 'Vietnam';
 
   return `
@@ -95,7 +95,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
         <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <!-- Header Image -->
             <div style="height: 250px; position: relative; overflow: hidden;">
-                <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.vercel.app'}${heroImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                <img src=${headerImage} alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));"></div>
                 <div style="position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
                     <h1 style="margin: 0; font-size: 28px; font-weight: bold;">💝 We'll Miss You 💝</h1>
@@ -155,6 +155,7 @@ export async function POST(request: Request) {
   try {
     const { name, email, attending, location } = await request.json();
 
+    console.log("POSTING RSVP: ", process.env)
     if (!name || !email || !location) {
       return NextResponse.json(
         { error: 'Name, email, and location are required' },
@@ -162,14 +163,30 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!process.env.EMAIL_USER) {
+        console.error("Missing EMAIL_USER variable");
+        return NextResponse.json(
+        { error: "An internal error occurred - missing EMAIL_USER variable." },
+        { status: 500 }
+      );
+    }
+    if (!process.env.EMAIL_PASS) {
+        console.error("Missing EMAIL_PASS variable");
+        return NextResponse.json(
+        { error: "An internal error occurred - missing EMAIL_USER variable." },
+        { status: 500 }
+      );
+    }
+
+    console.warn("[SERVER SIDE ] EMAIL USER: ", process.env.EMAIL_USER, process.env.EMAIL_USER!)
     try {
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
         secure: true,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          user: process.env.EMAIL_USER!,
+          pass: process.env.EMAIL_PASS!,
         },
       });
 
@@ -180,7 +197,7 @@ export async function POST(request: Request) {
 
       // Email to guest
       await transporter.sendMail({
-        from: `"Cata & Lam - ${locationName} Wedding 💒" <${process.env.EMAIL_USER}>`,
+        from: `"Cata & Lam - ${locationName} Wedding 💒" <${process.env.EMAIL_USER!}>`,
         to: email,
         subject: attending 
           ? `🎉 See you in ${locationName}! Wedding Confirmation 💒`
@@ -190,8 +207,8 @@ export async function POST(request: Request) {
 
       // CC notification to couple
       await transporter.sendMail({
-        from: `"Wedding RSVP Bot 🤖" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
+        from: `"Wedding RSVP Bot 🤖" <${process.env.EMAIL_USER!}>`,
+        to: process.env.EMAIL_USER!,
         subject: `${attending ? '🎉' : '😢'} New RSVP from ${name}`,
         text: `${name} (${email}) is ${attending ? 'attending 🎉' : 'not attending 😢'} the ${locationName} wedding.`,
       });

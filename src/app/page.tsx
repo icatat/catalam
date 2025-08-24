@@ -206,9 +206,6 @@ export default function Home() {
                 <h3 className={cn(themeClasses.heading('h5', 'primary'), 'mb-3')}>
                   Memories Coming Soon
                 </h3>
-                <p className={themeClasses.body('small', 'secondary')}>
-                  We&apos;ll be sharing our beautiful moments here soon!
-                </p>
               </div>
             </TextCard>
           </motion.div>

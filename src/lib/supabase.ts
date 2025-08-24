@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { Location } from '@/models/RSVP';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -9,7 +10,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export interface Guest {
   invite_id: string;
   full_name: string;
-  location: ('ROMANIA' | 'VIETNAM')[];
+  location: Location[];
   properties: Record<string, unknown>;
   email?: string;
   phone?: string;

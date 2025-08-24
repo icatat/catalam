@@ -11,7 +11,18 @@ export async function sendRSVPConfirmationEmail(data: EmailConfirmationData): Pr
   success: boolean;
   message?: string;
 }> {
+  console.log("HEREEEE")
+  console.log("In Email Utils = sending RSVC")
+  console.warn("[CLIENT SIDE ] EMAIL USER: ", process.env.EMAIL_USER, process.env.EMAIL_USER!)
   try {
+    // Validate email data
+    if (!data.email || data.email.trim() === '') {
+      return {
+        success: false,
+        message: `Invalid email address: ${data.email} . Please try again or contact Cata & Lam directly.`
+      };
+    }
+
     const response = await fetch('/api/send-rsvp-confirmation', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -35,7 +46,7 @@ export async function sendRSVPConfirmationEmail(data: EmailConfirmationData): Pr
     console.error('Error sending confirmation email:', error);
     return {
       success: false,
-      message: `An error occurred when trying to send you a confirmation email to ${data.email}. Please try again or contact Cata & Lam directly.`
+      message: `An error occurred when trying to send you a confirmation email${data.email ? ` to ${data.email}` : ''}. Please try again or contact Cata & Lam directly.`
     };
   }
 }
