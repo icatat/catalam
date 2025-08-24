@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 interface NavigationProps {
-  currentPage?: 'home' | 'vietnam' | 'romania';
+  currentPage?: 'home' | 'vietnam' | 'romania' | 'contact';
 }
 
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
@@ -37,11 +37,21 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               href="/romania" 
               className={`transition-colors ${
                 currentPage === 'romania' 
-                  ? 'text-slate-700 font-medium' 
+                  ? 'text-blue-600 font-medium' 
                   : 'text-slate-700 hover:text-blue-600'
               }`}
             >
               Romania Wedding
+            </Link>
+            <Link 
+              href="/contact" 
+              className={`transition-colors ${
+                currentPage === 'contact' 
+                  ? 'text-blue-600 font-medium' 
+                  : 'text-slate-700 hover:text-blue-600'
+              }`}
+            >
+              Contact
             </Link>
           </div>
         </div>
