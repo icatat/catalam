@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Lora, Inter } from "next/font/google";
+import { Thasadith } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/lib/theme";
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
+const thasadith = Thasadith({
+  variable: "--font-thasadith",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const lora = Lora({
-  variable: "--font-lora",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -33,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfairDisplay.variable} ${lora.variable} ${inter.variable} antialiased`}
+        className={`${thasadith.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

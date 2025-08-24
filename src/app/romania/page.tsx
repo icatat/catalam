@@ -6,6 +6,9 @@ import ItineraryDay from '@/components/ItineraryDay';
 import RSVPForm, { RSVPFormData } from '@/components/RSVPForm';
 import { WeddingItineraryFactory } from '@/models/Itinerary';
 import { ItineraryDayData, RSVPSubmissionData, RSVPApiResponse, RSVPOption } from '@/types/wedding';
+import { themeClasses } from '@/lib/theme';
+import { cn } from '@/lib/utils';
+import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 
 export default function RomaniaWedding() {
   const handleRSVP = async (data: RSVPFormData): Promise<void> => {
@@ -47,8 +50,10 @@ export default function RomaniaWedding() {
   const days: ItineraryDayData[] = itinerary.getDaysForComponent();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <Navigation currentPage="romania" />
+    <>
+      <ScrollProgress />
+      <div className={cn("min-h-screen", themeClasses.gradientBg('primary'))}>
+        <Navigation currentPage="romania" />
       
       <HeroSection
         title="Romania Wedding Celebration"
@@ -58,38 +63,49 @@ export default function RomaniaWedding() {
         backgroundImage="/photo_3.png"
       />
 
-      {/* Itinerary Section */}
-      <div className="bg-white py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-serif text-slate-800 mb-8 text-center">{itinerary.title}</h2>
-          {itinerary.subtitle && (
-            <h3 className="text-2xl font-body text-slate-600 mb-12 text-center italic">{itinerary.subtitle}</h3>
-          )}
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {days.map((day, index) => (
-              <ItineraryDay
-                key={index}
-                title={day.title}
-                subtitle={day.subtitle}
-                events={day.events}
-                bgColor={day.bgColor}
-                timeColor={day.timeColor}
-              />
-            ))}
+        {/* Itinerary Section */}
+        <section className={cn("bg-white", themeClasses.section('base'))}>
+          <div className={themeClasses.container()}>
+            <ScrollReveal direction="up">
+              <h2 className={cn(themeClasses.heading('h2', 'primary'), 'mb-8 text-center')}>
+                {itinerary.title}
+              </h2>
+              {itinerary.subtitle && (
+                <h3 className={cn(themeClasses.heading('h4', 'secondary'), 'mb-12 text-center italic')}>
+                  {itinerary.subtitle}
+                </h3>
+              )}
+            </ScrollReveal>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <Stagger staggerDelay={0.3}>
+                {days.map((day, index) => (
+                  <Parallax key={index} offset={index % 2 === 0 ? 20 : -20}>
+                    <ItineraryDay
+                      title={day.title}
+                      subtitle={day.subtitle}
+                      events={day.events}
+                      variant={index % 2 === 0 ? 'primary' : 'secondary'}
+                    />
+                  </Parallax>
+                ))}
+              </Stagger>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
 
-      <RSVPForm
+        <ScrollReveal direction="up" delay={0.2}>
+          <RSVPForm
         title="RSVP for Romania Wedding / Confirmarea Presenței la nunta din România"
         subtitle="Please let us know if you'll be joining us for our special day in Romania"
         onSubmit={handleRSVP}
         rsvpOptions={romanianRsvpOptions}
         placeholderMessage="Mesaj pentru cuplul ... (Special message for the happy couple...)"
-        bgColor="from-slate-50 to-slate-100"
-        submitText="Submit RSVP / Trimite Răspunsul"
-      />
-    </div>
+        variant="accent"
+            submitText="Submit RSVP / Trimite Răspunsul"
+          />
+        </ScrollReveal>
+      </div>
+    </>
   );
 }

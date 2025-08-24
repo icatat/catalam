@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { RSVPFormData, RSVPOption } from '@/types/wedding';
+import { themeClasses } from '@/lib/theme';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface RSVPFormProps {
   title: string;
@@ -10,7 +13,7 @@ interface RSVPFormProps {
   onSubmit?: (data: RSVPFormData) => void;
   rsvpOptions?: RSVPOption[];
   placeholderMessage?: string;
-  bgColor?: string;
+  variant?: 'primary' | 'secondary' | 'accent';
 }
 
 export type { RSVPFormData };
@@ -26,7 +29,7 @@ export default function RSVPForm({
     { value: 'maybe', label: 'Maybe' }
   ],
   placeholderMessage = 'Any special message for the couple...',
-  bgColor = 'from-blue-50 to-blue-100'
+  variant = 'primary'
 }: RSVPFormProps) {
   const [formData, setFormData] = useState<RSVPFormData>({
     name: '',
@@ -56,58 +59,60 @@ export default function RSVPForm({
   };
 
   return (
-    <div className={`bg-gradient-to-br ${bgColor} py-16`}>
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-3xl font-serif text-slate-800 mb-8 text-center">{title}</h2>
-        <p className="text-center text-slate-600 mb-8">
+    <div className={cn(themeClasses.gradientBg(variant), themeClasses.section('base'))}>
+      <div className={themeClasses.container()}>
+        <h2 className={cn(themeClasses.heading('h3', 'primary'), 'mb-8 text-center')}>
+          {title}
+        </h2>
+        <p className={cn(themeClasses.body('base', 'secondary'), 'text-center mb-8')}>
           {subtitle}
         </p>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8">
+        <form onSubmit={handleSubmit} className={themeClasses.card('base')}>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Full Name *</label>
+              <label className={themeClasses.inputLabel()}>Full Name *</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               />
             </div>
 
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Email *</label>
+              <label className={themeClasses.inputLabel()}>Email *</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               />
             </div>
 
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Phone Number</label>
+              <label className={themeClasses.inputLabel()}>Phone Number</label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               />
             </div>
 
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Will you attend? *</label>
+              <label className={themeClasses.inputLabel()}>Will you attend? *</label>
               <select
                 name="rsvp"
                 value={formData.rsvp}
                 onChange={handleInputChange}
                 required
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               >
                 <option value="">Please select</option>
                 {rsvpOptions.map((option) => (
@@ -119,12 +124,12 @@ export default function RSVPForm({
             </div>
 
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Number of Guests</label>
+              <label className={themeClasses.inputLabel()}>Number of Guests</label>
               <select
                 name="guestCount"
                 value={formData.guestCount}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               >
                 <option value="1">Just me</option>
                 <option value="2">2 people</option>
@@ -135,37 +140,38 @@ export default function RSVPForm({
             </div>
 
             <div>
-              <label className="block text-slate-700 font-medium mb-2">Dietary Restrictions</label>
+              <label className={themeClasses.inputLabel()}>Dietary Restrictions</label>
               <input
                 type="text"
                 name="dietaryRestrictions"
                 value={formData.dietaryRestrictions}
                 onChange={handleInputChange}
                 placeholder="Vegetarian, allergies, etc."
-                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={themeClasses.input()}
               />
             </div>
           </div>
 
           <div className="mt-6">
-            <label className="block text-slate-700 font-medium mb-2">Special Message</label>
+            <label className={themeClasses.inputLabel()}>Special Message</label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleInputChange}
               rows={4}
               placeholder={placeholderMessage}
-              className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={themeClasses.input()}
             />
           </div>
 
           <div className="mt-8 text-center">
-            <button
+            <Button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors shadow-lg"
+              variant={variant === 'primary' ? 'default' : 'secondary'}
+              size="lg"
             >
               {submitText}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
