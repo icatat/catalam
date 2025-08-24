@@ -55,9 +55,9 @@ export default function RSVPForm({
   };
 
   return (
-    <section className={cn("py-16", themeClasses.section('base'))}>
+    <section className={themeClasses.section('base')}>
       <div className={themeClasses.container()}>
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+        <div className={cn("max-w-2xl mx-auto", themeClasses.card('base'))}>
           <h2 className={cn(themeClasses.heading('h2', variant === 'primary' ? 'primary' : variant === 'secondary' ? 'secondary' : 'accent'), 'mb-4 text-center')}>
             {title}
           </h2>
