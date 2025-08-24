@@ -24,9 +24,8 @@ export default function RSVPForm({
   submitText = 'Submit RSVP',
   onSubmit,
   rsvpOptions = [
-    { value: 'yes', label: 'Yes, I\'ll be there!' },
-    { value: 'no', label: 'Sorry, I can\'t make it' },
-    { value: 'maybe', label: 'Maybe' }
+    { value: true , label: 'Yes, I\'ll be there!' },
+    { value: false, label: 'Sorry, I can\'t make it' }
   ],
   placeholderMessage = 'Any special message for the couple...',
   variant = 'primary'
@@ -36,7 +35,7 @@ export default function RSVPForm({
     email: '',
     phone: '',
     rsvp: '',
-    guestCount: '1',
+    guestCount: 1,
     dietaryRestrictions: '',
     message: ''
   });
@@ -51,6 +50,7 @@ export default function RSVPForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSubmit) {
+      console.log("FORM DATA: ", formData)
       onSubmit(formData);
     } else {
       console.log('RSVP Data:', formData);

@@ -22,7 +22,7 @@ export interface RSVPFormData {
   email: string;
   phone: string;
   rsvp: string;
-  guestCount: string;
+  guestCount: number;
   dietaryRestrictions: string;
   message: string;
 }

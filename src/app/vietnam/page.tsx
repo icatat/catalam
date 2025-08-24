@@ -1,34 +1,96 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import ItineraryDay from '@/components/ItineraryDay';
 import RSVPForm, { RSVPFormData } from '@/components/RSVPForm';
+import { InviteVerification } from '@/components/InviteVerification';
 import { WeddingItineraryFactory } from '@/models/Itinerary';
-import { ItineraryDayData, RSVPSubmissionData, RSVPApiResponse } from '@/types/wedding';
+import { ItineraryDayData } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
+import Cookies from 'js-cookie';
+import { Location, GuestData } from '@/models/RSVP';
 
 export default function VietnamWedding() {
-  const handleRSVP = async (data: RSVPFormData): Promise<void> => {
-    try {
-      const submissionData: RSVPSubmissionData = {
-        ...data,
-        wedding: 'vietnam',
-        timestamp: new Date().toISOString()
-      };
+  const [guestData, setGuestData] = useState<GuestData | null>(null);
+  const [isVerifying, setIsVerifying] = useState(true);
 
-      const res = await fetch('/api/server/backend', {
+  useEffect(() => {
+    // Check if we have a valid invite_id in cookies
+    const savedInviteId = Cookies.get('invite_id');
+    if (savedInviteId) {
+      // Verify the saved invite_id is still valid
+      fetch('/api/guest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify({ invite_id: savedInviteId }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.location?.includes(Location.VIETNAM)) {
+            setGuestData({
+              invite_id: savedInviteId,
+              full_name: data.full_name,
+              location: data.location,
+              rsvp: data.rsvp || []
+            });
+          }
+          setIsVerifying(false);
+        })
+        .catch(() => {
+          // If verification fails, clear the cookie and show verification screen
+          Cookies.remove('invite_id');
+          setIsVerifying(false);
+        });
+    } else {
+      setIsVerifying(false);
+    }
+  }, []);
+
+  const handleInviteVerified = (data: GuestData) => {
+    setGuestData(data);
+  };
+
+  const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
+    if (!guestData) return;
+
+    try {
+      if(formData.rsvp  &&  !guestData.rsvp.includes(Location.VIETNAM)) {
+        alert(`Thank you for re-confirming your attendance! Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`)
+        return;
+      }
+      if (formData.rsvp ==='false' && guestData.rsvp.includes(Location.VIETNAM)) {
+        // They previously accepted and changed their mind
+        setGuestData({...guestData, rsvp: guestData.rsvp.filter(r => r !== Location.VIETNAM)})
+      } else if (formData.rsvp === 'true' && !guestData.rsvp.includes(Location.VIETNAM)) {
+        setGuestData({...guestData, rsvp: [...guestData.rsvp,Location.VIETNAM]})
+      }
+     
+      const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invite_id: guestData.invite_id,
+          name: formData.name || guestData.full_name,
+          location: Location.VIETNAM,
+          email: [formData.email],
+          phone: [formData.phone],
+          rsvp: guestData.rsvp,
+          properties: {
+            dietary_restrictions: formData.dietaryRestrictions,
+            guests_count: formData.guestCount,
+            special_message: formData.message,
+          },
+        }),
       });
       
-      const result: RSVPApiResponse = await res.json();
+      const result = await response.json();
       
       if (result.success) {
-        alert('Thank you for your RSVP! We will contact you soon.');
+        alert(`Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`);
       } else {
         alert('Sorry, there was an error submitting your RSVP. Please try again.');
       }
@@ -37,6 +99,30 @@ export default function VietnamWedding() {
       alert('Sorry, there was an error submitting your RSVP. Please try again.');
     }
   };
+
+  // Show loading state while verifying
+  if (isVerifying) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Verifying your invitation...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show invite verification if not verified
+  if (!guestData) {
+    return (
+      <div className={cn("min-h-screen", themeClasses.gradientBg('secondary'))}>
+        <InviteVerification 
+          location={Location.VIETNAM}
+          onVerified={handleInviteVerified}
+        />
+      </div>
+    );
+  }
 
   // Create itinerary using the factory
   const itinerary = WeddingItineraryFactory.createVietnameseWedding();
@@ -48,13 +134,13 @@ export default function VietnamWedding() {
       <div className={cn("min-h-screen", themeClasses.gradientBg('secondary'))}>
         <Navigation currentPage="vietnam" />
       
-      <HeroSection
-        title="Vietnam Wedding Celebration"
-        subtitle="Join us for a traditional Vietnamese wedding ceremony in the heart of Vietnam"
-        date="September 26th, 2026"
-        location="Hanoi, Vietnam"
-        backgroundImage="/photo_0.png"
-      />
+        <HeroSection
+          title="Vietnam Wedding Celebration"
+          subtitle="Join us for a traditional Vietnamese wedding ceremony in the heart of Vietnam"
+          date="September 26th, 2026"
+          location="Hanoi, Vietnam"
+          backgroundImage="/photo_0.png"
+        />
 
         {/* Itinerary Section */}
         <section className={cn("bg-white", themeClasses.section('base'))}>
@@ -85,7 +171,7 @@ export default function VietnamWedding() {
         <ScrollReveal direction="up" delay={0.2}>
           <RSVPForm
             title="RSVP for Vietnam Wedding"
-            subtitle="Please let us know if you'll be joining us for our special day in Vietnam"
+            subtitle={`Welcome ${guestData.full_name}! Please let us know if you'll be joining us for our special day in Vietnam`}
             onSubmit={handleRSVP}
             variant="secondary"
           />

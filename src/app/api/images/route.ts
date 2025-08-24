@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const { blobs } = await list();
-    console.log(blobs)
     // Filter for image files only (based on pathname extension)
     const imageBlobs = blobs.filter(blob => 
       blob.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)
