@@ -207,7 +207,7 @@ export default function Home() {
                   Memories Coming Soon
                 </h3>
                 <p className={themeClasses.body('small', 'secondary')}>
-                  We'll be sharing our beautiful moments here soon!
+                  We&apos;ll be sharing our beautiful moments here soon!
                 </p>
               </div>
             </TextCard>

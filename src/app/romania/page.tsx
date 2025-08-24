@@ -7,13 +7,12 @@ import ItineraryDay from '@/components/ItineraryDay';
 import RSVPForm, { RSVPFormData } from '@/components/RSVPForm';
 import { InviteVerification } from '@/components/InviteVerification';
 import { WeddingItineraryFactory } from '@/models/Itinerary';
-import { ItineraryDayData, RSVPSubmissionData, RSVPApiResponse, RSVPOption } from '@/types/wedding';
+import { ItineraryDayData, RSVPOption } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
-import { LocaleRouteNormalizer } from 'next/dist/server/normalizers/locale-route-normalizer';
 
 
 export default function RomaniaWedding() {

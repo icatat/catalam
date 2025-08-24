@@ -10,7 +10,7 @@ export interface Guest {
   invite_id: string;
   full_name: string;
   location: ('ROMANIA' | 'VIETNAM')[];
-  properties: Record<string, any>;
+  properties: Record<string, unknown>;
   email?: string;
   phone?: string;
   rsvp_timestamp?: string;
@@ -25,6 +25,6 @@ export interface RSVPFormData {
     accommodation?: string;
     guests_count?: number;
     special_requests?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }

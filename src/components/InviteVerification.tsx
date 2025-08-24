@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { themeClasses } from '@/lib/theme';
 import { TextCard } from '@/components/ui/photo-card';
 import Cookies from 'js-cookie';
-import { Location, GuestData } from '@/models/RSVP';
+import { Location } from '@/models/RSVP';
 
 interface InviteVerificationProps {
   location: Location;
@@ -15,6 +15,7 @@ interface InviteVerificationProps {
     invite_id: string;
     full_name: string;
     location: Location[];
+    rsvp: Location[];
   }) => void;
 }
 
@@ -61,6 +62,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
         invite_id: inviteId.trim(),
         full_name: data.full_name,
         location: data.location,
+        rsvp: data.rsvp || [],
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to verify invite ID');
@@ -143,7 +145,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
             </form>
 
             <div className="mt-6 text-xs text-gray-500">
-              <p>Don't have an invite ID? Please contact the couple.</p>
+              <p>Don&apos;t have an invite ID? Please contact the couple.</p>
             </div>
           </div>
         </TextCard>

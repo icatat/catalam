@@ -24,8 +24,8 @@ export default function RSVPForm({
   submitText = 'Submit RSVP',
   onSubmit,
   rsvpOptions = [
-    { value: true , label: 'Yes, I\'ll be there!' },
-    { value: false, label: 'Sorry, I can\'t make it' }
+    { value: 'true' , label: 'Yes, I&apos;ll be there!' },
+    { value: 'false', label: 'Sorry, I can&apos;t make it' }
   ],
   placeholderMessage = 'Any special message for the couple...',
   variant = 'primary'
