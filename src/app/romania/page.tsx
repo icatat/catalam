@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
+import { sendRSVPConfirmationEmail, sendRSVPConfirmationEmailAsync } from '@/lib/emailUtils';
 
 
 export default function RomaniaWedding() {
@@ -56,13 +57,23 @@ export default function RomaniaWedding() {
   };
 
   const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
-    console.log("FORM DATA:", formData);
     if (!guestData) return;
 
     try {
-      console.log(formData)
-      if(formData.rsvp === 'true'  &&  !guestData.rsvp.includes(Location.ROMANIA)) {
-        alert(`Thank you for re-confirming your attendance! Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`)
+      if(formData.rsvp === 'true'  &&  guestData.rsvp.includes(Location.ROMANIA)) {
+        // Send email for re-confirmation
+        const result = await sendRSVPConfirmationEmail({
+          name: formData.name || guestData.full_name,
+          email: formData.email,
+          attending: formData.rsvp === 'true',
+          location: Location.ROMANIA
+        });
+
+        if (result.success) {
+          alert(`Thank you for re-confirming your attendance! ${result.message}`);
+        } else {
+          alert(`Thank you for re-confirming your attendance! We will contact you soon.`);
+        }
         return;
       }
       if (formData.rsvp ==='false' && guestData.rsvp.includes(Location.ROMANIA)) {
@@ -71,6 +82,7 @@ export default function RomaniaWedding() {
       } else if (formData.rsvp === 'true' && !guestData.rsvp.includes(Location.ROMANIA)) {
         setGuestData({...guestData, rsvp: [...guestData.rsvp,Location.ROMANIA]})
       }
+
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,8 +90,8 @@ export default function RomaniaWedding() {
           invite_id: guestData.invite_id,
           name: formData.name || guestData.full_name,
           location: Location.ROMANIA,
-          email: [formData.email],
-          phone: [formData.phone],
+          email: formData.email,
+          phone: formData.phone,
           rsvp: guestData.rsvp,
           properties: {
             dietary_restrictions: formData.dietaryRestrictions,
@@ -89,13 +101,44 @@ export default function RomaniaWedding() {
         }),
       });
       
-      const result = await response.json();
+      // Always send email confirmation regardless of database result
+      const emailPromise = sendRSVPConfirmationEmailAsync({
+        name: formData.name || guestData.full_name,
+        email: formData.email,
+        attending: formData.rsvp === 'true',
+        location: Location.ROMANIA
+      });
+
+      response.json()
+        .then(result => {
+          if (result.success) {
+            alert(`Thank you ${guestData.full_name} for confirming! Mulțumim pentru confirmare!`);
+            
+            // Process email confirmation
+            return emailPromise;
+          } else {
+            alert('Sorry, there was an error. Please try again. / Eroare - vă rugăm să încercați din nou!');
+            
+            // Still send email even if database fails
+            return emailPromise;
+          }
+        })
+        .then(emailResponse => {
+          return emailResponse.json();
+        })
+        .then(emailResult => {
+          if (emailResult.success) {
+            alert(`A confirmation email was sent to ${formData.email}`);
+          } else {
+            alert(`An error occurred when trying to send you a confirmation email to ${formData.email}. Please try again or contact Cata & Lam directly.`);
+          }
+        })
+        .catch(error => {
+          console.error('Error in promise chain:', error);
+          alert(`An error occurred when trying to send you a confirmation email to ${formData.email}. Please try again or contact Cata & Lam directly.`);
+        });
       
-      if (result.success) {
-        alert(`Thank you ${guestData.full_name} for confirming! Mulțumim pentru confirmare!`);
-      } else {
-        alert('Sorry, there was an error. Please try again. / Eroare - vă rugăm să încercați din nou!');
-      }
+      
     } catch (error) {
       console.error('Error submitting RSVP:', error);
       alert('Sorry, there was an error submitting your RSVP. Please try again.');

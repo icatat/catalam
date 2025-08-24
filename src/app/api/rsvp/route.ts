@@ -5,15 +5,12 @@ export async function POST(request: Request) {
   try {
     const { invite_id, location, email, phone, rsvp, properties } = await request.json();
 
-    console.log(request.json())
-
     if (!invite_id || !location) {
       return NextResponse.json(
         { error: 'Invite ID and location are required' },
         { status: 400 }
       );
     }
-    console.log("HERE")
     // First, verify that the guest exists and is invited to this location
     const { data: existingGuest, error: fetchError } = await supabase
       .from('rsvp')
@@ -68,8 +65,6 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
-
-    console.log("BEFORE NEXT RESPONSE")
     return NextResponse.json({ 
       success: true, 
       message: 'RSVP submitted successfully',

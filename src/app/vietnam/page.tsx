@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
+import { sendRSVPConfirmationEmail, sendRSVPConfirmationEmailAsync } from '@/lib/emailUtils';
 
 export default function VietnamWedding() {
   const [guestData, setGuestData] = useState<GuestData | null>(null);
@@ -58,8 +59,20 @@ export default function VietnamWedding() {
     if (!guestData) return;
 
     try {
-      if(formData.rsvp  &&  !guestData.rsvp.includes(Location.VIETNAM)) {
-        alert(`Thank you for re-confirming your attendance! Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`)
+      if(formData.rsvp === 'true' && guestData.rsvp.includes(Location.VIETNAM)) {
+        // Send email for re-confirmation
+        const result = await sendRSVPConfirmationEmail({
+          name: formData.name || guestData.full_name,
+          email: formData.email,
+          attending: formData.rsvp === 'true',
+          location: Location.VIETNAM
+        });
+
+        if (result.success) {
+          alert(`Thank you for re-confirming your attendance! ${result.message}`);
+        } else {
+          alert(`Thank you for re-confirming your attendance! We will contact you soon.`);
+        }
         return;
       }
       if (formData.rsvp ==='false' && guestData.rsvp.includes(Location.VIETNAM)) {
@@ -76,8 +89,8 @@ export default function VietnamWedding() {
           invite_id: guestData.invite_id,
           name: formData.name || guestData.full_name,
           location: Location.VIETNAM,
-          email: [formData.email],
-          phone: [formData.phone],
+          email: formData.email,
+          phone: formData.phone,
           rsvp: guestData.rsvp,
           properties: {
             dietary_restrictions: formData.dietaryRestrictions,
@@ -87,13 +100,42 @@ export default function VietnamWedding() {
         }),
       });
       
-      const result = await response.json();
-      
-      if (result.success) {
-        alert(`Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`);
-      } else {
-        alert('Sorry, there was an error submitting your RSVP. Please try again.');
-      }
+      // Always send email confirmation regardless of database result
+      const emailPromise = sendRSVPConfirmationEmailAsync({
+        name: formData.name || guestData.full_name,
+        email: formData.email,
+        attending: formData.rsvp === 'true',
+        location: Location.VIETNAM
+      });
+
+      response.json()
+        .then(result => {
+          if (result.success) {
+            alert(`Thank you ${guestData.full_name} for your RSVP! We will contact you soon.`);
+            
+            // Process email confirmation
+            return emailPromise;
+          } else {
+            alert('Sorry, there was an error submitting your RSVP. Please try again.');
+            
+            // Still send email even if database fails
+            return emailPromise;
+          }
+        })
+        .then(emailResponse => {
+          return emailResponse.json();
+        })
+        .then(emailResult => {
+          if (emailResult.success) {
+            alert(`A confirmation email was sent to ${formData.email}`);
+          } else {
+            alert(`An error occurred when trying to send you a confirmation email to ${formData.email}. Please try again or contact Cata & Lam directly.`);
+          }
+        })
+        .catch(error => {
+          console.error('Error in promise chain:', error);
+          alert(`An error occurred when trying to send you a confirmation email to ${formData.email}. Please try again or contact Cata & Lam directly.`);
+        });
     } catch (error) {
       console.error('Error submitting RSVP:', error);
       alert('Sorry, there was an error submitting your RSVP. Please try again.');
