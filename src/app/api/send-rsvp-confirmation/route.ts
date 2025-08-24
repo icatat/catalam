@@ -154,8 +154,6 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
 export async function POST(request: Request) {
   try {
     const { name, email, attending, location } = await request.json();
-
-    console.log("POSTING RSVP: ", process.env)
     if (!name || !email || !location) {
       return NextResponse.json(
         { error: 'Name, email, and location are required' },
@@ -164,21 +162,17 @@ export async function POST(request: Request) {
     }
 
     if (!process.env.EMAIL_USER) {
-        console.error("Missing EMAIL_USER variable");
         return NextResponse.json(
         { error: "An internal error occurred - missing EMAIL_USER variable." },
         { status: 500 }
       );
     }
     if (!process.env.EMAIL_PASS) {
-        console.error("Missing EMAIL_PASS variable");
         return NextResponse.json(
         { error: "An internal error occurred - missing EMAIL_USER variable." },
         { status: 500 }
       );
     }
-
-    console.warn("[SERVER SIDE ] EMAIL USER: ", process.env.EMAIL_USER, process.env.EMAIL_USER!)
     try {
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',

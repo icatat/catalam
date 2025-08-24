@@ -11,9 +11,7 @@ export async function sendRSVPConfirmationEmail(data: EmailConfirmationData): Pr
   success: boolean;
   message?: string;
 }> {
-  console.log("HEREEEE")
-  console.log("In Email Utils = sending RSVC")
-  console.warn("[CLIENT SIDE ] EMAIL USER: ", process.env.EMAIL_USER, process.env.EMAIL_USER!)
+  
   try {
     // Validate email data
     if (!data.email || data.email.trim() === '') {

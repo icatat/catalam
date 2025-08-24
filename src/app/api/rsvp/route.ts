@@ -43,7 +43,6 @@ export async function POST(request: Request) {
       }
     };
 
-    console.log("BEFORE SUPABASE")
     // Update the guest record
     const { data, error } = await supabase
       .from('rsvp')
@@ -57,7 +56,6 @@ export async function POST(request: Request) {
       .eq('invite_id', invite_id)
       .select();
 
-    console.log(data, error)
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
