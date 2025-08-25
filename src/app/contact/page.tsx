@@ -102,7 +102,7 @@ export default function ContactPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.secondary.main}20 100%)` }}>
+    <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.primary.light}20 100%)` }}>
       <Navigation currentPage="contact" />
       
       <Container maxWidth="xl" sx={{ py: 10 }}>
@@ -230,25 +230,6 @@ export default function ContactPage() {
                           → {t('contact.links.home')}
                         </Typography>
                       </Box>
-                    </CardContent>
-                  </Card>
-
-                  <Card 
-                    elevation={1} 
-                    sx={{ 
-                      borderRadius: 3, 
-                      background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%)',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                    }}
-                  >
-                    <CardContent sx={{ p: 3, textAlign: 'center' }}>
-                      <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary', lineHeight: 1.6 }}>
-                        &quot;{t('contact.quote')}&quot;
-                        <br />
-                        <Typography component="span" variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                          - Catalina & Lam
-                        </Typography>
-                      </Typography>
                     </CardContent>
                   </Card>
                 </Box>

@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, Heart, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { themeClasses } from '@/lib/theme';
 import { PhotoCard, TextCard } from '@/components/ui/photo-card';
 import { DynamicPhotoCard } from '@/components/DynamicPhotoCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect, useMemo } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, Container, Typography } from '@mui/material';
+import { getWeddingVariant } from '@/lib/mui-theme';
 
 interface BlobImage {
   url: string;
@@ -51,144 +51,215 @@ export default function Home() {
   }, [blobImages]);
 
   return (
-    <div className={cn('min-h-screen', themeClasses.gradientBg('hero'), 'p-4 md:p-6 relative')}>
+    <Box 
+      sx={{ 
+        minHeight: '100vh',
+        background: `linear-gradient(135deg, ${getWeddingVariant('romania').primary}08 0%, ${getWeddingVariant('romania').light}15 25%, ${getWeddingVariant('vietnam').primary}08 50%, ${getWeddingVariant('vietnam').light}15 75%, ${getWeddingVariant('accent').primary}08 100%)`,
+        p: { xs: theme.spacing(2), md: theme.spacing(3) },
+        position: 'relative'
+      }}
+    >
       {/* Subtle top-right controls */}
-      <div className="absolute top-4 right-4 flex items-center space-x-3 z-10">
-        <Link 
+      <Box sx={{ 
+        position: 'absolute', 
+        top: theme.spacing(2), 
+        right: theme.spacing(2), 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: theme.spacing(1.5), 
+        zIndex: theme.zIndex.appBar 
+      }}>
+        <Box
+          component={Link}
           href="/contact"
-          className={cn(
-            "px-3 py-2 rounded-full text-sm font-medium transition-all duration-200",
-            "bg-white/10 backdrop-blur-sm border border-white/20 text-white/90",
-            "hover:bg-white/20 hover:text-white hover:border-white/30"
-          )}
+          sx={{
+            px: theme.spacing(1.5),
+            py: theme.spacing(1),
+            borderRadius: theme.shape.borderRadius * 6,
+            fontSize: theme.typography.caption.fontSize,
+            fontWeight: theme.typography.fontWeightMedium,
+            transition: theme.transitions.create(['all'], { duration: theme.transitions.duration.short }),
+            backgroundColor: theme.palette.common.white + '1A',
+            backdropFilter: 'blur(4px)',
+            border: `1px solid ${theme.palette.common.white}33`,
+            color: theme.palette.common.white + 'E6',
+            textDecoration: 'none',
+            display: 'inline-block',
+            '&:hover': {
+              backgroundColor: theme.palette.common.white + '33',
+              color: theme.palette.common.white,
+              borderColor: theme.palette.common.white + '4D',
+            },
+          }}
         >
           {t('nav.contact')}
-        </Link>
+        </Box>
         <LanguageToggle variant="subtle" size="small" />
-      </div>
+      </Box>
       
-      <div className="max-w-7xl mx-auto">
+      <Container maxWidth="xl">
         
         {/* Centered Main Title */}
-        <div className="flex justify-center mb-16">
-          <TextCard size="large" variant="primary" className="max-w-md">
-            <div>
-              <motion.h1 
-                className={cn(themeClasses.heading('h1', 'primary'), 'mb-4 text-center')}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.8 }}
-              >
-                {t('home.title')}
-              </motion.h1>
-              <p className={cn(themeClasses.body('large', 'secondary'), 'text-center')}>
-                {t('home.subtitle')}
-              </p>
-            </div>
-          </TextCard>
-        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: theme.spacing(8) }}>
+          <Box
+            sx={{
+              position: 'relative',
+              height: { xs: 100, sm: 120, md: 160 },
+              width: { xs: 500, sm: 600, md: 700 },
+              maxWidth: '500vw',
+            }}
+          >
+            <Image
+              src="/NameHeader.png"
+              alt="Catalina & Lam"
+              fill
+              style={{ objectFit: 'contain' }}
+              priority
+            />
+          </Box>
+        </Box>
 
         {/* Prominent Wedding Location Cards */}
-        <motion.div
-          className="flex justify-center mb-16"
+        <Box
+          component={motion.div}
+          sx={{ display: 'flex', justifyContent: 'center', mb: theme.spacing(8), gap: theme.spacing(2), flexWrap: 'wrap' }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
       
-              {/* Romania Wedding Card */}
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="group"
-              >
-                <PhotoCard
-                  src="/photo_3.png"
-                  alt="Romania Wedding"
-                  size="wide"
-                  href="/romania"
-                  className="w-80 shadow-xl hover:shadow-2xl transition-all duration-300 ring-4 ring-rose-500/30 hover:ring-rose-500/60"
-                  overlay={
-                    <div className="text-center">
-                      <MapPin className="w-8 h-8 mb-3 mx-auto text-rose-400" />
-                      <h3 className={cn(themeClasses.heading('h4', 'white'), 'mb-2 font-bold')}>
-                        {t('nav.romania')}
-                      </h3>
-                      <p className={cn(themeClasses.body('base', 'white'), 'mb-3')}>
-                        {t('contact.info.romania')}
-                      </p>
-                      <div className="flex items-center justify-center gap-2 mt-4">
-                        <span className="text-white font-semibold">{t('contact.links.romania')}</span>
-                        <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  }
-                />
-              </motion.div>
+          {/* Romania Wedding Card */}
+          <Box
+            component={motion.div}
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            className="group"
+          >
+            <PhotoCard
+              src="/photo_3.png"
+              alt="Romania Wedding"
+              size="wide"
+              href="/romania"
+              className="w-80 transition-all duration-300"
+              sx={{
+                boxShadow: theme.shadows[8],
+                border: `${theme.spacing(0.5)} solid ${getWeddingVariant('romania').primary}30`,
+                borderRadius: theme.shape.borderRadius * 2,
+                '&:hover': {
+                  boxShadow: theme.shadows[16],
+                  borderColor: `${getWeddingVariant('romania').primary}60`,
+                },
+              }}
+              overlay={
+                <Box sx={{ textAlign: 'center' }}>
+                  <MapPin className="w-8 h-8 mb-3 mx-auto" style={{ color: getWeddingVariant('romania').light }} />
+                  <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
+                    {t('nav.romania')}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: theme.palette.common.white, mb: theme.spacing(2) }}>
+                    {t('contact.info.romania')}
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1), mt: theme.spacing(2) }}>
+                    <Typography variant="body1" sx={{ color: theme.palette.common.white, fontWeight: theme.typography.fontWeightMedium }}>{t('contact.links.romania')}</Typography>
+                    <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+                  </Box>
+                </Box>
+              }
+            />
+          </Box>
 
-              {/* Vietnam Wedding Card */}
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="group"
-              >
-                <PhotoCard
-                  src="/photo_0.png"
-                  alt="Vietnam Wedding"
-                  size="wide"
-                  href="/vietnam"
-                  className="w-80 shadow-xl hover:shadow-2xl transition-all duration-300 ring-4 ring-emerald-500/30 hover:ring-emerald-500/60"
-                  overlay={
-                    <div className="text-center">
-                      <Calendar className="w-8 h-8 mb-3 mx-auto text-emerald-400" />
-                      <h3 className={cn(themeClasses.heading('h4', 'white'), 'mb-2 font-bold')}>
-                        {t('nav.vietnam')}
-                      </h3>
-                      <p className={cn(themeClasses.body('base', 'white'), 'mb-3')}>
-                        {t('contact.info.vietnam')}
-                      </p>
-                      <div className="flex items-center justify-center gap-2 mt-4">
-                        <span className="text-white font-semibold">{t('contact.links.vietnam')}</span>
-                        <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  }
-                />
-              </motion.div>
-        </motion.div>
+          {/* Vietnam Wedding Card */}
+          <Box
+            component={motion.div}
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            className="group"
+          >
+            <PhotoCard
+              src="/photo_0.png"
+              alt="Vietnam Wedding"
+              size="wide"
+              href="/vietnam"
+              className="w-80 transition-all duration-300"
+              sx={{
+                boxShadow: theme.shadows[8],
+                border: `${theme.spacing(0.5)} solid ${getWeddingVariant('vietnam').primary}30`,
+                borderRadius: theme.shape.borderRadius * 2,
+                '&:hover': {
+                  boxShadow: theme.shadows[16],
+                  borderColor: `${getWeddingVariant('vietnam').primary}60`,
+                },
+              }}
+              overlay={
+                <Box sx={{ textAlign: 'center' }}>
+                  <Calendar className="w-8 h-8 mb-3 mx-auto" style={{ color: getWeddingVariant('vietnam').light }} />
+                  <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
+                    {t('nav.vietnam')}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: theme.palette.common.white, mb: theme.spacing(2) }}>
+                    {t('contact.info.vietnam')}
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: theme.spacing(1), mt: theme.spacing(2) }}>
+                    <Typography variant="body1" sx={{ color: theme.palette.common.white, fontWeight: theme.typography.fontWeightMedium }}>{t('contact.links.vietnam')}</Typography>
+                    <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+                  </Box>
+                </Box>
+              }
+            />
+          </Box>
+        </Box>
         {/* Dynamic Blob Store Images Gallery */}
         {loading && (
-          <motion.div
-            className="flex justify-center py-16"
+          <Box
+            component={motion.div}
+            sx={{ display: 'flex', justifyContent: 'center', py: theme.spacing(8) }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="text-center py-8 bg-white/10 backdrop-blur-sm rounded-2xl px-8">
+            <Box
+              sx={{
+                textAlign: 'center',
+                py: theme.spacing(4),
+                backgroundColor: theme.palette.common.white + '1A',
+                backdropFilter: 'blur(4px)',
+                borderRadius: theme.shape.borderRadius * 2,
+                px: theme.spacing(4),
+              }}
+            >
               <Box
                 className="inline-block animate-spin rounded-full h-12 w-12"
                 sx={{
                   borderBottom: `4px solid ${theme.palette.primary.main}`,
                 }}
               />
-              <p className={cn(themeClasses.body('large', 'secondary'), 'mt-4')}>
+              <Typography variant="h6" sx={{ color: theme.palette.text.secondary, mt: theme.spacing(2) }}>
                 {t('common.loading')}
-              </p>
-            </div>
-          </motion.div>
+              </Typography>
+            </Box>
+          </Box>
         )}
 
         {!loading && blobImages.length > 0 && (
-          <motion.div
+          <Box
+            component={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
           > 
             {/* Masonry-like grid for blob images */}
-            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6">
+            <Box sx={{ 
+              columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, 
+              columnGap: { xs: theme.spacing(2), md: theme.spacing(3) }
+            }}>
               {randomizedBlobImages.map((image, index) => (
-                <motion.div
+                <Box
                   key={image.url}
-                  className="break-inside-avoid mb-4 md:mb-6"
+                  component={motion.div}
+                  sx={{ 
+                    breakInside: 'avoid', 
+                    mb: { xs: theme.spacing(2), md: theme.spacing(3) },
+                    width: '100%'
+                  }}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ 
                     opacity: 1, 
@@ -211,33 +282,34 @@ export default function Home() {
                   <DynamicPhotoCard
                     src={image.url}
                     alt={`Wedding memory ${index + 1}`}
-                    className="w-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    className="w-full"
                   />
-                </motion.div>
+                </Box>
               ))}
-            </div>
-          </motion.div>
+            </Box>
+          </Box>
         )}
 
         {!loading && blobImages.length === 0 && (
-          <motion.div
-            className="flex justify-center py-16"
+          <Box
+            component={motion.div}
+            sx={{ display: 'flex', justifyContent: 'center', py: theme.spacing(8) }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <TextCard size="medium" variant="accent" className="max-w-md">
-              <div className="text-center">
-                <Heart className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-                <h3 className={cn(themeClasses.heading('h5', 'primary'), 'mb-3')}>
+            <TextCard size="medium" variant="accent" sx={{ maxWidth: theme.spacing(60) }}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: getWeddingVariant('accent').primary }} />
+                <Typography variant="h5" component="h3" sx={{ color: theme.palette.primary.main, mb: theme.spacing(1.5) }}>
                   Memories Coming Soon
-                </h3>
-              </div>
+                </Typography>
+              </Box>
             </TextCard>
-          </motion.div>
+          </Box>
         )}
 
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 }

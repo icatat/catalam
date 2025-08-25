@@ -16,6 +16,7 @@ interface PhotoCardProps {
   href?: string;
   className?: string;
   priority?: boolean;
+  sx?: object;
 }
 
 export function PhotoCard({
@@ -26,6 +27,7 @@ export function PhotoCard({
   href,
   className = '',
   priority = false,
+  sx,
 }: PhotoCardProps) {
   const theme = useTheme();
   const sizeClasses = {
@@ -52,6 +54,7 @@ export function PhotoCard({
         '&:hover': {
           boxShadow: theme.shadows[8],
         },
+        ...sx,
       }}
     >
       <div className="relative w-full h-full">
@@ -108,13 +111,15 @@ interface TextCardProps {
   size?: 'small' | 'medium' | 'large';
   variant?: 'primary' | 'secondary' | 'accent';
   className?: string;
+  sx?: object;
 }
 
 export function TextCard({ 
   children, 
   size = 'medium', 
   variant = 'primary',
-  className = '' 
+  className = '',
+  sx
 }: TextCardProps) {
   const theme = useTheme();
   const sizeClasses = {
@@ -144,6 +149,7 @@ export function TextCard({
         '&:hover': {
           boxShadow: theme.shadows[8],
         },
+        ...sx,
       }}
     >
       {children}

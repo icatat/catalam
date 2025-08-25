@@ -18,6 +18,7 @@ import {
   Container,
   Divider,
 } from '@mui/material';
+import Image from 'next/image';
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
@@ -86,9 +87,14 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
         background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
         color: 'white'
       }}>
-        <Typography variant="h6" sx={{ fontFamily: 'serif', fontWeight: 600 }}>
-          Catalina & Lam
-        </Typography>
+        <Box sx={{ height: 32, position: 'relative', minWidth: 120 }}>
+          <Image
+            src="/NameHeader.png"
+            alt="Catalina & Lam"
+            fill
+            style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+          />
+        </Box>
         <IconButton
           onClick={handleDrawerToggle}
           sx={{ color: 'white' }}
@@ -183,17 +189,11 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
 
             {/* Logo */}
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <Typography
-                variant="h5"
-                component="div"
+              <Box
                 sx={{
-                  fontFamily: 'serif',
-                  fontWeight: 600,
-                  color: 'text.primary',
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  height: 40,
+                  position: 'relative',
+                  minWidth: 150,
                   cursor: 'pointer',
                   '&:hover': {
                     transform: 'scale(1.02)',
@@ -201,8 +201,14 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                   transition: 'transform 0.2s ease',
                 }}
               >
-                Catalina & Lam
-              </Typography>
+                <Image
+                  src="/NameHeader.png"
+                  alt="Catalina & Lam"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  priority
+                />
+              </Box>
             </Link>
 
             {/* Desktop Navigation */}
