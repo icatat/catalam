@@ -7,7 +7,7 @@ import CustomButton from '@/components/Button';
 import { Edit } from 'lucide-react';
 import { Box, Card, CardContent, Typography, useTheme, Avatar } from '@mui/material';
 import { CheckCircleOutline, Cancel, EmailOutlined } from '@mui/icons-material';
-import { getWeddingVariant } from '@/lib/mui-theme';
+import { getUnifiedColors } from '@/lib/mui-theme';
 
 interface RSVPConfirmationProps {
   isVisible: boolean;
@@ -29,7 +29,8 @@ export default function RSVPConfirmation({
   location,
   onModify,
   onClose,
-  variant = 'primary',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  variant = 'primary', // Keep parameter but we don't use it for colors anymore
   emailSent = false
 }: RSVPConfirmationProps) {
   const { t } = useLanguage();
@@ -39,8 +40,12 @@ export default function RSVPConfirmation({
   if (!isVisible) return null;
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
-  const weddingVariant = variant === 'primary' ? 'romania' : variant === 'secondary' ? 'vietnam' : 'accent';
-  const variantColors = getWeddingVariant(weddingVariant);
+  const colors = getUnifiedColors();
+  // Use unified colors for all variants
+  const variantColors = {
+    primary: colors.primary.main,
+    light: colors.primary.light,
+  };
 
   return (
     <Box 
@@ -165,6 +170,7 @@ export default function RSVPConfirmation({
               onClick={onModify}
               variant="outlined"
               size="medium"
+              weddingVariant="primary"
               sx={{ flex: 1 }}
               startIcon={<Edit />}
             >
@@ -174,7 +180,7 @@ export default function RSVPConfirmation({
               onClick={onClose}
               variant="contained"
               size="medium"
-              weddingVariant={weddingVariant}
+              weddingVariant="primary"
               sx={{ flex: 1 }}
             >
               {t('common.done')}

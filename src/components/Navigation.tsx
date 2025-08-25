@@ -30,7 +30,6 @@ import {
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from './LanguageToggle';
-import { getWeddingVariant } from '@/lib/mui-theme';
 
 interface NavigationProps {
   currentPage?: 'home' | 'vietnam' | 'romania' | 'contact';
@@ -52,7 +51,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
       label: t('nav.home'), 
       href: '/', 
       icon: <Home />,
-      color: getWeddingVariant('neutral').primary
+      color: theme.palette.text.primary
     },
     { 
       key: 'romania', 

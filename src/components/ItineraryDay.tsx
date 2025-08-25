@@ -1,6 +1,6 @@
 import { ItineraryEvent } from '@/types/wedding';
 import { Card, CardContent, Typography, Box, Avatar, useTheme } from '@mui/material';
-import { getWeddingVariant } from '@/lib/mui-theme';
+import { getUnifiedColors } from '@/lib/mui-theme';
 
 interface ItineraryDayProps {
   title: string;
@@ -16,8 +16,11 @@ export default function ItineraryDay({
   variant = 'primary'
 }: ItineraryDayProps) {
   const theme = useTheme();
-  const weddingVariant = variant === 'primary' ? 'romania' : variant === 'secondary' ? 'vietnam' : 'accent';
-  const variantColors = getWeddingVariant(weddingVariant);
+  const colors = getUnifiedColors();
+  // Use unified emerald colors with slight variations for visual interest
+  const variantColors = {
+    primary: variant === 'primary' ? colors.primary.main : colors.primary.light,
+  };
 
   return (
     <Card elevation={2} sx={{ borderRadius: 3, overflow: 'hidden' }}>

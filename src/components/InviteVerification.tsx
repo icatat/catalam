@@ -146,7 +146,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
                   disabled={loading || !inviteId.trim()}
                   variant="contained"
                   size="large"
-                  weddingVariant={location === Location.ROMANIA ? 'romania' : 'vietnam'}
+                  weddingVariant="primary"
                   fullWidth
                   startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <Heart />}
                   sx={{

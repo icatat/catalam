@@ -86,7 +86,6 @@ export default function ContactPage() {
                   <CustomButton
                     onClick={() => {window.location.href = '/';}}
                     variant="contained"
-                    weddingVariant="romania"
                     size="medium"
                     sx={{ flex: 1 }}
                   >

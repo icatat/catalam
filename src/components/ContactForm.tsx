@@ -239,7 +239,7 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
                   variant="contained"
                   size="large"
                   fullWidth
-                  weddingVariant="romania"
+                  weddingVariant="primary"
                   loading={isSubmitting}
                   loadingText={t('contact.form.sending')}
                   icon={!isSubmitting ? <Send /> : undefined}

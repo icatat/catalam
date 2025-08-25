@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { Box, useTheme } from '@mui/material';
-import { getWeddingVariant } from '@/lib/mui-theme';
+import { getUnifiedColors } from '@/lib/mui-theme';
 
 interface PhotoCardProps {
   src: string;
@@ -128,8 +128,12 @@ export function TextCard({
     large: 'col-span-2 aspect-[2/1]',
   };
 
-  const weddingVariant = variant === 'primary' ? 'romania' : variant === 'secondary' ? 'vietnam' : 'accent';
-  const variantColors = getWeddingVariant(weddingVariant);
+  const colors = getUnifiedColors();
+  // Use different shades for visual variety while maintaining unified theme
+  const variantColors = {
+    primary: variant === 'primary' ? colors.primary.main : variant === 'secondary' ? colors.primary.light : colors.primary.lighter,
+    light: variant === 'primary' ? colors.primary.light : variant === 'secondary' ? colors.primary.lighter : colors.primary.lightest,
+  };
 
   return (
     <Box

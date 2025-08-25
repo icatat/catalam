@@ -3,13 +3,12 @@
 import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
+
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
 import { InviteVerification } from '@/components/InviteVerification';
 import { RSVPFormData } from '@/types/wedding';
-import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
 import CustomButton from '@/components/Button';
 import { ScrollReveal, ScrollProgress } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
@@ -23,7 +22,7 @@ import {
   createEmailPromise,
   RSVPHandlerOptions 
 } from '@/lib/rsvpUtils';
-import { WEDDING_INFO, LOCATION_THEME, MESSAGES } from '@/lib/constants';
+import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
 
 interface WeddingPageProps {
   location: Location;
@@ -43,7 +42,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   }>({ attending: false, email: '', emailSent: false });
 
   const weddingInfo = WEDDING_INFO[location];
-  const locationTheme = LOCATION_THEME[location];
   const isRomania = location === Location.ROMANIA;
   const locationName = isRomania ? 'Romania' : 'Vietnam';
 
@@ -153,7 +151,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               borderBottom: `2px solid ${theme.palette.primary.main}`,
             }}
           />
-          <p className={themeClasses.body('base', 'secondary')}>{t('wedding.verification.loading')}</p>
+          <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>{t('wedding.verification.loading')}</Typography>
         </div>
       </div>
     );
@@ -162,7 +160,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   // Invite verification
   if (!guestData) {
     return (
-      <div className={cn("min-h-screen", themeClasses.gradientBg(locationTheme.gradientBg))}>
+      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.primary.light}15 25%, ${theme.palette.secondary.light}08 50%, ${theme.palette.grey[50]} 75%, ${theme.palette.primary.main}05 100%)` }}>
         <InviteVerification 
           location={location}
           onVerified={handleInviteVerified}
@@ -240,7 +238,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   return (
     <>
       <ScrollProgress />
-      <div className={cn("min-h-screen", themeClasses.gradientBg(locationTheme.gradientBg))}>
+      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.primary.light}15 25%, ${theme.palette.secondary.light}08 50%, ${theme.palette.grey[50]} 75%, ${theme.palette.primary.main}05 100%)` }}>
         <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
       
         <HeroSection
@@ -279,12 +277,12 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
 
         {/* RSVP Section */}
         <ScrollReveal direction="up" delay={0.2}>
-          <section className={themeClasses.section('base')}>
-            <div className={themeClasses.container()}>
-              <div className={cn("max-w-2xl mx-auto text-center", themeClasses.card('base'))}>
-                <h2 className={cn(themeClasses.heading('h2', locationTheme.variant), 'mb-4')}>
+          <section style={{ padding: theme.spacing(8, 0) }}>
+            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
+              <Box sx={{ maxWidth: '48rem', mx: 'auto', textAlign: 'center', p: 4, bgcolor: 'background.paper', borderRadius: 3, boxShadow: theme.shadows[4] }}>
+                <Typography variant="h2" component="h2" sx={{ color: theme.palette.primary.main, fontWeight: 700, mb: 3 }}>
                   {t('rsvp.title', { location: locationName })}
-                </h2>
+                </Typography>
                 
                 <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 4, textAlign: 'center' }}>
                   {t('rsvp.modal.welcome', { name: guestData.full_name })}
@@ -342,7 +340,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   onClick={() => setShowRSVPModal(true)}
                   size="large"
                   variant="contained"
-                  weddingVariant={locationTheme.variant === 'primary' ? 'romania' : 'vietnam'}
                   sx={{
                     px: 6,
                     py: 2,
@@ -358,8 +355,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 <Typography variant="body2" sx={{ color: theme.palette.text.disabled, mt: 2, textAlign: 'center' }}>
                   {t('questions.text')}
                 </Typography>
-              </div>
-            </div>
+              </Box>
+            </Box>
           </section>
         </ScrollReveal>
 
@@ -371,7 +368,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             onSubmit={handleRSVP}
             guestData={guestData}
             location={location}
-            variant={locationTheme.variant}
+            variant="primary"
           />
         )}
 
@@ -388,7 +385,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               setShowRSVPModal(true);
             }}
             onClose={() => setShowConfirmation(false)}
-            variant={locationTheme.variant}
+            variant="primary"
             emailSent={confirmationData.emailSent}
           />
         )}

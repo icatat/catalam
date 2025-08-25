@@ -71,7 +71,7 @@ export default function RSVPModal({
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
   const hasExistingRSVP = guestData.rsvp.includes(location);
-  const weddingVariant = variant === 'primary' ? 'romania' : 'vietnam';
+  const weddingVariant = 'primary'; // Use unified theme
 
   // Reset form when modal opens
   useEffect(() => {

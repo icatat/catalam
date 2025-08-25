@@ -10,7 +10,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useMemo } from 'react';
 import { Box, useTheme, Container, Typography } from '@mui/material';
-import { getWeddingVariant } from '@/lib/mui-theme';
+// Removed getWeddingVariant import as we now use unified theme colors
 
 interface BlobImage {
   url: string;
@@ -54,7 +54,7 @@ export default function Home() {
     <Box 
       sx={{ 
         minHeight: '100vh',
-        background: `linear-gradient(135deg, ${getWeddingVariant('romania').primary}08 0%, ${getWeddingVariant('romania').light}15 25%, ${getWeddingVariant('vietnam').primary}08 50%, ${getWeddingVariant('vietnam').light}15 75%, ${getWeddingVariant('accent').primary}08 100%)`,
+        background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.primary.light}15 25%, ${theme.palette.secondary.light}08 50%, ${theme.palette.grey[50]} 75%, ${theme.palette.primary.main}05 100%)`,
         p: { xs: theme.spacing(2), md: theme.spacing(3) },
         position: 'relative'
       }}
@@ -143,16 +143,16 @@ export default function Home() {
               className="w-80 transition-all duration-300"
               sx={{
                 boxShadow: theme.shadows[8],
-                border: `${theme.spacing(0.5)} solid ${getWeddingVariant('romania').primary}30`,
+                border: `${theme.spacing(0.5)} solid ${theme.palette.primary.main}30`,
                 borderRadius: theme.shape.borderRadius * 2,
                 '&:hover': {
                   boxShadow: theme.shadows[16],
-                  borderColor: `${getWeddingVariant('romania').primary}60`,
+                  borderColor: `${theme.palette.primary.main}60`,
                 },
               }}
               overlay={
                 <Box sx={{ textAlign: 'center' }}>
-                  <MapPin className="w-8 h-8 mb-3 mx-auto" style={{ color: getWeddingVariant('romania').light }} />
+                  <MapPin className="w-8 h-8 mb-3 mx-auto" style={{ color: theme.palette.primary.light }} />
                   <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
                     {t('nav.romania')}
                   </Typography>
@@ -183,16 +183,16 @@ export default function Home() {
               className="w-80 transition-all duration-300"
               sx={{
                 boxShadow: theme.shadows[8],
-                border: `${theme.spacing(0.5)} solid ${getWeddingVariant('vietnam').primary}30`,
+                border: `${theme.spacing(0.5)} solid ${theme.palette.primary.main}30`,
                 borderRadius: theme.shape.borderRadius * 2,
                 '&:hover': {
                   boxShadow: theme.shadows[16],
-                  borderColor: `${getWeddingVariant('vietnam').primary}60`,
+                  borderColor: `${theme.palette.primary.main}60`,
                 },
               }}
               overlay={
                 <Box sx={{ textAlign: 'center' }}>
-                  <Calendar className="w-8 h-8 mb-3 mx-auto" style={{ color: getWeddingVariant('vietnam').light }} />
+                  <Calendar className="w-8 h-8 mb-3 mx-auto" style={{ color: theme.palette.primary.light }} />
                   <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
                     {t('nav.vietnam')}
                   </Typography>
@@ -300,7 +300,7 @@ export default function Home() {
           >
             <TextCard size="medium" variant="accent" sx={{ maxWidth: theme.spacing(60) }}>
               <Box sx={{ textAlign: 'center' }}>
-                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: getWeddingVariant('accent').primary }} />
+                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: theme.palette.primary.main }} />
                 <Typography variant="h5" component="h3" sx={{ color: theme.palette.primary.main, mb: theme.spacing(1.5) }}>
                   Memories Coming Soon
                 </Typography>

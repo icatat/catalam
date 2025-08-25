@@ -4,15 +4,15 @@ import { createTheme } from '@mui/material/styles';
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#f43f5e', // Rose-500 - Romania theme
-      light: '#fb7185', // Rose-400
-      dark: '#e11d48', // Rose-600
+      main: '#145870', 
+      light: '#7ebfd6', 
+      dark: '#0c3443', 
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#10b981', // Emerald-500 - Vietnam theme
-      light: '#34d399', // Emerald-400
-      dark: '#059669', // Emerald-600
+      main: '#6b7280', // Gray-500 - Secondary theme color
+      light: '#9ca3af', // Gray-400
+      dark: '#374151', // Gray-700
       contrastText: '#ffffff',
     },
     error: {
@@ -25,7 +25,9 @@ export const muiTheme = createTheme({
       main: '#3b82f6', // Blue-500
     },
     success: {
-      main: '#10b981', // Emerald-500
+      main: '#145870', 
+      light: '#7ebfd6', 
+      dark: '#0c3443', 
     },
     background: {
       default: '#fefefe',
@@ -34,6 +36,7 @@ export const muiTheme = createTheme({
     text: {
       primary: '#1f2937', // Gray-800
       secondary: '#6b7280', // Gray-500
+      disabled: '#9ca3af', // Gray-400
     },
   },
   typography: {
@@ -138,35 +141,44 @@ export const muiTheme = createTheme({
   },
 });
 
-// Wedding-specific color variants
+// Unified wedding color scheme - elegant emerald and gray
 export const weddingColors = {
-  romania: {
-    primary: '#f43f5e', // Rose-500
-    light: '#fdf2f8', // Rose-50
-    dark: '#e11d48', // Rose-600
-    hover: '#fb7185', // Rose-400
+  primary: {
+    main: '#4e7685', 
+    light: '#1a7697', 
+    lighter: '#51a7c6',
+    lightest: '#b2e1f3',
+    dark: '#07242e',
+    darker: '#0e3c4d',
+    surface: '#bac2c4', 
   },
-  vietnam: {
-    primary: '#10b981', // Emerald-500
-    light: '#f0fdf4', // Emerald-50
-    dark: '#059669', // Emerald-600
-    hover: '#34d399', // Emerald-400
-  },
-  accent: {
-    primary: '#ec4899', // Pink-500
-    light: '#fdf2f8', // Pink-50
-    dark: '#db2777', // Pink-600
-    hover: '#f472b6', // Pink-400
+  secondary: {
+    main: '#6b7280', 
+    light: '#9ca3af', // Gray-400
+    lighter: '#d1d5db', // Gray-300
+    lightest: '#e5e7eb', // Gray-200
+    dark: '#37514e', // Gray-700
+    darker: '#1f2937', // Gray-800
+    surface: '#f9fafb', // Gray-50
   },
   neutral: {
-    primary: '#64748b', // Slate-500
+    white: '#ffffff',
     light: '#f8fafc', // Slate-50
+    medium: '#64748b', // Slate-500
     dark: '#334155', // Slate-700
-    hover: '#94a3b8', // Slate-400
   },
 };
 
-// Helper function to get wedding variant colors from theme
-export const getWeddingVariant = (variant: 'romania' | 'vietnam' | 'accent' | 'neutral' = 'romania') => {
-  return weddingColors[variant];
+// Helper function to get wedding colors - now returns unified theme
+export const getWeddingVariant = () => {
+  // Always return the same unified theme
+  return {
+    primary: weddingColors.primary.main,
+    light: weddingColors.primary.light,
+    dark: weddingColors.primary.dark,
+    hover: weddingColors.primary.lighter,
+  };
 };
+
+// Direct access to the unified color palette
+export const getUnifiedColors = () => weddingColors;
