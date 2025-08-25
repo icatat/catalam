@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import MuiNavigation from '@/components/MuiNavigation';
-import MuiContactForm from '@/components/MuiContactForm';
+import Navigation from '@/components/Navigation';
+import ContactForm from '@/components/ContactForm';
 import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
-import MuiButton from '@/components/MuiButton';
+import CustomButton from '@/components/Button';
 import { Send } from 'lucide-react';
 import { Box, Card, CardContent, Typography, Grid } from '@mui/material';
 import { Email, LocationOn } from '@mui/icons-material';
@@ -43,7 +43,7 @@ export default function ContactPage() {
     return (
       <>
         <div className={cn("min-h-screen", themeClasses.gradientBg('primary'))}>
-          <MuiNavigation currentPage="contact" />
+          <Navigation currentPage="contact" />
           
           <div className="container mx-auto px-4 py-20">
             <div className="max-w-2xl mx-auto text-center">
@@ -61,15 +61,15 @@ export default function ContactPage() {
                 </p>
                 
                 <div className="flex gap-3">
-                  <MuiButton
+                  <CustomButton
                     onClick={() => setShowConfirmation(false)}
                     variant="outlined"
                     size="medium"
                     sx={{ flex: 1 }}
                   >
                     {t('contact.sent.another')}
-                  </MuiButton>
-                  <MuiButton
+                  </CustomButton>
+                  <CustomButton
                     onClick={() => {window.location.href = '/';}}
                     variant="contained"
                     weddingVariant="romania"
@@ -77,7 +77,7 @@ export default function ContactPage() {
                     sx={{ flex: 1 }}
                   >
                     {t('contact.sent.home')}
-                  </MuiButton>
+                  </CustomButton>
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@ export default function ContactPage() {
   return (
     <>
       <div className={cn("min-h-screen", themeClasses.gradientBg('primary'))}>
-        <MuiNavigation currentPage="contact" />
+        <Navigation currentPage="contact" />
         
         <div className="container mx-auto px-4 py-20">
           <div className="max-w-4xl mx-auto">
@@ -107,7 +107,7 @@ export default function ContactPage() {
             <Grid container spacing={6}>
               {/* Contact Form */}
               <Grid item xs={12} lg={6}>
-                <MuiContactForm
+                <ContactForm
                   onSubmit={handleSubmit}
                   onSuccess={handleSuccess}
                 />

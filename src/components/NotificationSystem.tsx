@@ -9,11 +9,12 @@ import {
   IconButton,
   Box,
   Typography,
+  useTheme,
 } from '@mui/material';
 import {
   Close,
   CheckCircle,
-  Error,
+  Error as ErrorIcon,
   Warning,
   Info,
   Email,
@@ -57,6 +58,7 @@ interface NotificationProviderProps {
 export function NotificationProvider({ children }: NotificationProviderProps) {
   const [notification, setNotification] = useState<NotificationData | null>(null);
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
 
   const showNotification = (data: NotificationData) => {
     setNotification(data);
@@ -99,7 +101,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
       case 'success':
         return <CheckCircle />;
       case 'error':
-        return <Error />;
+        return <ErrorIcon />;
       case 'warning':
         return <Warning />;
       case 'info':
@@ -122,19 +124,19 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     }}>
       {children}
       
-      <Snackbar
-        open={open}
-        autoHideDuration={notification?.duration || 4000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        TransitionComponent={Slide}
-        sx={{
-          '& .MuiSnackbarContent-root': {
-            padding: 0,
-          },
-        }}
-      >
-        {notification && (
+      {notification && (
+        <Snackbar
+          open={open}
+          autoHideDuration={notification.duration || 4000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          TransitionComponent={Slide}
+          sx={{
+            '& .MuiSnackbarContent-root': {
+              padding: 0,
+            },
+          }}
+        >
           <Alert
             severity={notification.type}
             onClose={handleClose}
@@ -142,7 +144,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
             sx={{
               width: '100%',
               borderRadius: 2,
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+              boxShadow: theme.shadows[8],
               '& .MuiAlert-icon': {
                 fontSize: '1.5rem',
               },
@@ -188,8 +190,8 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
               {notification.message}
             </Typography>
           </Alert>
-        )}
-      </Snackbar>
+        </Snackbar>
+      )}
     </NotificationContext.Provider>
   );
 }

@@ -1,13 +1,42 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+  Box,
+  IconButton,
+  Chip,
+  Divider,
+  Slide,
+  Alert,
+} from '@mui/material';
+import { Close, Person, Email, Phone, Group, Restaurant, Message } from '@mui/icons-material';
+import { TransitionProps } from '@mui/material/transitions';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { RSVPFormData } from '@/types/wedding';
 import { Location, GuestData } from '@/models/RSVP';
-import { themeClasses } from '@/lib/theme';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import Button from './Button';
+import { forwardRef } from 'react';
+import { useTheme } from '@mui/material';
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface RSVPModalProps {
   isOpen: boolean;
@@ -27,8 +56,9 @@ export default function RSVPModal({
   variant = 'primary'
 }: RSVPModalProps) {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [formData, setFormData] = useState<RSVPFormData>({
-    name: '',
+    name: guestData.full_name || '',
     email: '',
     phone: '',
     rsvp: '',
@@ -36,38 +66,71 @@ export default function RSVPModal({
     dietaryRestrictions: '',
     message: ''
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Partial<RSVPFormData>>({});
 
-  const isRomania = location === Location.ROMANIA;
+  const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
   const hasExistingRSVP = guestData.rsvp.includes(location);
-  const locationName = isRomania ? 'Romania' : 'Vietnam';
-  const rsvpOptions = [
-    { value: 'true', label: t('rsvp.option.yes') },
-    { value: 'false', label: t('rsvp.option.no') }
-  ];
+  const weddingVariant = variant === 'primary' ? 'romania' : 'vietnam';
 
-  // Prefill form with guest data
+  // Reset form when modal opens
   useEffect(() => {
-    if (guestData) {
-      setFormData(prev => ({
-        ...prev,
-        name: guestData.full_name,
-        rsvp: hasExistingRSVP ? 'true' : ''
-      }));
+    if (isOpen) {
+      setFormData({
+        name: guestData.full_name || '',
+        email: '',
+        phone: '',
+        rsvp: '',
+        guestCount: '1',
+        dietaryRestrictions: '',
+        message: ''
+      });
+      setErrors({});
     }
-  }, [guestData, hasExistingRSVP]);
+  }, [isOpen, guestData.full_name]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+  const validateForm = (): boolean => {
+    const newErrors: Partial<RSVPFormData> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = t('common.required');
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = t('common.required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.rsvp) {
+      newErrors.rsvp = t('common.required');
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof RSVPFormData) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value;
+    setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
+
     try {
       await onSubmit(formData);
       onClose();
@@ -78,218 +141,199 @@ export default function RSVPModal({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className={cn(
-        "bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto",
-        themeClasses.card('base')
-      )}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div>
-            <h2 className={cn(themeClasses.heading('h3', variant), 'mb-1')}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      TransitionComponent={Transition}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
+        }
+      }}
+    >
+      <DialogTitle sx={{ pb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box>
+            <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: 'primary.main' }}>
               {hasExistingRSVP ? t('rsvp.modal.title.modify') : t('rsvp.modal.title')}
-            </h2>
-            <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-              {t('rsvp.title', { location: locationName })}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+              {t('wedding.hero.title', { location: locationName })}
+            </Typography>
+          </Box>
+          <IconButton onClick={onClose} size="small" sx={{ color: 'text.secondary' }}>
+            <Close />
+          </IconButton>
+        </Box>
+        
+        <Box sx={{ mt: 2 }}>
+          <Chip 
+            icon={<Person />}
+            label={`${t('rsvp.modal.welcome', { name: guestData.full_name })}`}
+            variant="outlined"
+            color={variant === 'primary' ? 'primary' : 'secondary'}
+            sx={{ borderRadius: 2 }}
+          />
+        </Box>
+      </DialogTitle>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Status indicator */}
-          {hasExistingRSVP && (
-            <div className={cn(
-              "p-4 rounded-lg border",
-              "bg-green-50 border-green-200 text-green-800"
-            )}>
-              <p className={themeClasses.body('small')}>
-                ✓ {t('rsvp.modal.already.message')}
-              </p>
-            </div>
-          )}
+      <Divider />
 
-          {/* Welcome message */}
-          <div className="text-center">
-            <p className={cn(themeClasses.body('large'), 'text-gray-700')}>
-              {t('rsvp.modal.welcome', { name: guestData.full_name })}
-            </p>
-            <p className={cn(themeClasses.body('base'), 'text-gray-600 mt-2')}>
-              {t('rsvp.modal.description', { location: locationName })}
-            </p>
-          </div>
+      <DialogContent sx={{ pt: 3 }}>
+        {hasExistingRSVP && (
+          <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+            {t('rsvp.modal.already.message')}
+          </Alert>
+        )}
 
-          {/* Name Field (prefilled, readonly) */}
-          <div>
-            <label htmlFor="name" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('common.name')} {t('common.required')}
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box sx={{ display: 'grid', gap: 3 }}>
+            {/* Name Field */}
+            <TextField
+              fullWidth
+              label={`${t('common.name')} *`}
               value={formData.name}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              readOnly
+              onChange={handleInputChange('name')}
+              error={!!errors.name}
+              helperText={errors.name}
+              disabled={isSubmitting}
+              InputProps={{
+                startAdornment: <Person sx={{ color: 'text.secondary', mr: 1 }} />,
+              }}
             />
-          </div>
 
-          {/* Email Field */}
-          <div>
-            <label htmlFor="email" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.email')} {t('common.required')}
-            </label>
-            <input
+            {/* Email Field */}
+            <TextField
+              fullWidth
               type="email"
-              id="email"
-              name="email"
-              required
+              label={`${t('rsvp.field.email')} *`}
               value={formData.email}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder="your.email@example.com"
+              onChange={handleInputChange('email')}
+              error={!!errors.email}
+              helperText={errors.email}
+              disabled={isSubmitting}
+              InputProps={{
+                startAdornment: <Email sx={{ color: 'text.secondary', mr: 1 }} />,
+              }}
             />
-          </div>
 
-          {/* Phone Field */}
-          <div>
-            <label htmlFor="phone" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.phone')}
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
+            {/* Phone Field */}
+            <TextField
+              fullWidth
+              label={t('rsvp.field.phone')}
               value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder="+40 / +84 / +1..."
+              onChange={handleInputChange('phone')}
+              disabled={isSubmitting}
+              InputProps={{
+                startAdornment: <Phone sx={{ color: 'text.secondary', mr: 1 }} />,
+              }}
             />
-          </div>
 
-          {/* RSVP Field */}
-          <div>
-            <label className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.attending')} {t('common.required')}
-            </label>
-            <div className="grid grid-cols-1 gap-2">
-              {rsvpOptions.map((option) => (
-                <label key={option.value} className="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="rsvp"
-                    value={option.value}
-                    checked={formData.rsvp === option.value}
-                    onChange={handleInputChange}
-                    className="mr-3 text-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                  <span className={themeClasses.body('base')}>{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+            {/* Attendance Selection */}
+            <FormControl error={!!errors.rsvp}>
+              <FormLabel component="legend" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                {t('rsvp.field.attending')} *
+              </FormLabel>
+              <RadioGroup
+                value={formData.rsvp}
+                onChange={handleInputChange('rsvp')}
+                sx={{ mt: 1 }}
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
+                  label={t('rsvp.option.yes')}
+                  disabled={isSubmitting}
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
+                  label={t('rsvp.option.no')}
+                  disabled={isSubmitting}
+                />
+              </RadioGroup>
+              {errors.rsvp && (
+                <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+                  {errors.rsvp}
+                </Typography>
+              )}
+            </FormControl>
 
-          {/* Guest Count Field */}
-          <div>
-            <label htmlFor="guestCount" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.guestCount')}
-            </label>
-            <select
-              id="guestCount"
-              name="guestCount"
-              value={formData.guestCount}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-            >
-              {[1, 2, 3, 4, 5, 6].map(num => (
-                <option key={num} value={num.toString()}>{num}</option>
-              ))}
-            </select>
-          </div>
+            {formData.rsvp === 'true' && (
+              <>
+                {/* Guest Count */}
+                <TextField
+                  fullWidth
+                  type="number"
+                  label={t('rsvp.field.guestCount')}
+                  value={formData.guestCount}
+                  onChange={handleInputChange('guestCount')}
+                  disabled={isSubmitting}
+                  inputProps={{ min: 1, max: 10 }}
+                  InputProps={{
+                    startAdornment: <Group sx={{ color: 'text.secondary', mr: 1 }} />,
+                  }}
+                />
 
-          {/* Dietary Restrictions Field */}
-          <div>
-            <label htmlFor="dietaryRestrictions" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.dietary')}
-            </label>
-            <input
-              type="text"
-              id="dietaryRestrictions"
-              name="dietaryRestrictions"
-              value={formData.dietaryRestrictions}
-              onChange={handleInputChange}
-              placeholder={t('rsvp.placeholder.dietary')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-            />
-          </div>
+                {/* Dietary Restrictions */}
+                <TextField
+                  fullWidth
+                  label={t('rsvp.field.dietary')}
+                  value={formData.dietaryRestrictions}
+                  onChange={handleInputChange('dietaryRestrictions')}
+                  placeholder={t('rsvp.placeholder.dietary')}
+                  disabled={isSubmitting}
+                  InputProps={{
+                    startAdornment: <Restaurant sx={{ color: 'text.secondary', mr: 1 }} />,
+                  }}
+                />
+              </>
+            )}
 
-          {/* Message Field */}
-          <div>
-            <label htmlFor="message" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              {t('rsvp.field.message')}
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={4}
+            {/* Message Field */}
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label={t('rsvp.field.message')}
               value={formData.message}
-              onChange={handleInputChange}
+              onChange={handleInputChange('message')}
               placeholder={t('rsvp.placeholder.message')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
+              disabled={isSubmitting}
+              InputProps={{
+                startAdornment: (
+                  <Message sx={{ color: 'text.secondary', mr: 1, alignSelf: 'flex-start', mt: 1 }} />
+                ),
+              }}
             />
-          </div>
+          </Box>
+        </Box>
+      </DialogContent>
 
-          {/* Submit Button */}
-          <div className="flex gap-3 pt-4">
-            <Button
-              type="button"
-              onClick={onClose}
-              variant="outline"
-              size="lg"
-              className="flex-1"
-              disabled={isSubmitting}
-            >
-              {t('common.cancel')}
-            </Button>
-            <Button
-              type="submit"
-              variant="default"
-              size="lg"
-              className={cn(
-                'flex-1 font-medium text-white transition-all duration-200',
-                variant === 'primary' && 'bg-rose-500 hover:bg-rose-600',
-                variant === 'secondary' && 'bg-emerald-500 hover:bg-emerald-600',
-                variant === 'accent' && 'bg-amber-500 hover:bg-amber-600',
-                isSubmitting && 'opacity-50 cursor-not-allowed'
-              )}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  {t('rsvp.submitting')}
-                </>
-              ) : (
-                hasExistingRSVP 
-                  ? t('rsvp.button.update')
-                  : t('common.submit')
-              )}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+      <DialogActions sx={{ p: 3, pt: 2 }}>
+        <Button
+          onClick={onClose}
+          variant="outlined"
+          disabled={isSubmitting}
+          sx={{ mr: 1 }}
+        >
+          {t('common.cancel')}
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          weddingVariant={weddingVariant}
+          loading={isSubmitting}
+          loadingText={t('rsvp.submitting')}
+          sx={{ minWidth: 120 }}
+        >
+          {t('common.submit')}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

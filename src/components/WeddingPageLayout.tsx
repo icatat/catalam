@@ -12,9 +12,10 @@ import { ItineraryDayData } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
-import MuiButton from '@/components/MuiButton';
+import CustomButton from '@/components/Button';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
+import { useTheme } from '@mui/material';
 import { Location, GuestData } from '@/models/RSVP';
 import { 
   handleReconfirmation, 
@@ -31,6 +32,7 @@ interface WeddingPageProps {
 
 export default function WeddingPageLayout({ location }: WeddingPageProps) {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
@@ -42,7 +44,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   }>({ attending: false, email: '', emailSent: false });
 
   const weddingInfo = WEDDING_INFO[location];
-  const theme = LOCATION_THEME[location];
+  const locationTheme = LOCATION_THEME[location];
   const isRomania = location === Location.ROMANIA;
   const locationName = isRomania ? 'Romania' : 'Vietnam';
 
@@ -159,7 +161,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   // Invite verification
   if (!guestData) {
     return (
-      <div className={cn("min-h-screen", themeClasses.gradientBg(theme.gradientBg))}>
+      <div className={cn("min-h-screen", themeClasses.gradientBg(locationTheme.gradientBg))}>
         <InviteVerification 
           location={location}
           onVerified={handleInviteVerified}
@@ -244,7 +246,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   return (
     <>
       <ScrollProgress />
-      <div className={cn("min-h-screen", themeClasses.gradientBg(theme.gradientBg))}>
+      <div className={cn("min-h-screen", themeClasses.gradientBg(locationTheme.gradientBg))}>
         <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
       
         <HeroSection
@@ -259,7 +261,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         <section className={cn(themeClasses.card('base'), themeClasses.section('base'))}>
           <div className={themeClasses.container()}>
             <ScrollReveal direction="up">
-              <h2 className={cn(themeClasses.heading('h2', theme.variant), 'mb-8 text-center')}>
+              <h2 className={cn(themeClasses.heading('h2', locationTheme.variant), 'mb-8 text-center')}>
                 {t('wedding.itinerary.title')}
               </h2>
             </ScrollReveal>
@@ -272,7 +274,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                       title={day.title}
                       subtitle={day.subtitle}
                       events={day.events}
-                      variant={index % 2 === 0 ? theme.variant : 'secondary'}
+                      variant={index % 2 === 0 ? locationTheme.variant : 'secondary'}
                     />
                   </Parallax>
                 ))}
@@ -286,7 +288,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
           <section className={themeClasses.section('base')}>
             <div className={themeClasses.container()}>
               <div className={cn("max-w-2xl mx-auto text-center", themeClasses.card('base'))}>
-                <h2 className={cn(themeClasses.heading('h2', theme.variant), 'mb-4')}>
+                <h2 className={cn(themeClasses.heading('h2', locationTheme.variant), 'mb-4')}>
                   {t('rsvp.title', { location: locationName })}
                 </h2>
                 
@@ -308,21 +310,21 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                     <p className={cn(themeClasses.body('base'), 'text-green-700 mb-4')}>
                       {t('rsvp.already.message', { location: locationName })}
                     </p>
-                    <MuiButton
+                    <CustomButton
                       onClick={() => setShowRSVPModal(true)}
                       variant="outlined"
                       size="medium"
                       sx={{ 
-                        borderColor: '#10b981',
-                        color: '#047857',
+                        borderColor: theme.palette.success.main,
+                        color: theme.palette.success.dark,
                         '&:hover': {
-                          backgroundColor: '#f0fdf4',
-                          borderColor: '#059669'
+                          backgroundColor: theme.palette.success.light + '20', // 20% opacity
+                          borderColor: theme.palette.success.dark
                         }
                       }}
                     >
                       {t('common.modify')}
-                    </MuiButton>
+                    </CustomButton>
                   </div>
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
@@ -336,11 +338,11 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 )}
 
                 {/* RSVP Button */}
-                <MuiButton
+                <CustomButton
                   onClick={() => setShowRSVPModal(true)}
                   size="large"
                   variant="contained"
-                  weddingVariant={theme.variant === 'primary' ? 'romania' : 'vietnam'}
+                  weddingVariant={locationTheme.variant === 'primary' ? 'romania' : 'vietnam'}
                   sx={{
                     px: 6,
                     py: 2,
@@ -351,7 +353,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                     ? t('rsvp.button.update')
                     : t('rsvp.button.now')
                   }
-                </MuiButton>
+                </CustomButton>
 
                 <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
                   {t('questions.text')}
@@ -369,7 +371,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             onSubmit={handleRSVP}
             guestData={guestData}
             location={location}
-            variant={theme.variant}
+            variant={locationTheme.variant}
           />
         )}
 
@@ -386,7 +388,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               setShowRSVPModal(true);
             }}
             onClose={() => setShowConfirmation(false)}
-            variant={theme.variant}
+            variant={locationTheme.variant}
             emailSent={confirmationData.emailSent}
           />
         )}

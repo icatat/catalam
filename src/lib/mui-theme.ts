@@ -144,15 +144,29 @@ export const weddingColors = {
     primary: '#f43f5e', // Rose-500
     light: '#fdf2f8', // Rose-50
     dark: '#e11d48', // Rose-600
+    hover: '#fb7185', // Rose-400
   },
   vietnam: {
     primary: '#10b981', // Emerald-500
     light: '#f0fdf4', // Emerald-50
     dark: '#059669', // Emerald-600
+    hover: '#34d399', // Emerald-400
   },
   accent: {
     primary: '#ec4899', // Pink-500
     light: '#fdf2f8', // Pink-50
     dark: '#db2777', // Pink-600
+    hover: '#f472b6', // Pink-400
   },
+  neutral: {
+    primary: '#64748b', // Slate-500
+    light: '#f8fafc', // Slate-50
+    dark: '#334155', // Slate-700
+    hover: '#94a3b8', // Slate-400
+  },
+};
+
+// Helper function to get wedding variant colors from theme
+export const getWeddingVariant = (variant: 'romania' | 'vietnam' | 'accent' | 'neutral' = 'romania') => {
+  return weddingColors[variant];
 };

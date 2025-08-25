@@ -17,7 +17,8 @@ import {
 } from '@mui/material';
 import { Send, CheckCircle } from '@mui/icons-material';
 import { useLanguage } from '@/contexts/LanguageContext';
-import MuiButton from './MuiButton';
+import Button from './Button';
+import { useTheme } from '@mui/material';
 
 interface ContactFormData {
   name: string;
@@ -26,13 +27,14 @@ interface ContactFormData {
   message: string;
 }
 
-interface MuiContactFormProps {
+interface ContactFormProps {
   onSubmit: (data: ContactFormData) => Promise<void>;
   onSuccess: () => void;
 }
 
-export default function MuiContactForm({ onSubmit, onSuccess }: MuiContactFormProps) {
+export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -82,7 +84,7 @@ export default function MuiContactForm({ onSubmit, onSuccess }: MuiContactFormPr
   };
 
   const handleInputChange = (field: keyof ContactFormData) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { value: string } }
   ) => {
     const value = event.target.value;
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -127,7 +129,7 @@ export default function MuiContactForm({ onSubmit, onSuccess }: MuiContactFormPr
       sx={{ 
         borderRadius: 3,
         overflow: 'visible',
-        background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+        background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
       }}
     >
       <CardContent sx={{ p: 4 }}>
@@ -232,7 +234,7 @@ export default function MuiContactForm({ onSubmit, onSuccess }: MuiContactFormPr
             {/* Submit Button */}
             <Fade in={!showSuccess}>
               <Box>
-                <MuiButton
+                <Button
                   type="submit"
                   variant="contained"
                   size="large"
@@ -248,7 +250,7 @@ export default function MuiContactForm({ onSubmit, onSuccess }: MuiContactFormPr
                   }}
                 >
                   {t('contact.form.send')}
-                </MuiButton>
+                </Button>
               </Box>
             </Fade>
           </Box>

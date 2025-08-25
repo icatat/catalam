@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { FormControl, Select, MenuItem, Box, Typography, SelectChangeEvent, useTheme } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import { useLanguage, type Language } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
-import { ChevronDown, Globe } from 'lucide-react';
 
 const languages = [
   { code: 'en' as Language, name: 'English', flag: '🇺🇸' },
@@ -11,83 +10,139 @@ const languages = [
   { code: 'vi' as Language, name: 'Tiếng Việt', flag: '🇻🇳' }
 ];
 
-export default function LanguageToggle() {
+interface LanguageToggleProps {
+  variant?: 'navigation' | 'subtle';
+  size?: 'small' | 'medium';
+}
+
+export default function LanguageToggle({ 
+  variant = 'navigation', 
+  size = 'medium' 
+}: LanguageToggleProps) {
   const { language, setLanguage } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
 
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const handleLanguageChange = (langCode: Language) => {
-    setLanguage(langCode);
-    setIsOpen(false);
+  const handleLanguageChange = (event: SelectChangeEvent) => {
+    setLanguage(event.target.value as Language);
   };
 
-  return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium",
-          "bg-white/80 backdrop-blur-sm border border-gray-200",
-          "hover:bg-white/90 hover:border-gray-300 transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        )}
-        aria-label="Select language"
-        aria-expanded={isOpen}
-      >
-        <Globe className="h-4 w-4 text-gray-600" />
-        <span className="text-gray-700">{currentLanguage.flag}</span>
-        <span className="text-gray-700 hidden sm:inline">{currentLanguage.name}</span>
-        <ChevronDown className={cn(
-          "h-4 w-4 text-gray-500 transition-transform duration-200",
-          isOpen && "rotate-180"
-        )} />
-      </button>
+  const isSubtle = variant === 'subtle';
 
-      {isOpen && (
-        <div className={cn(
-          "absolute right-0 top-full mt-2 w-48 z-[9999]",
-          "bg-white/95 backdrop-blur-md rounded-lg shadow-xl border border-white/20",
-          "py-2"
-        )}
-        style={{ zIndex: 9999 }}>
-          {languages.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => handleLanguageChange(lang.code)}
-              className={cn(
-                "w-full px-4 py-2 text-left flex items-center space-x-3",
-                "hover:bg-white/20 transition-colors duration-150",
-                "text-sm focus:outline-none focus:bg-white/20",
-                language === lang.code && "bg-blue-50/50 text-blue-700"
-              )}
+  return (
+    <FormControl size={size}>
+      <Select
+        value={language}
+        onChange={handleLanguageChange}
+        displayEmpty
+        IconComponent={ExpandMore}
+        renderValue={() => (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <span style={{ fontSize: '1.1em' }}>{currentLanguage.flag}</span>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontWeight: 500,
+                color: isSubtle ? 'white' : 'text.primary',
+                display: { xs: 'none', sm: 'block' }
+              }}
             >
-              <span className="text-lg">{lang.flag}</span>
-              <span className="font-medium text-gray-800">{lang.name}</span>
-              {language === lang.code && (
-                <span className="ml-auto">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+              {currentLanguage.name}
+            </Typography>
+          </Box>
+        )}
+        sx={{
+          minWidth: 140,
+          height: 40,
+          backgroundColor: isSubtle 
+            ? 'rgba(255, 255, 255, 0.1)' 
+            : 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(8px)',
+          border: isSubtle 
+            ? '1px solid rgba(255, 255, 255, 0.2)'
+            : '1px solid rgba(0, 0, 0, 0.1)',
+          borderRadius: isSubtle ? '24px' : '12px',
+          color: isSubtle ? 'white' : 'text.primary',
+          '&:hover': {
+            backgroundColor: isSubtle 
+              ? 'rgba(255, 255, 255, 0.2)' 
+              : 'rgba(255, 255, 255, 0.9)',
+            borderColor: isSubtle 
+              ? 'rgba(255, 255, 255, 0.3)' 
+              : 'rgba(0, 0, 0, 0.2)',
+          },
+          '&.Mui-focused': {
+            backgroundColor: isSubtle 
+              ? 'rgba(255, 255, 255, 0.2)' 
+              : 'rgba(255, 255, 255, 0.9)',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none',
+          },
+          '& .MuiSelect-select': {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            paddingY: 1,
+            paddingX: 2,
+          },
+          '& .MuiSelect-icon': {
+            color: isSubtle ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
+          },
+        }}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              borderRadius: '12px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
+              mt: 1,
+            }
+          }
+        }}
+      >
+        {languages.map((lang) => (
+          <MenuItem 
+            key={lang.code} 
+            value={lang.code}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              py: 1.5,
+              px: 2,
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'primary.light',
+                color: 'primary.main',
+                fontWeight: 600,
+                '&:hover': {
+                  backgroundColor: 'primary.light',
+                },
+              },
+            }}
+          >
+            <span style={{ fontSize: '1.1em' }}>{lang.flag}</span>
+            <Typography variant="body2" sx={{ fontWeight: 'inherit' }}>
+              {lang.name}
+            </Typography>
+            {language === lang.code && (
+              <Box
+                sx={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: 'primary.main',
+                  marginLeft: 'auto',
+                }}
+              />
+            )}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

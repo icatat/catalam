@@ -7,7 +7,7 @@ import { themeClasses } from '@/lib/theme';
 import { PhotoCard, TextCard } from '@/components/ui/photo-card';
 import { DynamicPhotoCard } from '@/components/DynamicPhotoCard';
 import { useLanguage } from '@/contexts/LanguageContext';
-import MuiLanguageToggle from '@/components/MuiLanguageToggle';
+import LanguageToggle from '@/components/LanguageToggle';
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 
@@ -62,7 +62,7 @@ export default function Home() {
         >
           {t('nav.contact')}
         </Link>
-        <MuiLanguageToggle variant="subtle" size="small" />
+        <LanguageToggle variant="subtle" size="small" />
       </div>
       
       <div className="max-w-7xl mx-auto">

@@ -5,7 +5,7 @@ import { Location } from '@/models/RSVP';
 import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import CustomButton from '@/components/Button';
 import { CheckCircle, XCircle, Mail, Edit } from 'lucide-react';
 
 interface RSVPConfirmationProps {
@@ -119,19 +119,19 @@ export default function RSVPConfirmation({
 
           {/* Action buttons */}
           <div className="flex gap-3">
-            <Button
+            <CustomButton
               onClick={onModify}
-              variant="outline"
-              size="default"
+              variant="outlined"
+              size="medium"
               className="flex-1 flex items-center justify-center"
             >
               <Edit className="h-4 w-4 mr-2" />
               {t('common.modify')}
-            </Button>
-            <Button
+            </CustomButton>
+            <CustomButton
               onClick={onClose}
-              variant="default"
-              size="default"
+              variant="contained"
+              size="medium"
               className={cn(
                 'flex-1 font-medium text-white transition-all duration-200',
                 variant === 'primary' && 'bg-rose-500 hover:bg-rose-600',
@@ -140,7 +140,7 @@ export default function RSVPConfirmation({
               )}
             >
               {t('common.done')}
-            </Button>
+            </CustomButton>
           </div>
 
           {/* Contact info */}
