@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { RSVPFormData } from '@/types/wedding';
 import { Location, GuestData } from '@/models/RSVP';
 import { themeClasses } from '@/lib/theme';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { ROMANIAN_RSVP_OPTIONS } from '@/lib/constants';
 
 interface RSVPModalProps {
   isOpen: boolean;
@@ -26,6 +26,7 @@ export default function RSVPModal({
   location,
   variant = 'primary'
 }: RSVPModalProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<RSVPFormData>({
     name: '',
     email: '',
@@ -40,9 +41,10 @@ export default function RSVPModal({
 
   const isRomania = location === Location.ROMANIA;
   const hasExistingRSVP = guestData.rsvp.includes(location);
-  const rsvpOptions = isRomania ? ROMANIAN_RSVP_OPTIONS : [
-    { value: 'true', label: 'Yes, I&apos;ll be there!' },
-    { value: 'false', label: 'Sorry, I can&apos;t make it' }
+  const locationName = isRomania ? 'Romania' : 'Vietnam';
+  const rsvpOptions = [
+    { value: 'true', label: t('rsvp.option.yes') },
+    { value: 'false', label: t('rsvp.option.no') }
   ];
 
   // Prefill form with guest data
@@ -88,11 +90,10 @@ export default function RSVPModal({
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
             <h2 className={cn(themeClasses.heading('h3', variant), 'mb-1')}>
-              {hasExistingRSVP ? 'Modify Your RSVP' : 'RSVP'}
-              {isRomania && (hasExistingRSVP ? ' / Modifică Răspunsul' : ' / Confirmarea Presenței')}
+              {hasExistingRSVP ? t('rsvp.modal.title.modify') : t('rsvp.modal.title')}
             </h2>
             <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-              {location === Location.ROMANIA ? 'Romania Wedding' : 'Vietnam Wedding'}
+              {t('rsvp.title', { location: locationName })}
             </p>
           </div>
           <button
@@ -112,8 +113,7 @@ export default function RSVPModal({
               "bg-green-50 border-green-200 text-green-800"
             )}>
               <p className={themeClasses.body('small')}>
-                ✓ You have already RSVP&apos;d for this wedding. You can modify your response below.
-                {isRomania && ' / Ai confirmat deja prezența. Poți modifica răspunsul mai jos.'}
+                ✓ {t('rsvp.modal.already.message')}
               </p>
             </div>
           )}
@@ -121,19 +121,17 @@ export default function RSVPModal({
           {/* Welcome message */}
           <div className="text-center">
             <p className={cn(themeClasses.body('large'), 'text-gray-700')}>
-              Welcome {guestData.full_name}! 
-              {isRomania && ` / Bun venit ${guestData.full_name}!`}
+              {t('rsvp.modal.welcome', { name: guestData.full_name })}
             </p>
             <p className={cn(themeClasses.body('base'), 'text-gray-600 mt-2')}>
-              Please let us know if you&apos;ll be joining us for our special day in {location === Location.ROMANIA ? 'Romania' : 'Vietnam'}
-              {isRomania && ' / Te rugăm să ne spui dacă vei fi alături de noi în ziua noastră specială din România'}
+              {t('rsvp.modal.description', { location: locationName })}
             </p>
           </div>
 
           {/* Name Field (prefilled, readonly) */}
           <div>
             <label htmlFor="name" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Full Name / Nume Complet *
+              {t('common.name')} {t('common.required')}
             </label>
             <input
               type="text"
@@ -150,7 +148,7 @@ export default function RSVPModal({
           {/* Email Field */}
           <div>
             <label htmlFor="email" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Email Address / Adresa de Email *
+              {t('rsvp.field.email')} {t('common.required')}
             </label>
             <input
               type="email"
@@ -167,7 +165,7 @@ export default function RSVPModal({
           {/* Phone Field */}
           <div>
             <label htmlFor="phone" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Phone Number / Număr de Telefon
+              {t('rsvp.field.phone')}
             </label>
             <input
               type="tel"
@@ -183,7 +181,7 @@ export default function RSVPModal({
           {/* RSVP Field */}
           <div>
             <label className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Will you be attending? / Vei participa? *
+              {t('rsvp.field.attending')} {t('common.required')}
             </label>
             <div className="grid grid-cols-1 gap-2">
               {rsvpOptions.map((option) => (
@@ -206,7 +204,7 @@ export default function RSVPModal({
           {/* Guest Count Field */}
           <div>
             <label htmlFor="guestCount" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Number of Guests / Numărul de Invitați
+              {t('rsvp.field.guestCount')}
             </label>
             <select
               id="guestCount"
@@ -224,7 +222,7 @@ export default function RSVPModal({
           {/* Dietary Restrictions Field */}
           <div>
             <label htmlFor="dietaryRestrictions" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Dietary Restrictions / Restricții Alimentare
+              {t('rsvp.field.dietary')}
             </label>
             <input
               type="text"
@@ -232,7 +230,7 @@ export default function RSVPModal({
               name="dietaryRestrictions"
               value={formData.dietaryRestrictions}
               onChange={handleInputChange}
-              placeholder={isRomania ? "Vegetarian, alergii, etc. / Vegetarian, allergies, etc." : "Vegetarian, allergies, etc."}
+              placeholder={t('rsvp.placeholder.dietary')}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
           </div>
@@ -240,7 +238,7 @@ export default function RSVPModal({
           {/* Message Field */}
           <div>
             <label htmlFor="message" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-              Message for the Couple / Mesaj pentru Cuplu
+              {t('rsvp.field.message')}
             </label>
             <textarea
               id="message"
@@ -248,7 +246,7 @@ export default function RSVPModal({
               rows={4}
               value={formData.message}
               onChange={handleInputChange}
-              placeholder={isRomania ? "Mesaj pentru cuplul ... (Special message for the happy couple...)" : "Any special message for the couple..."}
+              placeholder={t('rsvp.placeholder.message')}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
             />
           </div>
@@ -263,7 +261,7 @@ export default function RSVPModal({
               className="flex-1"
               disabled={isSubmitting}
             >
-              Cancel / Anulează
+              {t('common.cancel')}
             </Button>
             <Button
               type="submit"
@@ -281,12 +279,12 @@ export default function RSVPModal({
               {isSubmitting ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  {isRomania ? 'Se trimite...' : 'Submitting...'}
+                  {t('rsvp.submitting')}
                 </>
               ) : (
                 hasExistingRSVP 
-                  ? (isRomania ? 'Update RSVP / Actualizează' : 'Update RSVP')
-                  : (isRomania ? 'Submit RSVP / Trimite' : 'Submit RSVP')
+                  ? t('rsvp.button.update')
+                  : t('common.submit')
               )}
             </Button>
           </div>

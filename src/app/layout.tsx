@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Thasadith } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const thasadith = Thasadith({
   variable: "--font-thasadith",
@@ -25,9 +26,11 @@ export default function RootLayout({
       <body
         className={`${thasadith.variable} antialiased`}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

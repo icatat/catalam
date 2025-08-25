@@ -8,9 +8,9 @@ import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
 import { InviteVerification } from '@/components/InviteVerification';
 import { RSVPFormData } from '@/types/wedding';
-import { WeddingItineraryFactory } from '@/models/Itinerary';
 import { ItineraryDayData } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
@@ -30,6 +30,7 @@ interface WeddingPageProps {
 }
 
 export default function WeddingPageLayout({ location }: WeddingPageProps) {
+  const { t } = useLanguage();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
@@ -43,6 +44,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   const weddingInfo = WEDDING_INFO[location];
   const theme = LOCATION_THEME[location];
   const isRomania = location === Location.ROMANIA;
+  const locationName = isRomania ? 'Romania' : 'Vietnam';
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -148,7 +150,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             "animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4",
             isRomania ? "border-rose-500" : "border-emerald-500"
           )}></div>
-          <p className={themeClasses.body('base', 'secondary')}>{MESSAGES.VERIFICATION_LOADING}</p>
+          <p className={themeClasses.body('base', 'secondary')}>{t('wedding.verification.loading')}</p>
         </div>
       </div>
     );
@@ -166,11 +168,78 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     );
   }
 
-  // Create itinerary
-  const itinerary = isRomania 
-    ? WeddingItineraryFactory.createRomanianWedding()
-    : WeddingItineraryFactory.createVietnameseWedding();
-  const days: ItineraryDayData[] = itinerary.getDaysForComponent();
+  // Create itinerary with translations
+  const days: ItineraryDayData[] = isRomania ? [
+    {
+      title: t('itinerary.romania.day1.title'),
+      subtitle: t('itinerary.romania.day1.subtitle'),
+      bgColor: 'from-slate-50 to-slate-100',
+      timeColor: 'bg-slate-700',
+      events: [
+        {
+          time: '6:00 PM',
+          title: t('itinerary.romania.day1.welcome.title'),
+          location: t('itinerary.romania.day1.welcome.location'),
+          description: t('itinerary.romania.day1.welcome.description')
+        }
+      ]
+    },
+    {
+      title: t('itinerary.romania.day2.title'),
+      subtitle: t('itinerary.romania.day2.subtitle'),
+      bgColor: 'from-blue-50 to-blue-100',
+      timeColor: 'bg-blue-500',
+      events: [
+        {
+          time: '3:00 PM',
+          title: t('itinerary.romania.day2.civil.title'),
+          location: t('itinerary.romania.day2.civil.location'),
+          description: t('itinerary.romania.day2.civil.description')
+        },
+        {
+          time: '6:00 PM',
+          title: t('itinerary.romania.day2.celebration.title'),
+          location: t('itinerary.romania.day2.celebration.location'),
+          description: t('itinerary.romania.day2.celebration.description')
+        }
+      ]
+    }
+  ] : [
+    {
+      title: t('itinerary.vietnam.day1.title'),
+      subtitle: t('itinerary.vietnam.day1.subtitle'),
+      bgColor: 'from-blue-50 to-blue-100',
+      timeColor: 'bg-blue-500',
+      events: [
+        {
+          time: '10:00 AM',
+          title: t('itinerary.vietnam.day1.ceremony.title'),
+          location: t('itinerary.vietnam.day1.ceremony.location'),
+          description: t('itinerary.vietnam.day1.ceremony.description')
+        },
+        {
+          time: '6:00 PM',
+          title: t('itinerary.vietnam.day1.reception.title'),
+          location: t('itinerary.vietnam.day1.reception.location'),
+          description: t('itinerary.vietnam.day1.reception.description')
+        }
+      ]
+    },
+    {
+      title: t('itinerary.vietnam.day2.title'),
+      subtitle: t('itinerary.vietnam.day2.subtitle'),
+      bgColor: 'from-slate-50 to-slate-100',
+      timeColor: 'bg-slate-500',
+      events: [
+        {
+          time: '10:00 AM',
+          title: t('itinerary.vietnam.day2.activities.title'),
+          location: t('itinerary.vietnam.day2.activities.location'),
+          description: t('itinerary.vietnam.day2.activities.description')
+        }
+      ]
+    }
+  ];
 
   return (
     <>
@@ -179,7 +248,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
       
         <HeroSection
-          title={`${weddingInfo.name} Wedding Celebration`}
+          title={t('wedding.hero.title', { location: weddingInfo.name })}
           date={weddingInfo.date}
           subtitle={weddingInfo.subtitle}
           location={weddingInfo.location}
@@ -191,13 +260,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
           <div className={themeClasses.container()}>
             <ScrollReveal direction="up">
               <h2 className={cn(themeClasses.heading('h2', theme.variant), 'mb-8 text-center')}>
-                {itinerary.title}
+                {t('wedding.itinerary.title')}
               </h2>
-              {itinerary.subtitle && (
-                <h3 className={cn(themeClasses.heading('h4', 'secondary'), 'mb-12 text-center italic')}>
-                  {itinerary.subtitle}
-                </h3>
-              )}
             </ScrollReveal>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -223,15 +287,11 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             <div className={themeClasses.container()}>
               <div className={cn("max-w-2xl mx-auto text-center", themeClasses.card('base'))}>
                 <h2 className={cn(themeClasses.heading('h2', theme.variant), 'mb-4')}>
-                  {isRomania 
-                    ? 'RSVP for Romania Wedding / Confirmarea Presenței'
-                    : 'RSVP for Vietnam Wedding'
-                  }
+                  {t('rsvp.title', { location: locationName })}
                 </h2>
                 
                 <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-8')}>
-                  Welcome {guestData.full_name}! 
-                  {isRomania && ` / Bun venit ${guestData.full_name}!`}
+                  {t('rsvp.modal.welcome', { name: guestData.full_name })}
                 </p>
 
                 {/* RSVP Status */}
@@ -242,15 +302,11 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                         <span className="text-white text-sm">✓</span>
                       </div>
                       <h3 className={cn(themeClasses.heading('h4', 'primary'), 'text-green-800')}>
-                        {isRomania 
-                          ? 'You&apos;ve already RSVP&apos;d! / Ai confirmat deja!'
-                          : 'You&apos;ve already RSVP&apos;d!'
-                        }
+                        {t('rsvp.already.title')}
                       </h3>
                     </div>
                     <p className={cn(themeClasses.body('base'), 'text-green-700 mb-4')}>
-                      Thank you for confirming your attendance for our {weddingInfo.name} celebration.
-                      {isRomania && ' / Mulțumim că ai confirmat prezența la celebrarea noastră din România.'}
+                      {t('rsvp.already.message', { location: locationName })}
                     </p>
                     <Button
                       onClick={() => setShowRSVPModal(true)}
@@ -258,20 +314,16 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                       size="lg"
                       className="border-green-500 text-green-700 hover:bg-green-50"
                     >
-                      {isRomania ? 'Modify RSVP / Modifică' : 'Modify RSVP'}
+                      {t('common.modify')}
                     </Button>
                   </div>
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
                     <h3 className={cn(themeClasses.heading('h4', 'secondary'), 'text-gray-700 mb-2')}>
-                      {isRomania 
-                        ? 'Please RSVP / Te rugăm să confirmi'
-                        : 'Please RSVP'
-                      }
+                      {t('rsvp.please.title')}
                     </h3>
                     <p className={cn(themeClasses.body('base'), 'text-gray-600 mb-4')}>
-                      Let us know if you&apos;ll be joining us for our special day in {weddingInfo.name}.
-                      {isRomania && ' / Spune-ne dacă vei fi alături de noi în ziua noastră specială din România.'}
+                      {t('rsvp.please.message', { location: locationName })}
                     </p>
                   </div>
                 )}
@@ -287,15 +339,13 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   )}
                 >
                   {guestData.rsvp.includes(location) 
-                    ? (isRomania ? 'Update RSVP / Actualizează' : 'Update RSVP')
-                    : (isRomania ? 'RSVP Now / Confirmă Acum' : 'RSVP Now')
+                    ? t('rsvp.button.update')
+                    : t('rsvp.button.now')
                   }
                 </Button>
 
                 <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
-                  Questions? <a href="/contact" className="text-blue-600 hover:text-blue-700 underline">Contact us</a>
-                  {isRomania && ' / Întrebări? '}
-                  {isRomania && <a href="/contact" className="text-blue-600 hover:text-blue-700 underline">Contactează-ne</a>}
+                  {t('questions.text')}
                 </p>
               </div>
             </div>

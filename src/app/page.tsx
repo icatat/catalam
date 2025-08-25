@@ -6,6 +6,9 @@ import { cn } from '@/lib/utils';
 import { themeClasses } from '@/lib/theme';
 import { PhotoCard, TextCard } from '@/components/ui/photo-card';
 import { DynamicPhotoCard } from '@/components/DynamicPhotoCard';
+import { useLanguage } from '@/contexts/LanguageContext';
+import SubtleLanguageToggle from '@/components/SubtleLanguageToggle';
+import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 
 interface BlobImage {
@@ -16,6 +19,7 @@ interface BlobImage {
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   const [blobImages, setBlobImages] = useState<BlobImage[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +49,22 @@ export default function Home() {
   }, [blobImages]);
 
   return (
-    <div className={cn('min-h-screen', themeClasses.gradientBg('hero'), 'p-4 md:p-6')}>
+    <div className={cn('min-h-screen', themeClasses.gradientBg('hero'), 'p-4 md:p-6 relative')}>
+      {/* Subtle top-right controls */}
+      <div className="absolute top-4 right-4 flex items-center space-x-3 z-10">
+        <Link 
+          href="/contact"
+          className={cn(
+            "px-3 py-2 rounded-full text-sm font-medium transition-all duration-200",
+            "bg-white/10 backdrop-blur-sm border border-white/20 text-white/90",
+            "hover:bg-white/20 hover:text-white hover:border-white/30"
+          )}
+        >
+          {t('nav.contact')}
+        </Link>
+        <SubtleLanguageToggle />
+      </div>
+      
       <div className="max-w-7xl mx-auto">
         
         {/* Centered Main Title */}
@@ -58,10 +77,10 @@ export default function Home() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.8 }}
               >
-                Cata & Lam
+                {t('home.title')}
               </motion.h1>
               <p className={cn(themeClasses.body('large', 'secondary'), 'text-center')}>
-                Wedding World Tour
+                {t('home.subtitle')}
               </p>
             </div>
           </TextCard>
@@ -91,13 +110,13 @@ export default function Home() {
                     <div className="text-center">
                       <MapPin className="w-8 h-8 mb-3 mx-auto text-rose-400" />
                       <h3 className={cn(themeClasses.heading('h4', 'white'), 'mb-2 font-bold')}>
-                        Romania Wedding
+                        {t('nav.romania')}
                       </h3>
                       <p className={cn(themeClasses.body('base', 'white'), 'mb-3')}>
-                        September 11-12, 2026 • Oradea
+                        {t('contact.info.romania')}
                       </p>
                       <div className="flex items-center justify-center gap-2 mt-4">
-                        <span className="text-white font-semibold">View Details</span>
+                        <span className="text-white font-semibold">{t('contact.links.romania')}</span>
                         <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
@@ -121,13 +140,13 @@ export default function Home() {
                     <div className="text-center">
                       <Calendar className="w-8 h-8 mb-3 mx-auto text-emerald-400" />
                       <h3 className={cn(themeClasses.heading('h4', 'white'), 'mb-2 font-bold')}>
-                        Vietnam Wedding
+                        {t('nav.vietnam')}
                       </h3>
                       <p className={cn(themeClasses.body('base', 'white'), 'mb-3')}>
-                        September 26, 2026 • Hanoi
+                        {t('contact.info.vietnam')}
                       </p>
                       <div className="flex items-center justify-center gap-2 mt-4">
-                        <span className="text-white font-semibold">View Details</span>
+                        <span className="text-white font-semibold">{t('contact.links.vietnam')}</span>
                         <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
@@ -145,7 +164,7 @@ export default function Home() {
             <div className="text-center py-8 bg-white/10 backdrop-blur-sm rounded-2xl px-8">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-rose-500"></div>
               <p className={cn(themeClasses.body('large', 'secondary'), 'mt-4')}>
-                Loading our memories...
+                {t('common.loading')}
               </p>
             </div>
           </motion.div>

@@ -8,6 +8,7 @@ import { themeClasses } from '@/lib/theme';
 import { TextCard } from '@/components/ui/photo-card';
 import Cookies from 'js-cookie';
 import { Location } from '@/models/RSVP';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface InviteVerificationProps {
   location: Location;
@@ -20,6 +21,7 @@ interface InviteVerificationProps {
 }
 
 export function InviteVerification({ location, onVerified }: InviteVerificationProps) {
+  const { t } = useLanguage();
   const [inviteId, setInviteId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,7 +29,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inviteId.trim()) {
-      setError('Please enter your invite ID');
+      setError(t('invite.error.empty'));
       return;
     }
 
@@ -46,12 +48,12 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to verify invite');
+        throw new Error(data.error || t('invite.error.invalid'));
       }
 
       // Check if guest is invited to this location
       if (!data.location.includes(location)) {
-        setError(`Your invitation doesn't include the ${location.toLowerCase()} wedding. Please check with the couple if you have multiple invitations.`);
+        setError(t('invite.error.location', { location: location.toLowerCase() }));
         return;
       }
 
@@ -65,7 +67,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
         rsvp: data.rsvp || [],
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to verify invite ID');
+      setError(err instanceof Error ? err.message : t('invite.error.invalid'));
     } finally {
       setLoading(false);
     }
@@ -89,11 +91,11 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
             </motion.div>
             
             <h1 className={cn(themeClasses.heading('h3', 'primary'), 'mb-4')}>
-              Welcome to Our {location === Location.ROMANIA ? 'Romanian' : 'Vietnamese'} Wedding
+              {t('invite.welcome.title', { location: location === Location.ROMANIA ? 'Romanian' : 'Vietnamese' })}
             </h1>
             
             <p className={cn(themeClasses.body('base', 'secondary'), 'mb-6')}>
-              Please enter your invite ID to continue. You should have received this unique code with your invitation.
+              {t('invite.welcome.description')}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -102,7 +104,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
                   type="text"
                   value={inviteId}
                   onChange={(e) => setInviteId(e.target.value.toUpperCase())}
-                  placeholder="Enter your invite ID"
+                  placeholder={t('invite.field.placeholder')}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-center text-lg font-mono tracking-wider"
                   disabled={loading}
                 />
@@ -133,19 +135,19 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Verifying...
+                    {t('invite.button.verifying')}
                   </>
                 ) : (
                   <>
                     <Heart className="w-5 h-5" />
-                    Continue to Wedding
+                    {t('invite.button.continue')}
                   </>
                 )}
               </motion.button>
             </form>
 
             <div className="mt-6 text-xs text-gray-500">
-              <p>Don&apos;t have an invite ID? Please contact the couple.</p>
+              <p>{t('invite.help')}</p>
             </div>
           </div>
         </TextCard>

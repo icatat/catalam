@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface DynamicPhotoCardProps {
   src: string;
@@ -22,6 +23,7 @@ export function DynamicPhotoCard({
   alt,
   className = '',
 }: DynamicPhotoCardProps) {
+  const { t } = useLanguage();
   const [dimensions, setDimensions] = useState<ImageDimensions | null>(null);
   const [imageError, setImageError] = useState(false);
 
@@ -48,7 +50,7 @@ export function DynamicPhotoCard({
       )}>
         {imageError && (
           <div className="flex items-center justify-center h-full text-gray-500 text-sm">
-            Failed to load image
+            {t('error.image')}
           </div>
         )}
       </div>

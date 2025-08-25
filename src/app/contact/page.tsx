@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import { themeClasses } from '@/lib/theme';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Send, Mail, MapPin } from 'lucide-react';
@@ -16,6 +17,7 @@ interface ContactFormData {
 }
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -47,11 +49,11 @@ export default function ContactPage() {
         setShowConfirmation(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        alert('Sorry, there was an error sending your message. Please try again.');
+        alert(t('error.contact'));
       }
     } catch (error) {
       console.error('Error sending contact form:', error);
-      alert('Sorry, there was an error sending your message. Please try again.');
+      alert(t('error.contact'));
     } finally {
       setIsSubmitting(false);
     }
@@ -71,11 +73,11 @@ export default function ContactPage() {
                 </div>
                 
                 <h2 className={cn(themeClasses.heading('h2', 'primary'), 'mb-4')}>
-                  Message Sent!
+                  {t('contact.sent.title')}
                 </h2>
                 
                 <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-6')}>
-                  Thank you for reaching out! We&apos;ve received your message and will get back to you as soon as possible.
+                  {t('contact.sent.message')}
                 </p>
                 
                 <div className="flex gap-3">
@@ -85,7 +87,7 @@ export default function ContactPage() {
                     size="lg"
                     className="flex-1"
                   >
-                    Send Another Message
+                    {t('contact.sent.another')}
                   </Button>
                   <Button
                     onClick={() => {window.location.href = '/';}}
@@ -93,7 +95,7 @@ export default function ContactPage() {
                     size="lg"
                     className="flex-1 bg-rose-500 hover:bg-rose-600 text-white"
                   >
-                    Back to Home
+                    {t('contact.sent.home')}
                   </Button>
                 </div>
               </div>
@@ -114,11 +116,10 @@ export default function ContactPage() {
             {/* Header */}
             <div className="text-center mb-12">
               <h1 className={cn(themeClasses.heading('h1', 'primary'), 'mb-4')}>
-                Contact Us
+                {t('contact.title')}
               </h1>
               <p className={cn(themeClasses.body('large'), 'text-gray-700 max-w-2xl mx-auto')}>
-                We&apos;d love to hear from you! Whether you have questions about our wedding celebrations, 
-                need help with your RSVP, or just want to send us a message, we&apos;re here for you.
+                {t('contact.description')}
               </p>
             </div>
 
@@ -126,14 +127,14 @@ export default function ContactPage() {
               {/* Contact Form */}
               <div className={cn("bg-white rounded-xl shadow-xl p-8", themeClasses.card('base'))}>
                 <h2 className={cn(themeClasses.heading('h3', 'primary'), 'mb-6')}>
-                  Send us a Message
+                  {t('contact.form.title')}
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name Field */}
                   <div>
                     <label htmlFor="name" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-                      Full Name *
+                      {t('common.name')} {t('common.required')}
                     </label>
                     <input
                       type="text"
@@ -143,14 +144,14 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors"
-                      placeholder="Your full name"
+                      placeholder={t('common.name')}
                     />
                   </div>
 
                   {/* Email Field */}
                   <div>
                     <label htmlFor="email" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-                      Email Address *
+                      {t('common.email')} {t('common.required')}
                     </label>
                     <input
                       type="email"
@@ -167,7 +168,7 @@ export default function ContactPage() {
                   {/* Subject Field */}
                   <div>
                     <label htmlFor="subject" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-                      Subject *
+                      {t('contact.form.subject')} {t('common.required')}
                     </label>
                     <select
                       id="subject"
@@ -192,7 +193,7 @@ export default function ContactPage() {
                   {/* Message Field */}
                   <div>
                     <label htmlFor="message" className={cn(themeClasses.body('small'), 'font-medium text-gray-700 block mb-2')}>
-                      Message *
+                      {t('contact.form.message')} {t('common.required')}
                     </label>
                     <textarea
                       id="message"
@@ -202,7 +203,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="Tell us what&apos;s on your mind..."
+                      placeholder={t('contact.form.placeholder.message')}
                     />
                   </div>
 
@@ -219,12 +220,12 @@ export default function ContactPage() {
                     {isSubmitting ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Sending...
+                        {t('contact.form.sending')}
                       </>
                     ) : (
                       <>
                         <Send className="h-4 w-4 mr-2" />
-                        Send Message
+                        {t('contact.form.send')}
                       </>
                     )}
                   </Button>
@@ -235,7 +236,7 @@ export default function ContactPage() {
               <div className="space-y-8">
                 <div className={cn("bg-white rounded-xl shadow-xl p-8", themeClasses.card('base'))}>
                   <h3 className={cn(themeClasses.heading('h4', 'primary'), 'mb-6')}>
-                    Get in Touch
+                    {t('contact.info.title')}
                   </h3>
                   
                   <div className="space-y-4">
@@ -243,7 +244,7 @@ export default function ContactPage() {
                       <Mail className="h-5 w-5 text-rose-500 mt-1" />
                       <div>
                         <p className={cn(themeClasses.body('small'), 'font-medium text-gray-700')}>
-                          Email
+                          {t('common.email')}
                         </p>
                         <a 
                           href="mailto:catalam@catalam.com"
@@ -258,13 +259,13 @@ export default function ContactPage() {
                       <MapPin className="h-5 w-5 text-emerald-500 mt-1" />
                       <div>
                         <p className={cn(themeClasses.body('small'), 'font-medium text-gray-700')}>
-                          Wedding Locations
+                          {t('contact.info.locations')}
                         </p>
                         <p className={cn(themeClasses.body('base'), 'text-gray-600')}>
-                          📍 Oradea, Romania - September 11-12, 2026
+                          📍 {t('contact.info.romania')}
                         </p>
                         <p className={cn(themeClasses.body('base'), 'text-gray-600')}>
-                          📍 Hanoi, Vietnam - September 26, 2026
+                          📍 {t('contact.info.vietnam')}
                         </p>
                       </div>
                     </div>
@@ -273,7 +274,7 @@ export default function ContactPage() {
 
                 <div className={cn("bg-white rounded-xl shadow-xl p-8", themeClasses.card('base'))}>
                   <h3 className={cn(themeClasses.heading('h4', 'primary'), 'mb-4')}>
-                    Quick Links
+                    {t('contact.links.title')}
                   </h3>
                   
                   <div className="space-y-3">
@@ -281,26 +282,26 @@ export default function ContactPage() {
                       href="/romania"
                       className={cn(themeClasses.body('base'), 'block text-rose-600 hover:text-rose-700 underline')}
                     >
-                      → Romania Wedding Details & RSVP
+                      → {t('contact.links.romania')}
                     </a>
                     <a 
                       href="/vietnam"
                       className={cn(themeClasses.body('base'), 'block text-emerald-600 hover:text-emerald-700 underline')}
                     >
-                      → Vietnam Wedding Details & RSVP
+                      → {t('contact.links.vietnam')}
                     </a>
                     <Link 
                       href="/"
                       className={cn(themeClasses.body('base'), 'block text-gray-600 hover:text-gray-700 underline')}
                     >
-                      → Back to Home
+                      → {t('contact.links.home')}
                     </Link>
                   </div>
                 </div>
 
                 <div className={cn("bg-gradient-to-r from-rose-50 to-emerald-50 rounded-xl p-6 border border-gray-200")}>
                   <p className={cn(themeClasses.body('small'), 'text-gray-700 text-center italic')}>
-                    &quot;We can&apos;t wait to celebrate with you! 💕&quot;
+                    &quot;{t('contact.quote')}&quot;
                     <br />
                     <span className="text-gray-500">- Cata & Lam</span>
                   </p>

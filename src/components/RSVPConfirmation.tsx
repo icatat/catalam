@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Location } from '@/models/RSVP';
 import { themeClasses } from '@/lib/theme';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Mail, Edit } from 'lucide-react';
@@ -30,11 +31,11 @@ export default function RSVPConfirmation({
   variant = 'primary',
   emailSent = false
 }: RSVPConfirmationProps) {
+  const { t } = useLanguage();
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
   if (!isVisible) return null;
 
-  const isRomania = location === Location.ROMANIA;
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
 
   return (
@@ -58,31 +59,16 @@ export default function RSVPConfirmation({
 
           <h2 className={cn(themeClasses.heading('h3', variant), 'mb-2')}>
             {attending 
-              ? (isRomania ? 'RSVP Confirmed! / Confirmat!' : 'RSVP Confirmed!')
-              : (isRomania ? 'RSVP Updated / Actualizat' : 'RSVP Updated')
+              ? t('confirmation.title.confirmed')
+              : t('confirmation.title.updated')
             }
           </h2>
 
           <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-6')}>
-            {attending ? (
-              <>
-                Thank you {guestName}! We&apos;re excited to celebrate with you in {locationName}.
-                {isRomania && (
-                  <span className="block mt-2 text-gray-600">
-                    Mulțumim {guestName}! Ne bucurăm să sărbătorim cu tine în România.
-                  </span>
-                )}
-              </>
-            ) : (
-              <>
-                Thank you {guestName} for letting us know. We&apos;ll miss you at our {locationName} celebration.
-                {isRomania && (
-                  <span className="block mt-2 text-gray-600">
-                    Mulțumim {guestName} că ne-ai anunțat. O să ne lipsești la celebrarea din România.
-                  </span>
-                )}
-              </>
-            )}
+            {attending 
+              ? t('confirmation.message.attending', { name: guestName, location: locationName })
+              : t('confirmation.message.not.attending', { name: guestName, location: locationName })
+            }
           </p>
 
           {/* Email confirmation section */}
@@ -97,8 +83,8 @@ export default function RSVPConfirmation({
                 emailSent ? 'text-green-700' : 'text-orange-700'
               )}>
                 {emailSent 
-                  ? (isRomania ? 'Email sent! / Email trimis!' : 'Confirmation email sent!')
-                  : (isRomania ? 'Email sending... / Se trimite email...' : 'Sending confirmation email...')
+                  ? t('confirmation.email.sent')
+                  : t('confirmation.email.sending')
                 }
               </span>
             </div>
@@ -107,27 +93,24 @@ export default function RSVPConfirmation({
               onClick={() => setShowEmailDetails(!showEmailDetails)}
               className={cn(themeClasses.body('small'), 'text-blue-600 hover:text-blue-700 underline')}
             >
-              {showEmailDetails ? 'Hide details' : 'Show email details'}
-              {isRomania && ` / ${showEmailDetails ? 'Ascunde detalii' : 'Arată detalii'}`}
+              {showEmailDetails ? t('confirmation.email.hide') : t('confirmation.email.details')}
             </button>
 
             {showEmailDetails && (
               <div className="mt-3 text-left">
                 <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-                  <strong>To / Către:</strong> {email}
+                  <strong>{t('confirmation.email.to')}:</strong> {email}
                 </p>
                 <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-                  <strong>Subject / Subiect:</strong> Wedding RSVP Confirmation - {locationName}
+                  <strong>{t('confirmation.email.subject')}:</strong> Wedding RSVP Confirmation - {locationName}
                 </p>
                 {emailSent ? (
                   <p className={cn(themeClasses.body('small'), 'text-green-600 mt-2')}>
-                    ✓ Please check your inbox and spam folder
-                    {isRomania && ' / Te rugăm verifică inbox-ul și folderul spam'}
+                    ✓ {t('confirmation.email.check')}
                   </p>
                 ) : (
                   <p className={cn(themeClasses.body('small'), 'text-orange-600 mt-2')}>
-                    ⏳ Email will arrive shortly
-                    {isRomania && ' / Email-ul va sosi în curând'}
+                    ⏳ {t('confirmation.email.arrive')}
                   </p>
                 )}
               </div>
@@ -143,7 +126,7 @@ export default function RSVPConfirmation({
               className="flex-1 flex items-center justify-center"
             >
               <Edit className="h-4 w-4 mr-2" />
-              {isRomania ? 'Modify / Modifică' : 'Modify RSVP'}
+              {t('common.modify')}
             </Button>
             <Button
               onClick={onClose}
@@ -156,14 +139,13 @@ export default function RSVPConfirmation({
                 variant === 'accent' && 'bg-amber-500 hover:bg-amber-600'
               )}
             >
-              {isRomania ? 'Done / Gata' : 'Done'}
+              {t('common.done')}
             </Button>
           </div>
 
           {/* Contact info */}
           <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
-            Questions? Contact us: catalam@catalam.com
-            {isRomania && ' / Întrebări? Contactează-ne: catalam@catalam.com'}
+            {t('questions.text')}
           </p>
         </div>
       </div>
