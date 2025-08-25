@@ -174,69 +174,70 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   }
 
   // Create itinerary with translations
-  const days: ItineraryDayData[] = isRomania ? [
-    {
-      title: t('itinerary.romania.day1.title'),
-      subtitle: t('itinerary.romania.day1.subtitle'),
-      events: [
-        {
-          time: '6:00 PM',
-          title: t('itinerary.romania.day1.welcome.title'),
-          location: t('itinerary.romania.day1.welcome.location'),
-          description: t('itinerary.romania.day1.welcome.description')
-        }
-      ]
-    },
-    {
-      title: t('itinerary.romania.day2.title'),
-      subtitle: t('itinerary.romania.day2.subtitle'),
-      events: [
-        {
-          time: '3:00 PM',
-          title: t('itinerary.romania.day2.civil.title'),
-          location: t('itinerary.romania.day2.civil.location'),
-          description: t('itinerary.romania.day2.civil.description')
-        },
-        {
-          time: '6:00 PM',
-          title: t('itinerary.romania.day2.celebration.title'),
-          location: t('itinerary.romania.day2.celebration.location'),
-          description: t('itinerary.romania.day2.celebration.description')
-        }
-      ]
-    }
-  ] : [
-    {
-      title: t('itinerary.vietnam.day1.title'),
-      subtitle: t('itinerary.vietnam.day1.subtitle'),
-      events: [
-        {
-          time: '10:00 AM',
-          title: t('itinerary.vietnam.day1.ceremony.title'),
-          location: t('itinerary.vietnam.day1.ceremony.location'),
-          description: t('itinerary.vietnam.day1.ceremony.description')
-        },
-        {
-          time: '6:00 PM',
-          title: t('itinerary.vietnam.day1.reception.title'),
-          location: t('itinerary.vietnam.day1.reception.location'),
-          description: t('itinerary.vietnam.day1.reception.description')
-        }
-      ]
-    },
-    {
-      title: t('itinerary.vietnam.day2.title'),
-      subtitle: t('itinerary.vietnam.day2.subtitle'),
-      events: [
-        {
-          time: '10:00 AM',
-          title: t('itinerary.vietnam.day2.activities.title'),
-          location: t('itinerary.vietnam.day2.activities.location'),
-          description: t('itinerary.vietnam.day2.activities.description')
-        }
-      ]
-    }
-  ];
+  // const days: ItineraryDayData[] = []
+  // const days: ItineraryDayData[] = isRomania ? [
+  //   {
+  //     title: t('itinerary.romania.day1.title'),
+  //     subtitle: t('itinerary.romania.day1.subtitle'),
+  //     events: [
+  //       {
+  //         time: '6:00 PM',
+  //         title: t('itinerary.romania.day1.welcome.title'),
+  //         location: t('itinerary.romania.day1.welcome.location'),
+  //         description: t('itinerary.romania.day1.welcome.description')
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     title: t('itinerary.romania.day2.title'),
+  //     subtitle: t('itinerary.romania.day2.subtitle'),
+  //     events: [
+  //       {
+  //         time: '3:00 PM',
+  //         title: t('itinerary.romania.day2.civil.title'),
+  //         location: t('itinerary.romania.day2.civil.location'),
+  //         description: t('itinerary.romania.day2.civil.description')
+  //       },
+  //       {
+  //         time: '6:00 PM',
+  //         title: t('itinerary.romania.day2.celebration.title'),
+  //         location: t('itinerary.romania.day2.celebration.location'),
+  //         description: t('itinerary.romania.day2.celebration.description')
+  //       }
+  //     ]
+  //   }
+  // ] : [
+  //   {
+  //     title: t('itinerary.vietnam.day1.title'),
+  //     subtitle: t('itinerary.vietnam.day1.subtitle'),
+  //     events: [
+  //       {
+  //         time: '10:00 AM',
+  //         title: t('itinerary.vietnam.day1.ceremony.title'),
+  //         location: t('itinerary.vietnam.day1.ceremony.location'),
+  //         description: t('itinerary.vietnam.day1.ceremony.description')
+  //       },
+  //       {
+  //         time: '6:00 PM',
+  //         title: t('itinerary.vietnam.day1.reception.title'),
+  //         location: t('itinerary.vietnam.day1.reception.location'),
+  //         description: t('itinerary.vietnam.day1.reception.description')
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     title: t('itinerary.vietnam.day2.title'),
+  //     subtitle: t('itinerary.vietnam.day2.subtitle'),
+  //     events: [
+  //       {
+  //         time: '10:00 AM',
+  //         title: t('itinerary.vietnam.day2.activities.title'),
+  //         location: t('itinerary.vietnam.day2.activities.location'),
+  //         description: t('itinerary.vietnam.day2.activities.description')
+  //       }
+  //     ]
+  //   }
+  // ];
 
   return (
     <>
@@ -253,7 +254,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         />
 
         {/* Itinerary Section */}
-        <section className={cn(themeClasses.card('base'), themeClasses.section('base'))}>
+        {/* <section className={cn(themeClasses.card('base'), themeClasses.section('base'))}>
           <div className={themeClasses.container()}>
             <ScrollReveal direction="up">
               <h2 className={cn(themeClasses.heading('h2', locationTheme.variant), 'mb-8 text-center')}>
@@ -276,7 +277,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               </Stagger>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* RSVP Section */}
         <ScrollReveal direction="up" delay={0.2}>
