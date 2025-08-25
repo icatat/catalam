@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     // Fetch guest data from Supabase
     const { data: guest, error } = await supabase
       .from('rsvp')
-      .select('invite_id, full_name, location')
+      .select('invite_id, full_name, location, rsvp')
       .eq('invite_id', invite_id)
       .single();
 
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
       invite_id: guest.invite_id,
       full_name: guest.full_name,
       location: guest.location,
+      rsvp: guest.rsvp || [],
     });
   } catch (error) {
     console.error('Error fetching guest:', error);

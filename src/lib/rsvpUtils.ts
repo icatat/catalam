@@ -54,7 +54,7 @@ export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHan
       location,
       email: formData.email,
       phone: formData.phone,
-      rsvp: guestData.rsvp,
+      attending: formData.rsvp === 'true', // Send the actual RSVP response as boolean
       properties: {
         dietary_restrictions: formData.dietaryRestrictions,
         guests_count: formData.guestCount,

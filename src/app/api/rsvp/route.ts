@@ -3,18 +3,18 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
   try {
-    const { invite_id, location, email, phone, rsvp, properties } = await request.json();
+    const { invite_id, location, email, phone, attending, properties } = await request.json();
 
-    if (!invite_id || !location) {
+    if (!invite_id || !location || attending === undefined) {
       return NextResponse.json(
-        { error: 'Invite ID and location are required' },
+        { error: 'Invite ID, location, and attending status are required' },
         { status: 400 }
       );
     }
     // First, verify that the guest exists and is invited to this location
     const { data: existingGuest, error: fetchError } = await supabase
       .from('rsvp')
-      .select('invite_id, location, properties')
+      .select('invite_id, location, properties, rsvp')
       .eq('invite_id', invite_id)
       .single();
 
@@ -32,6 +32,20 @@ export async function POST(request: Request) {
       );
     }
 
+    // Calculate the updated RSVP array based on attending status
+    const currentRsvpArray = existingGuest.rsvp || [];
+    let updatedRsvpArray;
+
+    if (attending) {
+      // User is attending - add location to RSVP array if not already present
+      updatedRsvpArray = currentRsvpArray.includes(location) 
+        ? currentRsvpArray 
+        : [...currentRsvpArray, location];
+    } else {
+      // User is not attending - remove location from RSVP array
+      updatedRsvpArray = currentRsvpArray.filter((loc: string) => loc !== location);
+    }
+
     // Merge existing properties with new ones, organizing by location
     const updatedProperties = {
       ...existingGuest.properties,
@@ -40,6 +54,7 @@ export async function POST(request: Request) {
         ...properties,
         rsvp_submitted: true,
         rsvp_timestamp: new Date().toISOString(),
+        attending: attending,
       }
     };
 
@@ -49,7 +64,7 @@ export async function POST(request: Request) {
       .update({
         email,
         phone,
-        rsvp,
+        rsvp: updatedRsvpArray,
         properties: updatedProperties,
         rsvp_timestamp: new Date().toISOString(),
       })

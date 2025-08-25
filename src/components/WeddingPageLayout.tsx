@@ -17,7 +17,6 @@ import { CheckCircle } from '@mui/icons-material';
 import { Location, GuestData } from '@/models/RSVP';
 import { 
   handleReconfirmation, 
-  updateGuestRSVPStatus, 
   submitRSVP, 
   createEmailPromise,
   RSVPHandlerOptions 
@@ -96,11 +95,25 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         return;
       }
 
-      // Update guest RSVP status
-      updateGuestRSVPStatus(options);
-
       // Submit RSVP
-      await submitRSVP(options);
+      const rsvpResponse = await submitRSVP(options);
+      const rsvpResult = await rsvpResponse.json();
+
+      if (rsvpResult.success) {
+        // Refetch guest data from database to get updated RSVP status
+        const updatedGuestResponse = await fetch('/api/guest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invite_id: guestData.invite_id }),
+        });
+        const updatedGuestData = await updatedGuestResponse.json();
+        setGuestData({
+          invite_id: guestData.invite_id,
+          full_name: updatedGuestData.full_name,
+          location: updatedGuestData.location,
+          rsvp: updatedGuestData.rsvp || []
+        });
+      }
 
       // Create email promise
       const emailPromise = createEmailPromise({
