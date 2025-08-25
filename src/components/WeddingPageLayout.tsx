@@ -3,17 +3,15 @@
 import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
-import ItineraryDay from '@/components/ItineraryDay';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
 import { InviteVerification } from '@/components/InviteVerification';
 import { RSVPFormData } from '@/types/wedding';
-import { ItineraryDayData } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import CustomButton from '@/components/Button';
-import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
+import { ScrollReveal, ScrollProgress } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { useTheme, Card, CardContent, Box, Typography, Avatar } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';

@@ -39,7 +39,7 @@ export default function ContactPage() {
 
   if (showConfirmation) {
     return (
-      <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.secondary.main}20 100%)` }}>
+      <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.primary.light}20 100%)` }}>
         <Navigation currentPage="contact" />
         
         <Container maxWidth="md" sx={{ py: 10 }}>

@@ -143,7 +143,7 @@ export function TextCard({
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
       sx={{
-        background: `linear-gradient(135deg, ${variantColors.primary}10, ${variantColors.secondary}20)`,
+        background: `linear-gradient(135deg, ${variantColors.primary}10, ${variantColors.light}20)`,
         color: theme.palette.text.primary,
         boxShadow: theme.shadows[4],
         '&:hover': {
