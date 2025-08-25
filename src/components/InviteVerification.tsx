@@ -2,13 +2,15 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Key, Loader2 } from 'lucide-react';
+import { Heart, Key } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { themeClasses } from '@/lib/theme';
 import { TextCard } from '@/components/ui/photo-card';
 import Cookies from 'js-cookie';
 import { Location } from '@/models/RSVP';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Box, TextField, Typography, useTheme, Alert, CircularProgress } from '@mui/material';
+import CustomButton from '@/components/Button';
 
 interface InviteVerificationProps {
   location: Location;
@@ -22,6 +24,7 @@ interface InviteVerificationProps {
 
 export function InviteVerification({ location, onVerified }: InviteVerificationProps) {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [inviteId, setInviteId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -87,7 +90,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
             >
-              <Key className="w-16 h-16 mx-auto mb-6 text-rose-500" />
+              <Key className="w-16 h-16 mx-auto mb-6" style={{ color: theme.palette.primary.main }} />
             </motion.div>
             
             <h1 className={cn(themeClasses.heading('h3', 'primary'), 'mb-4')}>
@@ -98,57 +101,68 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
               {t('invite.welcome.description')}
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  value={inviteId}
-                  onChange={(e) => setInviteId(e.target.value.toUpperCase())}
-                  placeholder={t('invite.field.placeholder')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-center text-lg font-mono tracking-wider"
-                  disabled={loading}
-                />
-              </div>
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <TextField
+                type="text"
+                value={inviteId}
+                onChange={(e) => setInviteId(e.target.value.toUpperCase())}
+                placeholder={t('invite.field.placeholder')}
+                disabled={loading}
+                variant="outlined"
+                fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    textAlign: 'center',
+                    fontSize: '1.125rem',
+                    fontFamily: 'monospace',
+                    letterSpacing: '0.1em',
+                    '& fieldset': {
+                      borderRadius: 2,
+                    },
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    padding: '12px 16px',
+                  },
+                }}
+              />
 
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-600 text-sm bg-red-50 p-3 rounded-lg"
                 >
-                  {error}
+                  <Alert severity="error" sx={{ borderRadius: 2 }}>
+                    {error}
+                  </Alert>
                 </motion.div>
               )}
 
-              <motion.button
-                type="submit"
-                disabled={loading || !inviteId.trim()}
-                className={cn(
-                  'w-full px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200',
-                  'bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
-                  'flex items-center justify-center gap-2'
-                )}
+              <motion.div
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    {t('invite.button.verifying')}
-                  </>
-                ) : (
-                  <>
-                    <Heart className="w-5 h-5" />
-                    {t('invite.button.continue')}
-                  </>
-                )}
-              </motion.button>
-            </form>
+                <CustomButton
+                  type="submit"
+                  disabled={loading || !inviteId.trim()}
+                  variant="contained"
+                  size="large"
+                  weddingVariant={location === Location.ROMANIA ? 'romania' : 'vietnam'}
+                  fullWidth
+                  startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <Heart />}
+                  sx={{
+                    py: 1.5,
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {loading ? t('invite.button.verifying') : t('invite.button.continue')}
+                </CustomButton>
+              </motion.div>
+            </Box>
 
-            <div className="mt-6 text-xs text-gray-500">
-              <p>{t('invite.help')}</p>
-            </div>
+            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 3, textAlign: 'center' }}>
+              {t('invite.help')}
+            </Typography>
           </div>
         </TextCard>
       </motion.div>

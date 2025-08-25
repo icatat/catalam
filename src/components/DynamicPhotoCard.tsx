@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Box, useTheme } from '@mui/material';
 
 interface DynamicPhotoCardProps {
   src: string;
@@ -41,19 +42,44 @@ export function DynamicPhotoCard({
     img.src = src;
   }, [src]);
 
+  const theme = useTheme();
+
   if (imageError || !dimensions) {
     return (
-      <div className={cn(
-        'relative overflow-hidden rounded-2xl shadow-card bg-gray-200 animate-pulse',
-        'aspect-square min-h-[200px]',
-        className
-      )}>
-        {imageError && (
-          <div className="flex items-center justify-center h-full text-gray-500 text-sm">
-            {t('error.image')}
-          </div>
+      <Box
+        className={cn(
+          'relative overflow-hidden rounded-2xl aspect-square min-h-[200px]',
+          className
         )}
-      </div>
+        sx={{
+          bgcolor: theme.palette.grey[200],
+          boxShadow: theme.shadows[2],
+          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          '@keyframes pulse': {
+            '0%, 100%': {
+              opacity: 1,
+            },
+            '50%': {
+              opacity: 0.5,
+            },
+          },
+        }}
+      >
+        {imageError && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              color: theme.palette.text.disabled,
+              fontSize: '0.875rem',
+            }}
+          >
+            {t('error.image')}
+          </Box>
+        )}
+      </Box>
     );
   }
 
@@ -106,9 +132,10 @@ export function DynamicPhotoCard({
   }
 
   return (
-    <motion.div
+    <Box
+      component={motion.div}
       className={cn(
-        'relative overflow-hidden rounded-2xl shadow-card hover:shadow-card-hover group cursor-pointer',
+        'relative overflow-hidden rounded-2xl group cursor-pointer',
         finalGridClass,
         finalAspectClass,
         className
@@ -116,6 +143,12 @@ export function DynamicPhotoCard({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
+      sx={{
+        boxShadow: theme.shadows[4],
+        '&:hover': {
+          boxShadow: theme.shadows[8],
+        },
+      }}
     >
       <div className="relative w-full h-full">
         <Image
@@ -127,11 +160,21 @@ export function DynamicPhotoCard({
         />
         
         {/* Dark overlay that appears on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <Box
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          sx={{
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent, transparent)',
+          }}
+        />
       </div>
       
       {/* Decorative border that appears on hover */}
-      <div className="absolute inset-0 border-2 border-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    </motion.div>
+      <Box
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        sx={{
+          border: `2px solid ${theme.palette.common.white}20`,
+        }}
+      />
+    </Box>
   );
 }

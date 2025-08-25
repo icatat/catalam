@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
+import { Box, useTheme } from '@mui/material';
+import { getWeddingVariant } from '@/lib/mui-theme';
 
 interface PhotoCardProps {
   src: string;
@@ -25,6 +27,7 @@ export function PhotoCard({
   className = '',
   priority = false,
 }: PhotoCardProps) {
+  const theme = useTheme();
   const sizeClasses = {
     small: 'col-span-1 aspect-square',
     medium: 'col-span-1 aspect-[3/4]',
@@ -34,15 +37,22 @@ export function PhotoCard({
   };
 
   const CardContent = (
-    <motion.div
+    <Box
+      component={motion.div}
       className={cn(
-        'relative overflow-hidden rounded-2xl shadow-card hover:shadow-card-hover group cursor-pointer',
+        'relative overflow-hidden rounded-2xl group cursor-pointer',
         sizeClasses[size],
         className
       )}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
+      sx={{
+        boxShadow: theme.shadows[4],
+        '&:hover': {
+          boxShadow: theme.shadows[8],
+        },
+      }}
     >
       <div className="relative w-full h-full">
         <Image
@@ -55,7 +65,12 @@ export function PhotoCard({
         />
         
         {/* Dark overlay that appears on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <Box
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          sx={{
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent, transparent)',
+          }}
+        />
         
         {/* Content overlay */}
         {overlay && (
@@ -68,8 +83,13 @@ export function PhotoCard({
       </div>
       
       {/* Decorative border that appears on hover */}
-      <div className="absolute inset-0 border-2 border-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    </motion.div>
+      <Box
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        sx={{
+          border: `2px solid ${theme.palette.common.white}20`,
+        }}
+      />
+    </Box>
   );
 
   if (href) {
@@ -96,31 +116,37 @@ export function TextCard({
   variant = 'primary',
   className = '' 
 }: TextCardProps) {
+  const theme = useTheme();
   const sizeClasses = {
     small: 'col-span-1 aspect-square',
     medium: 'col-span-1 aspect-[3/4]', 
     large: 'col-span-2 aspect-[2/1]',
   };
 
-  const variantClasses = {
-    primary: 'bg-gradient-to-br from-rose-50 to-pink-100 text-slate-800',
-    secondary: 'bg-gradient-to-br from-emerald-50 to-teal-100 text-slate-800',
-    accent: 'bg-gradient-to-br from-purple-50 to-indigo-100 text-slate-800',
-  };
+  const weddingVariant = variant === 'primary' ? 'romania' : variant === 'secondary' ? 'vietnam' : 'accent';
+  const variantColors = getWeddingVariant(weddingVariant);
 
   return (
-    <motion.div
+    <Box
+      component={motion.div}
       className={cn(
-        'relative rounded-2xl shadow-card hover:shadow-card-hover p-6 flex items-center justify-center text-center',
+        'relative rounded-2xl p-6 flex items-center justify-center text-center',
         sizeClasses[size],
-        variantClasses[variant],
         className
       )}
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
+      sx={{
+        background: `linear-gradient(135deg, ${variantColors.primary}10, ${variantColors.secondary}20)`,
+        color: theme.palette.text.primary,
+        boxShadow: theme.shadows[4],
+        '&:hover': {
+          boxShadow: theme.shadows[8],
+        },
+      }}
     >
       {children}
-    </motion.div>
+    </Box>
   );
 }

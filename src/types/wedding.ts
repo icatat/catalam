@@ -12,8 +12,6 @@ export interface ItineraryDayData {
   title: string;
   subtitle?: string;
   events: ItineraryEvent[];
-  bgColor: string;
-  timeColor: string;
 }
 
 // RSVP form data structure

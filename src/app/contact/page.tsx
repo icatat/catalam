@@ -4,13 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import ContactForm from '@/components/ContactForm';
-import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
 import CustomButton from '@/components/Button';
-import { Send } from 'lucide-react';
-import { Box, Card, CardContent, Typography, Grid } from '@mui/material';
-import { Email, LocationOn } from '@mui/icons-material';
+import { Box, Card, CardContent, Typography, Grid, Container, Avatar, useTheme } from '@mui/material';
+import { Email, LocationOn, CheckCircle } from '@mui/icons-material';
 
 interface ContactFormData {
   name: string;
@@ -21,6 +18,7 @@ interface ContactFormData {
 
 export default function ContactPage() {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleSubmit = async (data: ContactFormData) => {
@@ -41,26 +39,42 @@ export default function ContactPage() {
 
   if (showConfirmation) {
     return (
-      <>
-        <div className={cn("min-h-screen", themeClasses.gradientBg('primary'))}>
-          <Navigation currentPage="contact" />
-          
-          <div className="container mx-auto px-4 py-20">
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="bg-white rounded-xl shadow-xl p-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Send className="h-8 w-8 text-green-600" />
-                </div>
+      <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.secondary.main}20 100%)` }}>
+        <Navigation currentPage="contact" />
+        
+        <Container maxWidth="md" sx={{ py: 10 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Card elevation={8} sx={{ maxWidth: 600, width: '100%', borderRadius: 3 }}>
+              <CardContent sx={{ p: 6, textAlign: 'center' }}>
+                <Avatar 
+                  sx={{ 
+                    width: 64, 
+                    height: 64, 
+                    bgcolor: theme.palette.success.light, 
+                    mx: 'auto', 
+                    mb: 3 
+                  }}
+                >
+                  <CheckCircle sx={{ fontSize: '2rem', color: theme.palette.success.main }} />
+                </Avatar>
                 
-                <h2 className={cn(themeClasses.heading('h2', 'primary'), 'mb-4')}>
+                <Typography 
+                  variant="h4" 
+                  component="h2" 
+                  gutterBottom 
+                  sx={{ color: theme.palette.primary.main, fontWeight: 600 }}
+                >
                   {t('contact.sent.title')}
-                </h2>
+                </Typography>
                 
-                <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-6')}>
+                <Typography 
+                  variant="body1" 
+                  sx={{ color: theme.palette.text.secondary, mb: 4 }}
+                >
                   {t('contact.sent.message')}
-                </p>
+                </Typography>
                 
-                <div className="flex gap-3">
+                <Box sx={{ display: 'flex', gap: 2 }}>
                   <CustomButton
                     onClick={() => setShowConfirmation(false)}
                     variant="outlined"
@@ -78,31 +92,38 @@ export default function ContactPage() {
                   >
                     {t('contact.sent.home')}
                   </CustomButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        </Container>
+      </Box>
     );
   }
 
   return (
-    <>
-      <div className={cn("min-h-screen", themeClasses.gradientBg('primary'))}>
-        <Navigation currentPage="contact" />
-        
-        <div className="container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-12">
-              <h1 className={cn(themeClasses.heading('h1', 'primary'), 'mb-4')}>
-                {t('contact.title')}
-              </h1>
-              <p className={cn(themeClasses.body('large'), 'text-gray-700 max-w-2xl mx-auto')}>
-                {t('contact.description')}
-              </p>
-            </div>
+    <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.main}20 0%, ${theme.palette.secondary.main}20 100%)` }}>
+      <Navigation currentPage="contact" />
+      
+      <Container maxWidth="xl" sx={{ py: 10 }}>
+        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+          {/* Header */}
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Typography 
+              variant="h2" 
+              component="h1" 
+              gutterBottom 
+              sx={{ color: theme.palette.primary.main, fontWeight: 700 }}
+            >
+              {t('contact.title')}
+            </Typography>
+            <Typography 
+              variant="h6" 
+              sx={{ color: theme.palette.text.secondary, maxWidth: 600, mx: 'auto' }}
+            >
+              {t('contact.description')}
+            </Typography>
+          </Box>
 
             <Grid container spacing={6}>
               {/* Contact Form */}
@@ -233,9 +254,8 @@ export default function ContactPage() {
                 </Box>
               </Grid>
             </Grid>
-          </div>
-        </div>
-      </div>
-    </>
+        </Box>
+      </Container>
+    </Box>
   );
 }

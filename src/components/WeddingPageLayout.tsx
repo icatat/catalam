@@ -15,7 +15,8 @@ import { cn } from '@/lib/utils';
 import CustomButton from '@/components/Button';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
-import { useTheme } from '@mui/material';
+import { useTheme, Card, CardContent, Box, Typography, Avatar } from '@mui/material';
+import { CheckCircle } from '@mui/icons-material';
 import { Location, GuestData } from '@/models/RSVP';
 import { 
   handleReconfirmation, 
@@ -148,10 +149,12 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className={cn(
-            "animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4",
-            isRomania ? "border-rose-500" : "border-emerald-500"
-          )}></div>
+          <Box
+            className="animate-spin rounded-full h-12 w-12 mx-auto mb-4"
+            sx={{
+              borderBottom: `2px solid ${theme.palette.primary.main}`,
+            }}
+          />
           <p className={themeClasses.body('base', 'secondary')}>{t('wedding.verification.loading')}</p>
         </div>
       </div>
@@ -175,8 +178,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     {
       title: t('itinerary.romania.day1.title'),
       subtitle: t('itinerary.romania.day1.subtitle'),
-      bgColor: 'from-slate-50 to-slate-100',
-      timeColor: 'bg-slate-700',
       events: [
         {
           time: '6:00 PM',
@@ -189,8 +190,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     {
       title: t('itinerary.romania.day2.title'),
       subtitle: t('itinerary.romania.day2.subtitle'),
-      bgColor: 'from-blue-50 to-blue-100',
-      timeColor: 'bg-blue-500',
       events: [
         {
           time: '3:00 PM',
@@ -210,8 +209,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     {
       title: t('itinerary.vietnam.day1.title'),
       subtitle: t('itinerary.vietnam.day1.subtitle'),
-      bgColor: 'from-blue-50 to-blue-100',
-      timeColor: 'bg-blue-500',
       events: [
         {
           time: '10:00 AM',
@@ -230,8 +227,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
     {
       title: t('itinerary.vietnam.day2.title'),
       subtitle: t('itinerary.vietnam.day2.subtitle'),
-      bgColor: 'from-slate-50 to-slate-100',
-      timeColor: 'bg-slate-500',
       events: [
         {
           time: '10:00 AM',
@@ -292,49 +287,55 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   {t('rsvp.title', { location: locationName })}
                 </h2>
                 
-                <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-8')}>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 4, textAlign: 'center' }}>
                   {t('rsvp.modal.welcome', { name: guestData.full_name })}
-                </p>
+                </Typography>
 
                 {/* RSVP Status */}
                 {guestData.rsvp.includes(location) ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-white text-sm">✓</span>
-                      </div>
-                      <h3 className={cn(themeClasses.heading('h4', 'primary'), 'text-green-800')}>
-                        {t('rsvp.already.title')}
-                      </h3>
-                    </div>
-                    <p className={cn(themeClasses.body('base'), 'text-green-700 mb-4')}>
-                      {t('rsvp.already.message', { location: locationName })}
-                    </p>
-                    <CustomButton
-                      onClick={() => setShowRSVPModal(true)}
-                      variant="outlined"
-                      size="medium"
-                      sx={{ 
-                        borderColor: theme.palette.success.main,
-                        color: theme.palette.success.dark,
-                        '&:hover': {
-                          backgroundColor: theme.palette.success.light + '20', // 20% opacity
-                          borderColor: theme.palette.success.dark
-                        }
-                      }}
-                    >
-                      {t('common.modify')}
-                    </CustomButton>
-                  </div>
+                  <Card sx={{ bgcolor: theme.palette.success.light + '20', border: `1px solid ${theme.palette.success.main}40`, mb: 3 }}>
+                    <CardContent sx={{ p: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                        <Avatar sx={{ bgcolor: theme.palette.success.main, width: 32, height: 32, mr: 2 }}>
+                          <CheckCircle sx={{ fontSize: '1rem', color: 'white' }} />
+                        </Avatar>
+                        <Typography variant="h6" sx={{ color: theme.palette.success.dark, fontWeight: 600 }}>
+                          {t('rsvp.already.title')}
+                        </Typography>
+                      </Box>
+                      <Typography variant="body1" sx={{ color: theme.palette.success.dark, mb: 2, textAlign: 'center' }}>
+                        {t('rsvp.already.message', { location: locationName })}
+                      </Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <CustomButton
+                          onClick={() => setShowRSVPModal(true)}
+                          variant="outlined"
+                          size="medium"
+                          sx={{ 
+                            borderColor: theme.palette.success.main,
+                            color: theme.palette.success.dark,
+                            '&:hover': {
+                              backgroundColor: theme.palette.success.light + '20',
+                              borderColor: theme.palette.success.dark
+                            }
+                          }}
+                        >
+                          {t('common.modify')}
+                        </CustomButton>
+                      </Box>
+                    </CardContent>
+                  </Card>
                 ) : (
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-                    <h3 className={cn(themeClasses.heading('h4', 'secondary'), 'text-gray-700 mb-2')}>
-                      {t('rsvp.please.title')}
-                    </h3>
-                    <p className={cn(themeClasses.body('base'), 'text-gray-600 mb-4')}>
-                      {t('rsvp.please.message', { location: locationName })}
-                    </p>
-                  </div>
+                  <Card sx={{ bgcolor: theme.palette.grey[50], border: `1px solid ${theme.palette.grey[200]}`, mb: 3 }}>
+                    <CardContent sx={{ p: 3, textAlign: 'center' }}>
+                      <Typography variant="h6" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 600 }}>
+                        {t('rsvp.please.title')}
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
+                        {t('rsvp.please.message', { location: locationName })}
+                      </Typography>
+                    </CardContent>
+                  </Card>
                 )}
 
                 {/* RSVP Button */}
@@ -355,9 +356,9 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   }
                 </CustomButton>
 
-                <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
+                <Typography variant="body2" sx={{ color: theme.palette.text.disabled, mt: 2, textAlign: 'center' }}>
                   {t('questions.text')}
-                </p>
+                </Typography>
               </div>
             </div>
           </section>

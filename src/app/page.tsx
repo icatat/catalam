@@ -10,6 +10,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
+import { Box, useTheme } from '@mui/material';
 
 interface BlobImage {
   url: string;
@@ -20,6 +21,7 @@ interface BlobImage {
 
 export default function Home() {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [blobImages, setBlobImages] = useState<BlobImage[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -162,7 +164,12 @@ export default function Home() {
             animate={{ opacity: 1 }}
           >
             <div className="text-center py-8 bg-white/10 backdrop-blur-sm rounded-2xl px-8">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-rose-500"></div>
+              <Box
+                className="inline-block animate-spin rounded-full h-12 w-12"
+                sx={{
+                  borderBottom: `4px solid ${theme.palette.primary.main}`,
+                }}
+              />
               <p className={cn(themeClasses.body('large', 'secondary'), 'mt-4')}>
                 {t('common.loading')}
               </p>

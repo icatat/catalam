@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { Location } from '@/models/RSVP';
-import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
 import CustomButton from '@/components/Button';
-import { CheckCircle, XCircle, Mail, Edit } from 'lucide-react';
+import { Edit } from 'lucide-react';
+import { Box, Card, CardContent, Typography, useTheme, Avatar } from '@mui/material';
+import { CheckCircleOutline, Cancel, EmailOutlined } from '@mui/icons-material';
+import { getWeddingVariant } from '@/lib/mui-theme';
 
 interface RSVPConfirmationProps {
   isVisible: boolean;
@@ -32,123 +33,160 @@ export default function RSVPConfirmation({
   emailSent = false
 }: RSVPConfirmationProps) {
   const { t } = useLanguage();
+  const theme = useTheme();
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
   if (!isVisible) return null;
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
+  const weddingVariant = variant === 'primary' ? 'romania' : variant === 'secondary' ? 'vietnam' : 'accent';
+  const variantColors = getWeddingVariant(weddingVariant);
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className={cn(
-        "bg-white rounded-xl shadow-2xl w-full max-w-md",
-        themeClasses.card('base')
-      )}>
-        {/* Header with status icon */}
-        <div className="text-center p-8">
-          {attending ? (
-            <CheckCircle className={cn(
-              "h-16 w-16 mx-auto mb-4",
-              variant === 'primary' && 'text-rose-500',
-              variant === 'secondary' && 'text-emerald-500',
-              variant === 'accent' && 'text-amber-500'
-            )} />
-          ) : (
-            <XCircle className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-          )}
+    <Box 
+      sx={{ 
+        position: 'fixed', 
+        inset: 0, 
+        bgcolor: 'rgba(0, 0, 0, 0.5)', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        zIndex: 50, 
+        p: 2 
+      }}
+    >
+      <Card sx={{ width: '100%', maxWidth: 400, borderRadius: 3, boxShadow: theme.shadows[8] }}>
+        <CardContent sx={{ p: 4, textAlign: 'center' }}>
+          {/* Header with status icon */}
+          <Avatar 
+            sx={{ 
+              width: 64, 
+              height: 64, 
+              bgcolor: attending ? variantColors.primary : theme.palette.grey[400], 
+              mx: 'auto', 
+              mb: 3 
+            }}
+          >
+            {attending ? (
+              <CheckCircleOutline sx={{ fontSize: '2rem', color: 'white' }} />
+            ) : (
+              <Cancel sx={{ fontSize: '2rem', color: 'white' }} />
+            )}
+          </Avatar>
 
-          <h2 className={cn(themeClasses.heading('h3', variant), 'mb-2')}>
+          <Typography 
+            variant="h4" 
+            component="h2" 
+            gutterBottom 
+            sx={{ color: attending ? variantColors.primary : theme.palette.text.primary, fontWeight: 600 }}
+          >
             {attending 
               ? t('confirmation.title.confirmed')
               : t('confirmation.title.updated')
             }
-          </h2>
+          </Typography>
 
-          <p className={cn(themeClasses.body('large'), 'text-gray-700 mb-6')}>
+          <Typography 
+            variant="body1" 
+            sx={{ color: theme.palette.text.secondary, mb: 3 }}
+          >
             {attending 
               ? t('confirmation.message.attending', { name: guestName, location: locationName })
               : t('confirmation.message.not.attending', { name: guestName, location: locationName })
             }
-          </p>
+          </Typography>
 
           {/* Email confirmation section */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <div className="flex items-center justify-center mb-2">
-              <Mail className={cn(
-                "h-5 w-5 mr-2",
-                emailSent ? 'text-green-500' : 'text-orange-500'
-              )} />
-              <span className={cn(
-                themeClasses.body('small'),
-                emailSent ? 'text-green-700' : 'text-orange-700'
-              )}>
-                {emailSent 
-                  ? t('confirmation.email.sent')
-                  : t('confirmation.email.sending')
-                }
-              </span>
-            </div>
-            
-            <button
-              onClick={() => setShowEmailDetails(!showEmailDetails)}
-              className={cn(themeClasses.body('small'), 'text-blue-600 hover:text-blue-700 underline')}
-            >
-              {showEmailDetails ? t('confirmation.email.hide') : t('confirmation.email.details')}
-            </button>
+          <Card sx={{ bgcolor: theme.palette.grey[50], mb: 3 }}>
+            <CardContent sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
+                <EmailOutlined 
+                  sx={{ 
+                    mr: 1, 
+                    color: emailSent ? theme.palette.success.main : theme.palette.warning.main,
+                    fontSize: '1.25rem'
+                  }} 
+                />
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: emailSent ? theme.palette.success.dark : theme.palette.warning.dark,
+                    fontWeight: 500
+                  }}
+                >
+                  {emailSent 
+                    ? t('confirmation.email.sent')
+                    : t('confirmation.email.sending')
+                  }
+                </Typography>
+              </Box>
+              
+              <Typography
+                component="button"
+                variant="body2"
+                onClick={() => setShowEmailDetails(!showEmailDetails)}
+                sx={{ 
+                  color: theme.palette.primary.main,
+                  textDecoration: 'underline',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  '&:hover': { color: theme.palette.primary.dark }
+                }}
+              >
+                {showEmailDetails ? t('confirmation.email.hide') : t('confirmation.email.details')}
+              </Typography>
 
-            {showEmailDetails && (
-              <div className="mt-3 text-left">
-                <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-                  <strong>{t('confirmation.email.to')}:</strong> {email}
-                </p>
-                <p className={cn(themeClasses.body('small'), 'text-gray-600')}>
-                  <strong>{t('confirmation.email.subject')}:</strong> Wedding RSVP Confirmation - {locationName}
-                </p>
-                {emailSent ? (
-                  <p className={cn(themeClasses.body('small'), 'text-green-600 mt-2')}>
-                    ✓ {t('confirmation.email.check')}
-                  </p>
-                ) : (
-                  <p className={cn(themeClasses.body('small'), 'text-orange-600 mt-2')}>
-                    ⏳ {t('confirmation.email.arrive')}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
+              {showEmailDetails && (
+                <Box sx={{ mt: 2, textAlign: 'left' }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                    <strong>{t('confirmation.email.to')}:</strong> {email}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                    <strong>{t('confirmation.email.subject')}:</strong> Wedding RSVP Confirmation - {locationName}
+                  </Typography>
+                  {emailSent ? (
+                    <Typography variant="body2" sx={{ color: theme.palette.success.main, mt: 1 }}>
+                      ✓ {t('confirmation.email.check')}
+                    </Typography>
+                  ) : (
+                    <Typography variant="body2" sx={{ color: theme.palette.warning.main, mt: 1 }}>
+                      ⏳ {t('confirmation.email.arrive')}
+                    </Typography>
+                  )}
+                </Box>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Action buttons */}
-          <div className="flex gap-3">
+          <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
             <CustomButton
               onClick={onModify}
               variant="outlined"
               size="medium"
-              className="flex-1 flex items-center justify-center"
+              sx={{ flex: 1 }}
+              startIcon={<Edit />}
             >
-              <Edit className="h-4 w-4 mr-2" />
               {t('common.modify')}
             </CustomButton>
             <CustomButton
               onClick={onClose}
               variant="contained"
               size="medium"
-              className={cn(
-                'flex-1 font-medium text-white transition-all duration-200',
-                variant === 'primary' && 'bg-rose-500 hover:bg-rose-600',
-                variant === 'secondary' && 'bg-emerald-500 hover:bg-emerald-600',
-                variant === 'accent' && 'bg-amber-500 hover:bg-amber-600'
-              )}
+              weddingVariant={weddingVariant}
+              sx={{ flex: 1 }}
             >
               {t('common.done')}
             </CustomButton>
-          </div>
+          </Box>
 
           {/* Contact info */}
-          <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
+          <Typography variant="body2" sx={{ color: theme.palette.text.disabled, mt: 2 }}>
             {t('questions.text')}
-          </p>
-        </div>
-      </div>
-    </div>
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }
