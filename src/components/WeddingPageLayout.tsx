@@ -12,7 +12,7 @@ import { ItineraryDayData } from '@/types/wedding';
 import { themeClasses } from '@/lib/theme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import MuiButton from '@/components/MuiButton';
 import { ScrollReveal, Parallax, ScrollProgress, Stagger } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
@@ -308,14 +308,21 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                     <p className={cn(themeClasses.body('base'), 'text-green-700 mb-4')}>
                       {t('rsvp.already.message', { location: locationName })}
                     </p>
-                    <Button
+                    <MuiButton
                       onClick={() => setShowRSVPModal(true)}
-                      variant="outline"
-                      size="lg"
-                      className="border-green-500 text-green-700 hover:bg-green-50"
+                      variant="outlined"
+                      size="medium"
+                      sx={{ 
+                        borderColor: '#10b981',
+                        color: '#047857',
+                        '&:hover': {
+                          backgroundColor: '#f0fdf4',
+                          borderColor: '#059669'
+                        }
+                      }}
                     >
                       {t('common.modify')}
-                    </Button>
+                    </MuiButton>
                   </div>
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
@@ -329,20 +336,22 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 )}
 
                 {/* RSVP Button */}
-                <Button
+                <MuiButton
                   onClick={() => setShowRSVPModal(true)}
-                  size="lg"
-                  className={cn(
-                    'font-medium text-white transition-all duration-200 hover:scale-105 px-12 py-4',
-                    theme.variant === 'primary' && 'bg-rose-500 hover:bg-rose-600',
-                    theme.variant === 'secondary' && 'bg-emerald-500 hover:bg-emerald-600'
-                  )}
+                  size="large"
+                  variant="contained"
+                  weddingVariant={theme.variant === 'primary' ? 'romania' : 'vietnam'}
+                  sx={{
+                    px: 6,
+                    py: 2,
+                    fontSize: '1.125rem',
+                  }}
                 >
                   {guestData.rsvp.includes(location) 
                     ? t('rsvp.button.update')
                     : t('rsvp.button.now')
                   }
-                </Button>
+                </MuiButton>
 
                 <p className={cn(themeClasses.body('small'), 'text-gray-500 mt-4')}>
                   {t('questions.text')}

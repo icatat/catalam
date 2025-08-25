@@ -3,6 +3,7 @@ import { Thasadith } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import MuiThemeProvider from "@/components/MuiThemeProvider";
 
 const thasadith = Thasadith({
   variable: "--font-thasadith",
@@ -27,9 +28,11 @@ export default function RootLayout({
         className={`${thasadith.variable} antialiased`}
       >
         <LanguageProvider>
-          <ThemeProvider>
-            {children}
-          </ThemeProvider>
+          <MuiThemeProvider>
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
+          </MuiThemeProvider>
         </LanguageProvider>
       </body>
     </html>

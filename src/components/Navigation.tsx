@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import LanguageToggle from './LanguageToggle';
+import MuiLanguageToggle from './MuiLanguageToggle';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NavigationProps {
@@ -61,7 +61,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                 {t('nav.contact')}
               </Link>
             </div>
-            <LanguageToggle />
+            <MuiLanguageToggle variant="navigation" size="small" />
           </div>
         </div>
       </div>
