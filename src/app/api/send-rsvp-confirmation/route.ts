@@ -8,7 +8,13 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
   const locationName = isRomania ? 'Romania' : 'Vietnam';
   const headerImage = isRomania ? "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_3.png" : "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_0.png"
   const date = isRomania ? 'September 11-12, 2026' : 'September 26, 2026';
-  const city = isRomania ? 'Oradea, Romania' : 'Hanoi, Vietnam';
+  const city = isRomania ? 'Oradea, Romania' : 'Cam Ranh, Vietnam';
+  const googleMapsUrl = isRomania 
+    ? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d173904.50690078692!2d21.625633020176004!3d47.074405555680805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474647e368762353%3A0x1b55a486d65d5344!2sOradea%2C%20Romania!5e0!3m2!1sen!2sus!4v1756700652208!5m2!1sen!2sus'
+    : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d501725.3182740997!2d106.36831087319508!3d10.755292866990637!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529292e8d3dd1%3A0xf15f5aad773c112b!2sHo%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1756700700000!5m2!1sen!2sus';
+  const googleMapsLink = isRomania 
+    ? 'https://maps.google.com/?q=Oradea,Romania' 
+    : 'https://maps.google.com/?q=Cam+Ranh,Vietnam';
 
   return `
     <!DOCTYPE html>
@@ -31,7 +37,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
             
             <!-- Content -->
             <div style="padding: 30px; text-align: center;">
-                <h2 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-bottom: 20px; font-size: 24px;">
+                <h2 style="color: #145870; margin-bottom: 20px; font-size: 24px;">
                     🎉 We're So Excited! 💃🕺
                 </h2>
                 
@@ -47,12 +53,15 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
                 </div>
                 
                 <div style="background-color: #fef9e7; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left;">
-                    <h3 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-top: 0; display: flex; align-items: center;">
+                    <h3 style="color: #145870; margin-top: 0; display: flex; align-items: center;">
                         📅 Wedding Details
                     </h3>
-                    <p style="margin: 8px 0; color: #374151;"><strong>📍 Location:</strong> ${city}</p>
+                    <p style="margin: 8px 0; color: #374151;"><strong>📍 Location:</strong> <a href="${googleMapsLink}" style="color: #145870; text-decoration: none;">${city}</a></p>
                     <p style="margin: 8px 0; color: #374151;"><strong>🗓️ Date:</strong> ${date}</p>
                     <p style="margin: 8px 0; color: #374151;"><strong>🎭 Theme:</strong> ${isRomania ? 'Traditional Romanian Celebration 🇷🇴' : 'Vietnamese Wedding Ceremony 🇻🇳'}</p>
+                    <div style="margin: 15px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <iframe src="${googleMapsUrl}" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
                 
                 <p style="font-size: 16px; color: #6b7280; line-height: 1.6; margin: 20px 0;">
@@ -64,7 +73,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
                     <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
                         With all our love and excitement, 💕
                     </p>
-                    <p style="font-size: 18px; color: ${isRomania ? '#dc2626' : '#059669'}; font-weight: bold; margin: 0;">
+                    <p style="font-size: 18px; color: #145870; font-weight: bold; margin: 0;">
                         Cata & Lam 👰‍♀️🤵‍♂️
                     </p>
                 </div>
@@ -105,7 +114,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
             
             <!-- Content -->
             <div style="padding: 30px; text-align: center;">
-                <h2 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-bottom: 20px; font-size: 24px;">
+                <h2 style="color: #145870; margin-bottom: 20px; font-size: 24px;">
                     😢 We Understand 🤗
                 </h2>
                 
@@ -136,7 +145,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
                     <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
                         Sending you love and hugs, 🤗💕
                     </p>
-                    <p style="font-size: 18px; color: ${isRomania ? '#dc2626' : '#059669'}; font-weight: bold; margin: 0;">
+                    <p style="font-size: 18px; color: #145870; font-weight: bold; margin: 0;">
                         Cata & Lam 👰‍♀️🤵‍♂️
                     </p>
                 </div>

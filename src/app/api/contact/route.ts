@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
             </p>
             <p style="margin: 8px 0;">
               🇻🇳 <a href="https://catalam.com/vietnam" style="color: #059669; text-decoration: none;">
-                Vietnam Wedding - September 26, 2026
+                Vietnam Wedding - September 22 - September 24, 2026
               </a>
             </p>
           </div>
@@ -115,9 +115,6 @@ export async function POST(request: NextRequest) {
           </p>
           
           <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 100%); border-radius: 8px;">
-            <p style="margin: 0; font-style: italic; color: #6b7280;">
-              "Love is not just looking at each other, it's looking in the same direction together."
-            </p>
             <p style="margin: 10px 0 0 0; font-weight: bold; color: #374151;">
               With love,<br />
               Cata & Lam ❤️

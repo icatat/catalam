@@ -121,7 +121,7 @@ const translations: Record<Language, Record<string, string>> = {
     'wedding.vietnam.description': 'Celebrate with us in vibrant Cam Ranh for our Vietnamese wedding ceremony.',
     'wedding.venue.title': 'Wedding Venue',
     'wedding.venue.tbd': 'Venue details coming soon...',
-    'wedding.location.title': '{location} Venue',
+    'wedding.location.title': 'Venue',
     'wedding.welcome.confirmed': 'We are looking forward to seeing you at our Wedding in {location}, {name}!',
     'wedding.welcome.pending': 'Welcome {name}! We would love to have you at our Wedding in {location}',
     

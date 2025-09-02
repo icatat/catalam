@@ -13,6 +13,7 @@ import CustomButton from '@/components/Button';
 import { ScrollReveal, ScrollProgress } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { useTheme, Box, Typography } from '@mui/material';
+import { CheckCircle } from '@mui/icons-material';
 import { Location, GuestData } from '@/models/RSVP';
 import { 
   handleReconfirmation, 
@@ -190,16 +191,34 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         {/* Personalized Welcome Section */}
         {guestData && (
           <Box sx={{ 
-            pt: { xs: 12, md: 16 }, 
-            pb: 8, 
+            pt: { xs: 8, md: 10 }, 
+            pb: 12, 
             px: 3,
             textAlign: 'center',
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+            position: 'relative',
+            backgroundImage: `url(${weddingInfo.heroImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             borderRadius: { xs: 0, md: 4 },
             mx: { xs: 0, md: 4 },
             mt: { xs: 0, md: 3 },
             boxShadow: { xs: 'none', md: theme.shadows[6] },
-            border: `1px solid rgba(255, 255, 255, 0.9)`
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              zIndex: 1
+            },
+            '& > *': {
+              position: 'relative',
+              zIndex: 2
+            }
           }}>
             {/* Personalized Message */}
             {guestData.rsvp.includes(location) ? (
@@ -257,31 +276,57 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               {weddingInfo.date} • {weddingInfo.location}
             </Typography>
 
-            {/* Subtle RSVP/Update Button */}
-            <CustomButton
-              onClick={() => setShowRSVPModal(true)}
-              variant={guestData.rsvp.includes(location) ? "outlined" : "contained"}
-              size="large"
-              sx={{
-                px: 6,
-                py: 2,
-                fontSize: '1.1rem',
-                fontWeight: 400,
-                borderRadius: 3,
-                textTransform: 'none',
-                boxShadow: theme.shadows[4],
-                '&:hover': {
-                  boxShadow: theme.shadows[8],
-                  transform: 'translateY(-2px)'
-                },
-                transition: 'all 0.3s ease'
-              }}
-            >
-              {guestData.rsvp.includes(location) 
-                ? t('rsvp.button.update')
-                : t('rsvp.button.now')
-              }
-            </CustomButton>
+            {/* RSVP/Update Button */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+              {guestData.rsvp.includes(location) && (
+                <CheckCircle 
+                  sx={{ 
+                    color: theme.palette.success.main, 
+                    fontSize: '1.5rem' 
+                  }} 
+                />
+              )}
+              <CustomButton
+                onClick={() => setShowRSVPModal(true)}
+                variant={guestData.rsvp.includes(location) ? "text" : "contained"}
+                size={guestData.rsvp.includes(location) ? "medium" : "large"}
+                sx={guestData.rsvp.includes(location) ? {
+                  // Subtle styling for confirmed users
+                  px: 3,
+                  py: 1.5,
+                  fontSize: '0.95rem',
+                  fontWeight: 400,
+                  borderRadius: 2,
+                  textTransform: 'none',
+                  color: theme.palette.text.secondary,
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0,0,0,0.04)',
+                    transform: 'translateY(-1px)'
+                  },
+                  transition: 'all 0.3s ease'
+                } : {
+                  // Prominent styling for non-confirmed users
+                  px: 6,
+                  py: 2,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  borderRadius: 3,
+                  textTransform: 'none',
+                  boxShadow: theme.shadows[4],
+                  '&:hover': {
+                    boxShadow: theme.shadows[8],
+                    transform: 'translateY(-2px)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {guestData.rsvp.includes(location) 
+                  ? t('rsvp.button.update')
+                  : t('rsvp.button.now')
+                }
+              </CustomButton>
+            </Box>
           </Box>
         )}
 
@@ -296,32 +341,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
           />
         )}
 
-        {/* Itinerary Section */}
-        {/* <section className={cn(themeClasses.card('base'), themeClasses.section('base'))}>
-          <div className={themeClasses.container()}>
-            <ScrollReveal direction="up">
-              <h2 className={cn(themeClasses.heading('h2', locationTheme.variant), 'mb-8 text-center')}>
-                {t('wedding.itinerary.title')}
-              </h2>
-            </ScrollReveal>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <Stagger staggerDelay={0.3}>
-                {days.map((day, index) => (
-                  <Parallax key={index} offset={index % 2 === 0 ? 20 : -20}>
-                    <ItineraryDay
-                      title={day.title}
-                      subtitle={day.subtitle}
-                      events={day.events}
-                      variant={index % 2 === 0 ? locationTheme.variant : 'secondary'}
-                    />
-                  </Parallax>
-                ))}
-              </Stagger>
-            </div>
-          </div>
-        </section> */}
-
         {/* Location/Venue Section */}
         <ScrollReveal direction="up" delay={0.1}>
           <section style={{ padding: theme.spacing(8, 0) }}>
@@ -332,7 +351,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 mb: 6, 
                 textAlign: 'center' 
               }}>
-                {t('wedding.location.title') || `${locationName} Venue`}
+                {t('wedding.location.title')}
               </Typography>
               
               <Box sx={{ 
@@ -400,19 +419,18 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 }}>
                   {isRomania ? (
                     <iframe 
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d173904.50690078692!2d21.625633020176004!3d47.074405555680805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474647e368762353%3A0x1b55a486d65d5344!2sOradea%2C%20Romania!5e0!3m2!1sen!2sus!4v1756700652208!5m2!1sen!2sus" 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2716.889008262144!2d22.072338490107096!3d47.0816401496941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474637651b7f20c1%3A0x9e1984228909fcf2!2sCamelot%20Resort!5e0!3m2!1sen!2sus!4v1756786599009!5m2!1sen!2sus"
                       allowFullScreen
                       loading="lazy" 
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Oradea, Romania Location"
+                      title="Camelot Resort - Oradea, Romania"
                     />
                   ) : (
                     <iframe 
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d501725.3182740997!2d106.36831087319508!3d10.755292866990637!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529292e8d3dd1%3A0xf15f5aad773c112b!2sHo%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1756700700000!5m2!1sen!2sus"
-                      allowFullScreen
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.5942044923677!2d109.19268197506148!3d12.071417288167309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31708bff67aac6b7%3A0xd15bf6357e2930a3!2sAlma%20Resort%20Cam%20Ranh!5e0!3m2!1sen!2sus!4v1756786279316!5m2!1sen!2sus"
                       loading="lazy" 
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Cam Ranh, Vietnam Location"
+                      title="Alma Resort - Cam Ranh, Vietnam"
                     />
                   )}
                 </Box>
