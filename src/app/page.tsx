@@ -128,7 +128,6 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-      
           {/* Romania Wedding Card */}
           <Box
             component={motion.div}
@@ -355,7 +354,7 @@ export default function Home() {
             <TextCard size="medium" variant="accent" sx={{ maxWidth: theme.spacing(60) }}>
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ maxWidth: "48px", mx: 'auto', mb: theme.spacing(2) }}>
-                  <img src="favicon.ico" alt="Wedding icon" style={{ width: '100%', height: 'auto' }} />
+                  <Image src="/favicon.ico" alt="Wedding icon" width={48} height={48} style={{ width: '100%', height: 'auto' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ color: theme.palette.primary.main, mb: theme.spacing(1.5) }}>
                   Memories Coming Soon

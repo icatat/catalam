@@ -6,7 +6,8 @@ import { Box, useTheme, Container, Typography, Button } from '@mui/material';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Timeline from '@/components/Timeline';
-import { Heart, ArrowUpDown } from 'lucide-react';
+import TimelineUpload from '@/components/TimelineUpload';
+import { Heart, ArrowUpDown, Upload } from 'lucide-react';
 import Image from 'next/image';
 
 interface TimelineEvent {
@@ -25,29 +26,35 @@ export default function AboutPage() {
   const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [reverseOrder, setReverseOrder] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
-    async function fetchTimelineData() {
-      try {
-        const response = await fetch('/api/timeline');
-        if (!response.ok) {
-          throw new Error('Failed to fetch timeline data');
-        }
-        const data = await response.json();
-        setTimelineEvents(data);
-      } catch (error) {
-        console.error('Error fetching timeline:', error);
-        setTimelineEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchTimelineData();
   }, []);
 
   const handleToggleOrder = () => {
     setReverseOrder(!reverseOrder);
+  };
+
+  const handleUploadSuccess = () => {
+    // Refresh timeline events after successful upload
+    fetchTimelineData();
+  };
+
+  const fetchTimelineData = async () => {
+    try {
+      const response = await fetch('/api/timeline');
+      if (!response.ok) {
+        throw new Error('Failed to fetch timeline data');
+      }
+      const data = await response.json();
+      setTimelineEvents(data);
+    } catch (error) {
+      console.error('Error fetching timeline:', error);
+      setTimelineEvents([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const sortedEvents = reverseOrder 
@@ -114,7 +121,7 @@ export default function AboutPage() {
         {/* Timeline Controls */}
         <Box
           component={motion.div}
-          sx={{ display: 'flex', justifyContent: 'center', mb: 6 }}
+          sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 6, flexWrap: 'wrap' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -142,6 +149,28 @@ export default function AboutPage() {
             }}
           >
             {reverseOrder ? t('timeline.newest') : t('timeline.oldest')} {t('common.first')}
+          </Button>
+          
+          <Button
+            onClick={() => setShowUpload(true)}
+            startIcon={<Upload />}
+            variant="contained"
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1.5,
+              fontSize: '0.95rem',
+              fontWeight: 500,
+              backgroundColor: theme.palette.primary.main,
+              '&:hover': {
+                backgroundColor: theme.palette.primary.dark,
+                transform: 'translateY(-2px)',
+                boxShadow: theme.shadows[8]
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Add Memory
           </Button>
         </Box>
 
@@ -193,6 +222,13 @@ export default function AboutPage() {
           )}
         </Box>
       </Container>
+
+      {/* Upload Modal */}
+      <TimelineUpload 
+        open={showUpload}
+        onClose={() => setShowUpload(false)}
+        onUploadSuccess={handleUploadSuccess}
+      />
     </Box>
   );
 }

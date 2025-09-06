@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script async src="//www.instagram.com/embed.js"></script>
+      </head>
       <body
         className={`${thasadith.variable} antialiased`}
       >

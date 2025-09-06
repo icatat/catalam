@@ -12,18 +12,18 @@ export interface RSVPHandlerOptions {
 
 export async function handleReconfirmation({ guestData, formData, location }: RSVPHandlerOptions): Promise<boolean> {
   if (formData.rsvp === 'true' && guestData.rsvp.includes(location)) {
-    const result = await sendRSVPConfirmationEmail({
+    await sendRSVPConfirmationEmail({
       name: formData.name || guestData.full_name,
       email: formData.email,
       attending: formData.rsvp === 'true',
       location
     });
 
-    const message = result.success 
-      ? MESSAGES.RECONFIRM_SUCCESS(guestData.full_name, formData.email)
-      : MESSAGES.RECONFIRM_SUCCESS(guestData.full_name);
+    // const message = result.success 
+    //   ? MESSAGES.RECONFIRM_SUCCESS(guestData.full_name, formData.email)
+    //   : MESSAGES.RECONFIRM_SUCCESS(guestData.full_name);
 
-    alert(message);
+    // alert(message);
     return true; // Handled, exit early
   }
   return false; // Not handled, continue with normal flow
@@ -81,16 +81,15 @@ export function handleRSVPPromiseChain(
   response: Response,
   emailPromise: Promise<Response>,
   guestData: GuestData,
-  formData: RSVPFormData,
-  location: Location
+  formData: RSVPFormData
 ): void {
   response.json()
     .then(result => {
       if (result.success) {
-        alert(MESSAGES.RSVP_SUCCESS(guestData.full_name, location));
+        // alert(MESSAGES.RSVP_SUCCESS(guestData.full_name, location));
         return emailPromise;
       } else {
-        alert(MESSAGES.RSVP_ERROR(location));
+        // alert(MESSAGES.RSVP_ERROR(location));
         return emailPromise;
       }
     })
