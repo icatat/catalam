@@ -26,7 +26,8 @@ export async function GET() {
       image: item.image,
       date: item.date,
       location: item.location,
-      tag: item.tag // For people tagging
+      tag: item.tag, // For people tagging
+      from: item.from // Who uploaded/shared this memory
     }));
 
     return NextResponse.json(transformedEvents);

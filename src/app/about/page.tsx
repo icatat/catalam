@@ -9,6 +9,8 @@ import Timeline from '@/components/Timeline';
 import TimelineUpload from '@/components/TimelineUpload';
 import { Heart, ArrowUpDown, Upload } from 'lucide-react';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { GuestData } from '@/models/RSVP';
 
 interface TimelineEvent {
   id: string;
@@ -18,6 +20,7 @@ interface TimelineEvent {
   image?: string;
   location?: string | null;
   tag?: string | null;
+  from?: string | null;
 }
 
 export default function AboutPage() {
@@ -27,10 +30,42 @@ export default function AboutPage() {
   const [loading, setLoading] = useState(true);
   const [reverseOrder, setReverseOrder] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
+  const [guestData, setGuestData] = useState<GuestData | null>(null);
 
   useEffect(() => {
     fetchTimelineData();
+    verifyGuestAccess();
   }, []);
+
+  const verifyGuestAccess = async () => {
+    try {
+      const savedInviteId = Cookies.get('invite_id');
+      if (savedInviteId) {
+        const response = await fetch('/api/guest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invite_id: savedInviteId }),
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          // Check if guest has RSVPed for any location
+          if (data.rsvp && data.rsvp.length > 0) {
+            setGuestData({
+              invite_id: savedInviteId,
+              full_name: data.full_name,
+              location: data.location,
+              rsvp: data.rsvp || []
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error verifying guest access:', error);
+    } finally {
+      // Verification complete
+    }
+  };
 
   const handleToggleOrder = () => {
     setReverseOrder(!reverseOrder);
@@ -151,27 +186,30 @@ export default function AboutPage() {
             {reverseOrder ? t('timeline.newest') : t('timeline.oldest')} {t('common.first')}
           </Button>
           
-          <Button
-            onClick={() => setShowUpload(true)}
-            startIcon={<Upload />}
-            variant="contained"
-            sx={{
-              borderRadius: 2,
-              px: 3,
-              py: 1.5,
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              backgroundColor: theme.palette.primary.main,
-              '&:hover': {
-                backgroundColor: theme.palette.primary.dark,
-                transform: 'translateY(-2px)',
-                boxShadow: theme.shadows[8]
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Add Memory
-          </Button>
+          {guestData && (
+            <Button
+              onClick={() => setShowUpload(true)}
+              startIcon={<Upload />}
+              variant="contained"
+              sx={{
+                borderRadius: 2,
+                px: 3,
+                py: 1.5,
+                fontSize: '0.95rem',
+                fontWeight: 500,
+                backgroundColor: theme.palette.primary.main,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.dark,
+                  transform: 'translateY(-2px)',
+                  boxShadow: theme.shadows[8]
+                },
+                transition: 'all 0.3s ease'
+              }}
+              title="Have a memory together? Please share it on our timeline!"
+            >
+              Share your memory!
+            </Button>
+          )}
         </Box>
 
         {/* Timeline */}
@@ -224,11 +262,14 @@ export default function AboutPage() {
       </Container>
 
       {/* Upload Modal */}
-      <TimelineUpload 
-        open={showUpload}
-        onClose={() => setShowUpload(false)}
-        onUploadSuccess={handleUploadSuccess}
-      />
+      {guestData && (
+        <TimelineUpload 
+          open={showUpload}
+          onClose={() => setShowUpload(false)}
+          onUploadSuccess={handleUploadSuccess}
+          defaultFromValue={guestData.full_name}
+        />
+      )}
     </Box>
   );
 }

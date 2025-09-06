@@ -13,11 +13,12 @@ export async function POST(request: NextRequest) {
     const location = formData.get('location') as string;
     const date = formData.get('date') as string;
     const tag = formData.get('tag') as string;
+    const from = formData.get('from') as string;
 
     // Validate required fields
-    if (!file || !title) {
+    if (!file || !title || !from) {
       return NextResponse.json(
-        { error: 'File and title are required' },
+        { error: 'File, title, and from are required' },
         { status: 400 }
       );
     }
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
           date: date || null,
           location: location.trim() || null,
           tag: tag.trim() || null,
+          from: from.trim(),
         }
       ]);
 

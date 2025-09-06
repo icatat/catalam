@@ -14,6 +14,7 @@ interface TimelineEvent {
   image?: string;
   location?: string | null;
   tag?: string | null;
+  from?: string | null;
 }
 
 interface TimelineCardProps {
@@ -175,6 +176,24 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                   </Typography>
                 </Box>
               )}
+
+              {event.from && (
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: 'white',
+                    fontSize: '0.75rem',
+                    display: 'block',
+                    textAlign: 'center',
+                    mt: 1,
+                    fontStyle: 'italic',
+                    opacity: 0.9,
+                    textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                  }}
+                >
+                  Shared by {event.from}
+                </Typography>
+              )}
             </Box>
           </>
         ) : (
@@ -245,6 +264,23 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                   {t('timeline.tag.prefix')} {event.tag}
                 </Typography>
               </Box>
+            )}
+
+            {event.from && (
+              <Typography
+                variant="caption"
+                sx={{
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
+                  display: 'block',
+                  textAlign: 'center',
+                  mt: 1,
+                  fontStyle: 'italic',
+                  opacity: 0.8
+                }}
+              >
+                Shared by {event.from}
+              </Typography>
             )}
           </Box>
         )}

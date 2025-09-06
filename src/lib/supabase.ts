@@ -38,4 +38,5 @@ export interface TimelineEvent {
   description: string | null;
   location: string | null;
   tag: string | null; // For people tagging
+  from: string | null; // Who uploaded/shared this memory
 }

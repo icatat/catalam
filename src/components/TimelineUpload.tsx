@@ -22,6 +22,7 @@ interface TimelineUploadProps {
   open: boolean;
   onClose: () => void;
   onUploadSuccess: () => void;
+  defaultFromValue?: string;
 }
 
 interface UploadFormData {
@@ -30,9 +31,10 @@ interface UploadFormData {
   location: string;
   date: string;
   tag: string;
+  from: string;
 }
 
-export default function TimelineUpload({ open, onClose, onUploadSuccess }: TimelineUploadProps) {
+export default function TimelineUpload({ open, onClose, onUploadSuccess, defaultFromValue }: TimelineUploadProps) {
   const theme = useTheme();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -41,7 +43,8 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
     description: '',
     location: '',
     date: '',
-    tag: ''
+    tag: '',
+    from: defaultFromValue || ''
   });
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>('');
@@ -78,8 +81,8 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
   };
 
   const handleSubmit = async () => {
-    if (!selectedFile || !formData.title.trim()) {
-      setError('Please select an image and provide a title');
+    if (!selectedFile || !formData.title.trim() || !formData.from.trim()) {
+      setError('Please select an image and provide a title and your name');
       return;
     }
 
@@ -95,6 +98,7 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
       uploadFormData.append('location', formData.location);
       uploadFormData.append('date', formData.date);
       uploadFormData.append('tag', formData.tag);
+      uploadFormData.append('from', formData.from);
 
       const response = await fetch('/api/timeline/upload', {
         method: 'POST',
@@ -126,7 +130,8 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
         description: '',
         location: '',
         date: '',
-        tag: ''
+        tag: '',
+        from: defaultFromValue || ''
       });
       setError('');
       onClose();
@@ -295,6 +300,17 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
           />
 
+          <TextField
+            label="From"
+            required
+            fullWidth
+            value={formData.from}
+            onChange={(e) => handleFormChange('from', e.target.value)}
+            placeholder="Your name"
+            helperText="Who is sharing this memory?"
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+          />
+
           {error && (
             <Alert severity="error" sx={{ borderRadius: 2 }}>
               {error}
@@ -314,7 +330,7 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess }: Timel
         <Button
           onClick={handleSubmit}
           variant="contained"
-          disabled={uploading || !selectedFile || !formData.title.trim()}
+          disabled={uploading || !selectedFile || !formData.title.trim() || !formData.from.trim()}
           startIcon={uploading ? <CircularProgress size={16} /> : <Upload size={16} />}
           sx={{ 
             borderRadius: 2,
