@@ -173,7 +173,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   // Invite verification
   if (!guestData) {
     return (
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: 'auto' }}>
+      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: '100% auto', backgroundAttachment: 'fixed' }}>
         <InviteVerification 
           location={location}
           onVerified={handleInviteVerified}
@@ -185,7 +185,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   return (
     <>
       <ScrollProgress />
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: 'auto' }}>
+      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: '100% auto', backgroundAttachment: 'fixed' }}>
         <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
       
         {/* Personalized Welcome Section */}

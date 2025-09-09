@@ -7,3 +7,4 @@ export default function RomaniaWedding() {
   return (
   <WeddingPageLayout location={Location.ROMANIA} />)
 }
+
