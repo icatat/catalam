@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       subject: `Contact Form: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #dc2626; border-bottom: 2px solid #dc2626; padding-bottom: 10px;">
+          <h2 style="color: #efd9df; border-bottom: 2px solid #efd9df; padding-bottom: 10px;">
             New Contact Form Message
           </h2>
           
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
             <p><strong>Subject:</strong> ${subject}</p>
           </div>
           
-          <div style="background: white; padding: 20px; border-left: 4px solid #dc2626; margin: 20px 0;">
+          <div style="background: white; padding: 20px; border-left: 4px solid #efd9df; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #374151;">Message:</h3>
             <p style="line-height: 1.6; color: #4b5563;">${message.replace(/\n/g, '<br>')}</p>
           </div>
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #dc2626; font-family: Georgia, serif;">Cata & Lam</h1>
+            <h1 style="color: #efd9df; font-family: Georgia, serif;">Cata & Lam</h1>
             <p style="color: #059669; font-style: italic;">Wedding Celebration 2026</p>
           </div>
           
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
           </p>
           
           <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #dc2626;">Your Message:</h3>
+            <h3 style="margin-top: 0; color: #efd9df;">Your Message:</h3>
             <p style="line-height: 1.6; color: #4b5563; font-style: italic;">${message.replace(/\n/g, '<br>')}</p>
           </div>
           
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
           
           <div style="margin: 20px 0;">
             <p style="margin: 8px 0;">
-              🇷🇴 <a href="https://catalam.com/romania" style="color: #dc2626; text-decoration: none;">
+              🇷🇴 <a href="https://catalam.com/romania" style="color: #efd9df; text-decoration: none;">
                 Romania Wedding - September 11-12, 2026
               </a>
             </p>

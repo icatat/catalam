@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Box,
   IconButton,
@@ -13,9 +11,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  useMediaQuery,
   useTheme,
-  Container,
   Divider,
 } from '@mui/material';
 import Image from 'next/image';
@@ -39,7 +35,6 @@ interface NavigationProps {
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   const { t } = useLanguage();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -171,98 +166,56 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
 
   return (
     <>
-      <AppBar 
-        position="sticky" 
-        elevation={0}
-        sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.85)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-          color: 'text.primary',
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar sx={{ justifyContent: 'space-between', minHeight: 64 }}>
-            {/* Mobile Menu Button */}
-            {isMobile && (
-              <IconButton
-                onClick={handleDrawerToggle}
-                edge="start"
-                sx={{ mr: 2, color: 'text.primary' }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
+      {/* Logo and Menu */}
+      <Box sx={{
+        position: 'fixed',
+        top: 20,
+        left: 20,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        zIndex: theme.zIndex.appBar
+      }}>
+        {/* Logo */}
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <Box
+            sx={{
+              height: 32,
+              position: 'relative',
+              minWidth: 120,
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'scale(1.02)',
+              },
+              transition: 'transform 0.2s ease',
+            }}
+          >
+            <Image
+              src="/NameHeader.png"
+              alt="Catalina & Lam"
+              fill
+              style={{ objectFit: 'contain' }}
+              priority
+            />
+          </Box>
+        </Link>
 
-            {/* Logo */}
-            <Link href="/" style={{ textDecoration: 'none' }}>
-              <Box
-                sx={{
-                  height: 40,
-                  position: 'relative',
-                  minWidth: 150,
-                  cursor: 'pointer',
-                  '&:hover': {
-                    transform: 'scale(1.02)',
-                  },
-                  transition: 'transform 0.2s ease',
-                }}
-              >
-                <Image
-                  src="/NameHeader.png"
-                  alt="Catalina & Lam"
-                  fill
-                  style={{ objectFit: 'contain' }}
-                  priority
-                />
-              </Box>
-            </Link>
+        {/* Menu Button */}
+        <IconButton
+          onClick={handleDrawerToggle}
+          sx={{ 
+            color: 'text.primary',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            }
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-            {/* Desktop Navigation */}
-            {!isMobile && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {navItems.map((item) => (
-                  <Link key={item.key} href={item.href} style={{ textDecoration: 'none' }}>
-                    <Box
-                      sx={{
-                        px: 2,
-                        py: 1,
-                        borderRadius: 2,
-                        color: currentPage === item.key ? item.color : 'text.primary',
-                        backgroundColor: currentPage === item.key ? `${item.color}15` : 'transparent',
-                        fontWeight: currentPage === item.key ? 600 : 500,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 0.5,
-                        '&:hover': {
-                          backgroundColor: `${item.color}10`,
-                          color: item.color,
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', color: 'inherit', fontSize: '1.1rem' }}>
-                        {item.icon}
-                      </Box>
-                      <Typography variant="body1" sx={{ color: 'inherit', fontWeight: 'inherit' }}>
-                        {item.label}
-                      </Typography>
-                    </Box>
-                  </Link>
-                ))}
-              </Box>
-            )}
-
-            {/* Language Toggle (Desktop only) */}
-            {!isMobile && (
-              <Box sx={{ ml: 2 }}>
-                <LanguageToggle variant="navigation" size="small" />
-              </Box>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
+        {/* Language Toggle */}
+        <LanguageToggle variant="navigation" size="small" />
+      </Box>
 
       {/* Mobile Drawer */}
       <Drawer

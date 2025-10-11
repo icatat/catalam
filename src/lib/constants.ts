@@ -7,7 +7,7 @@ export const WEDDING_INFO = {
     dateShort: 'September 11-12, 2026',
     location: 'Oradea, Romania',
     subtitle: '11 Septembrie 2026 - 12 Septembrie 2026',
-    heroImage: '/photo_3.png',
+    heroImage: '/scratch.png',
     heroImageUrl: 'https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/main/photo_3.png',
     theme: 'World Tour ✈️',
     name: 'Romania',
@@ -17,7 +17,7 @@ export const WEDDING_INFO = {
     dateShort: 'September 26, 2026',
     location: 'Cam Rahn, Vietnam',
     subtitle: 'Join us for a our  Vietnamese Wedding!',
-    heroImage: '/photo_0.png',
+    heroImage: '/scratch.png',
     heroImageUrl: 'https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/main/photo_0.png',
     theme: 'World Tour ✈️',
     name: 'Vietnam',
@@ -55,13 +55,13 @@ export const ROMANIAN_RSVP_OPTIONS = [
 export const LOCATION_THEME = {
   [Location.ROMANIA]: {
     variant: 'primary' as const,
-    color: '#dc2626',
+    color: '#efd9df',
     gradientBg: 'primary' as const,
     rsvpVariant: 'accent' as const,
   },
   [Location.VIETNAM]: {
     variant: 'secondary' as const,
-    color: '#059669',
+    color: '#c2e1ee',
     gradientBg: 'secondary' as const,
     rsvpVariant: 'secondary' as const,
   }

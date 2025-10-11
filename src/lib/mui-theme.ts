@@ -4,10 +4,10 @@ import { createTheme } from '@mui/material/styles';
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#145870', 
-      light: '#7ebfd6', 
-      dark: '#0c3443', 
-      contrastText: '#ffffff',
+      main: '#c2e1ee', 
+      light: '#d6ecf4', 
+      dark: '#9dc4d7', 
+      contrastText: '#2c3e50',
     },
     secondary: {
       main: '#6b7280', // Gray-500 - Secondary theme color
@@ -144,13 +144,13 @@ export const muiTheme = createTheme({
 // Unified wedding color scheme - elegant emerald and gray
 export const weddingColors = {
   primary: {
-    main: '#2176a4', 
-    light: '#4da2d0', 
-    lighter: '#97c5de',
-    lightest: '#d0e9f6',
-    dark: '#07242e',
-    darker: '#0e3c4d',
-    surface: '#bac2c4', 
+    main: '#c2e1ee', 
+    light: '#d1e8f3', 
+    lighter: '#e0f0f7',
+    lightest: '#f0f7fb',
+    dark: '#a8d4e6',
+    darker: '#8ec7de',
+    surface: '#b5dde9', 
   },
   secondary: {
     main: '#2f8a90', 

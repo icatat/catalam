@@ -100,9 +100,10 @@ export default function AboutPage() {
     <Box 
       sx={{ 
         minHeight: '100vh',
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/landmarks.png)`,
+        background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
         backgroundRepeat: 'repeat',
-        backgroundSize: 'auto',
+        backgroundSize: 'contain',
+        backgroundAttachment: 'fixed',
         p: { xs: theme.spacing(2), md: theme.spacing(3) },
         position: 'relative'
       }}

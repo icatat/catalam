@@ -68,8 +68,11 @@ module.exports = {
         xs: '2px',
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(236, 72, 153, 0.3)',
-        'glow-lg': '0 0 40px rgba(236, 72, 153, 0.4)',
+        'glow': '0 0 20px rgba(239, 217, 223, 0.3)',
+        'glow-lg': '0 0 40px rgba(239, 217, 223, 0.4)',
+        'glow-romania': '0 0 20px rgba(239, 217, 223, 0.3)',
+        'glow-vietnam': '0 0 20px rgba(194, 225, 238, 0.3)',
+        'glow-vietnam-lg': '0 0 40px rgba(194, 225, 238, 0.4)',
         'card': '0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05)',
         'card-hover': '0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1)',
       },

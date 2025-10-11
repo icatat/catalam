@@ -98,9 +98,9 @@ const translations: Record<Language, Record<string, string>> = {
     'home.memories.title': 'Memories Coming Soon',
     
     // About page
-    'about.title': 'Our Love Story',
-    'about.description': 'A journey of two hearts becoming one, across cultures and continents',
-    'about.subtitle': 'A journey of two hearts becoming one, across cultures and continents',
+    'about.title': 'Our Story',
+    'about.description': 'What happens when a Romanian girls and Vietnamese guy meet at a college party in America.',
+    'about.subtitle': '',
     'about.sort.newest': 'Newest First',
     'about.sort.oldest': 'Oldest First',
     'about.timeline.empty.title': 'No memories found',

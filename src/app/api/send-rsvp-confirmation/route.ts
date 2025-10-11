@@ -23,8 +23,8 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
         <meta charset="utf-8">
         <title>Wedding Confirmation - Cata & Lam</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-image: url('https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/background-main.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.95); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px);">
             <!-- Header Image -->
             <div style="height: 250px; position: relative; overflow: hidden;">
                 <img src="${headerImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
@@ -37,7 +37,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
             
             <!-- Content -->
             <div style="padding: 30px; text-align: center;">
-                <h2 style="color: #145870; margin-bottom: 20px; font-size: 24px;">
+                <h2 style="color: ${isRomania ? '#efd9df' : '#c2e1ee'}; margin-bottom: 20px; font-size: 24px;">
                     🎉 We're So Excited! 💃🕺
                 </h2>
                 
@@ -53,10 +53,10 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
                 </div>
                 
                 <div style="background-color: #fef9e7; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left;">
-                    <h3 style="color: #145870; margin-top: 0; display: flex; align-items: center;">
+                    <h3 style="color: ${isRomania ? '#efd9df' : '#c2e1ee'}; margin-top: 0; display: flex; align-items: center;">
                         📅 Wedding Details
                     </h3>
-                    <p style="margin: 8px 0; color: #374151;"><strong>📍 Location:</strong> <a href="${googleMapsLink}" style="color: #145870; text-decoration: none;">${city}</a></p>
+                    <p style="margin: 8px 0; color: #374151;"><strong>📍 Location:</strong> <a href="${googleMapsLink}" style="color: ${isRomania ? '#efd9df' : '#c2e1ee'}; text-decoration: none;">${city}</a></p>
                     <p style="margin: 8px 0; color: #374151;"><strong>🗓️ Date:</strong> ${date}</p>
                     <p style="margin: 8px 0; color: #374151;"><strong>🎭 Theme:</strong> ${isRomania ? 'Traditional Romanian Celebration 🇷🇴' : 'Vietnamese Wedding Ceremony 🇻🇳'}</p>
                     <div style="margin: 15px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
@@ -73,7 +73,7 @@ function getPositiveEmailTemplate(name: string, location: Location): string {
                     <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
                         With all our love and excitement, 💕
                     </p>
-                    <p style="font-size: 18px; color: #145870; font-weight: bold; margin: 0;">
+                    <p style="font-size: 18px; color: ${isRomania ? '#efd9df' : '#c2e1ee'}; font-weight: bold; margin: 0;">
                         Cata & Lam 👰‍♀️🤵‍♂️
                     </p>
                 </div>
@@ -100,11 +100,11 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
         <meta charset="utf-8">
         <title>Wedding RSVP - Cata & Lam</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-image: url('https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/background-main.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.95); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px);">
             <!-- Header Image -->
             <div style="height: 250px; position: relative; overflow: hidden;">
-                <img src=${headerImage} alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                <img src="${headerImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));"></div>
                 <div style="position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
                     <h1 style="margin: 0; font-size: 28px; font-weight: bold;">💝 We'll Miss You 💝</h1>
@@ -114,7 +114,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
             
             <!-- Content -->
             <div style="padding: 30px; text-align: center;">
-                <h2 style="color: #145870; margin-bottom: 20px; font-size: 24px;">
+                <h2 style="color: ${isRomania ? '#efd9df' : '#c2e1ee'}; margin-bottom: 20px; font-size: 24px;">
                     😢 We Understand 🤗
                 </h2>
                 
@@ -122,7 +122,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
                     Hi <strong>${name}</strong>! 👋
                 </p>
                 
-                <div style="background-color: #fef2f2; border: 2px solid #f87171; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                <div style="background-color: #fef2f2; border: 2px solid #efd9df; border-radius: 10px; padding: 20px; margin: 20px 0;">
                     <p style="font-size: 16px; color: #7f1d1d; margin: 0; line-height: 1.6;">
                         We received your RSVP and understand you won't be able to join us in ${locationName}. 
                         While we're sad you can't be there, we completely understand! 💙
@@ -145,7 +145,7 @@ function getNegativeEmailTemplate(name: string, location: Location): string {
                     <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
                         Sending you love and hugs, 🤗💕
                     </p>
-                    <p style="font-size: 18px; color: #145870; font-weight: bold; margin: 0;">
+                    <p style="font-size: 18px; color: ${isRomania ? '#efd9df' : '#c2e1ee'}; font-weight: bold; margin: 0;">
                         Cata & Lam 👰‍♀️🤵‍♂️
                     </p>
                 </div>

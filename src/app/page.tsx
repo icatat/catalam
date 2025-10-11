@@ -1,66 +1,27 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { PhotoCard, TextCard } from '@/components/ui/photo-card';
-import { DynamicPhotoCard } from '@/components/DynamicPhotoCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState, useEffect, useMemo } from 'react';
-import { Box, useTheme, Container, Typography } from '@mui/material';
-// Removed getWeddingVariant import as we now use unified theme colors
-
-interface BlobImage {
-  url: string;
-  pathname: string;
-  size: number;
-  uploadedAt: string;
-}
+import { Box, useTheme, Container } from '@mui/material';
+import { MainPageCard } from '@/components/MainPageCard';
 
 export default function Home() {
   const { t } = useLanguage();
   const theme = useTheme();
-  const [blobImages, setBlobImages] = useState<BlobImage[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchImages() {
-      try {
-        const response = await fetch('/api/images');
-        const data = await response.json();
-        setBlobImages(data.images || []);
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchImages();
-  }, []);
-
-  // Randomize blob images with dynamic positioning
-  const randomizedBlobImages = useMemo(() => {
-    return [...blobImages].sort(() => Math.random() - 0.5).map(image => ({
-      ...image,
-      rotation: 0, // Removed rotation to keep images straight
-      scale: 0.8 + Math.random() * 0.4,
-    }));
-  }, [blobImages]);
 
   return (
     <Box 
       sx={{ 
-        minHeight: '100vh',
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/landmarks.png)`,
+        height: '100vh',
+        background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.png)`,
         backgroundRepeat: 'repeat',
-        backgroundSize: 'auto',
-        p: { xs: theme.spacing(2), md: theme.spacing(3) },
+        backgroundSize: 'contain',
+        backgroundAttachment: 'fixed',
+        overflow: 'hidden',
         position: 'relative'
       }}
     >
-      {/* Subtle top-right controls */}
+      {/* Top-right controls */}
       <Box sx={{ 
         position: 'absolute', 
         top: theme.spacing(2), 
@@ -70,299 +31,413 @@ export default function Home() {
         gap: theme.spacing(1.5), 
         zIndex: theme.zIndex.appBar 
       }}>
-        <Box
-          component={Link}
-          href="/contact"
-          sx={{
-            px: theme.spacing(1.5),
-            py: theme.spacing(1),
-            borderRadius: theme.shape.borderRadius * 6,
-            fontSize: theme.typography.caption.fontSize,
-            fontWeight: theme.typography.fontWeightMedium,
-            transition: theme.transitions.create(['all'], { duration: theme.transitions.duration.short }),
-            backgroundColor: theme.palette.common.white + '1A',
-            backdropFilter: 'blur(4px)',
-            border: `1px solid ${theme.palette.common.white}33`,
-            color: theme.palette.common.white + 'E6',
-            textDecoration: 'none',
-            display: 'inline-block',
-            '&:hover': {
-              backgroundColor: theme.palette.common.white + '33',
-              color: theme.palette.common.white,
-              borderColor: theme.palette.common.white + '4D',
-            },
-          }}
-        >
-          {t('nav.contact')}
-        </Box>
         <LanguageToggle variant="subtle" size="small" />
       </Box>
       
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         
-        {/* Centered Main Title */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: theme.spacing(8) }}>
-          <Box
-            sx={{
-              position: 'relative',
-              height: { xs: 100, sm: 120, md: 160 },
-              width: { xs: 500, sm: 600, md: 700 },
-              maxWidth: '500vw',
-            }}
-          >
-            <Image
-              src="/NameHeader.png"
-              alt="Catalina & Lam"
-              fill
-              style={{ objectFit: 'contain' }}
-              priority
-            />
-          </Box>
-        </Box>
-
-        {/* Prominent Wedding Location Cards */}
+        {/* Random Grid Layout with photo-shaped cards */}
         <Box
-          component={motion.div}
-          sx={{ display: 'flex', justifyContent: 'center', mb: theme.spacing(8), gap: theme.spacing(2), flexWrap: 'wrap' }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-        >
-          {/* Romania Wedding Card */}
-          <Box
-            component={motion.div}
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.95 }}
-            className="group"
-          >
-            <PhotoCard
-              src="/photo_3.png"
-              alt="Romania Wedding"
-              size="wide"
-              href="/romania"
-              className="w-80 transition-all duration-300"
-              sx={{
-                boxShadow: theme.shadows[8],
-                border: `${theme.spacing(0.5)} solid ${theme.palette.primary.main}30`,
-                borderRadius: theme.shape.borderRadius * 0.05,
-                '&:hover': {
-                  boxShadow: theme.shadows[16],
-                  borderColor: `${theme.palette.primary.main}60`,
-                  background: theme.palette.primary.main 
-                },
-              }}
-              overlay={
-                <Box sx={{ 
-                  textAlign: 'center',
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundColor: 'rgba(52, 65, 80, 0.75)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: theme.spacing(2)
-                }}>
-                 
-                  <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
-                      {t('nav.romania') } 🇷🇴
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: theme.palette.common.white, mb: theme.spacing(2) }}>
-                    {t('contact.info.romania')}
-                  </Typography>
-                </Box>
-              }
-            />
-          </Box>
-
-          {/* Vietnam Wedding Card */}
-          <Box
-            component={motion.div}
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.95 }}
-            className="group"
-          >
-            <PhotoCard
-              src="/photo_0.png"
-              alt="Vietnam Wedding"
-              size="wide"
-              href="/vietnam"
-              className="w-80 transition-all duration-300"
-              sx={{
-                boxShadow: theme.shadows[8],
-                border: `${theme.spacing(0.5)} solid ${theme.palette.primary.main}30`,
-                borderRadius: theme.shape.borderRadius * 0.05,
-                '&:hover': {
-                  boxShadow: theme.shadows[16],
-                  borderColor: `${theme.palette.primary.main}60`,
-                },
-              }}
-              overlay={
-                <Box sx={{ 
-                  textAlign: 'center',
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundColor: 'rgba(52, 65, 80, 0.75)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: theme.spacing(2)
-                }}>
-                  <Typography variant="h5" component="h3" sx={{ color: theme.palette.common.white, mb: theme.spacing(1), fontWeight: theme.typography.fontWeightBold }}>
-                    {t('nav.vietnam')} 🇻🇳
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: theme.palette.common.white, mb: theme.spacing(2) }}>
-                    {t('contact.info.vietnam')}
-                  </Typography>
-                </Box>
-              }
-            />
-          </Box>
-        </Box>
-
-                {/* About Us Section */}
-        <Box
-          component={motion.div}
-          sx={{ 
-            textAlign: 'center', 
-            mb: theme.spacing(8),
-            maxWidth: 800,
-            mx: 'auto',
-            px: theme.spacing(2)
+          sx={{
+            flex: 1,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(10, 1fr)',
+            gridTemplateRows: 'repeat(6, 1fr)',
+            gap: theme.spacing(0.3),
+            p: theme.spacing(0.5),
+            position: 'relative',
+            height: '100%',
+            overflow: 'hidden'
           }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <Box
-            component={Link}
+          {/* Large landscape photo_2 */}
+          <MainPageCard
+            gridColumnStart={1}
+            gridColumnEnd={5}
+            gridRowStart={1}
+            gridRowEnd={3}
+            imageSrc="/photo_2.png"
+            alt="Wedding Photo 2"
+            aspectRatio="4/3"
+            objectFit="contain"
+            animationDelay={0.1}
+          />
+          
+          {/* About button */}
+          <MainPageCard
+            gridColumnStart={5}
+            gridColumnEnd={6}
+            gridRowStart={1}
+            gridRowEnd={2}
+            backgroundColor="linear-gradient(135deg, rgba(255, 182, 193, 0.9) 0%, rgba(255, 182, 193, 0.7) 100%)"
+            title={t('nav.about')}
             href="/about"
+            aspectRatio="1/1"
+            animationDelay={0.2}
             sx={{
-              display: 'inline-block',
-              px: theme.spacing(3),
-              py: theme.spacing(1.5),
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.common.white,
-              borderRadius: theme.shape.borderRadius * 2,
-              textDecoration: 'none',
-              fontWeight: theme.typography.fontWeightMedium,
-              transition: 'all 0.3s ease',
-              boxShadow: theme.shadows[4],
+              color: 'white',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              border: `2px solid rgba(255, 182, 193, 0.8)`,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: '0.8rem',
+              backdropFilter: 'blur(8px)',
               '&:hover': {
-                backgroundColor: theme.palette.primary.dark,
+                backgroundColor: 'rgba(255, 182, 193, 1)',
+                transform: 'translateY(-3px) scale(1.02)',
                 boxShadow: theme.shadows[8],
-                transform: 'translateY(-2px)'
               }
             }}
-          >
-            Read Our Story
-          </Box>
+          />
+          
+          {/* Portrait photo_4 */}
+          <MainPageCard
+            gridColumnStart={6}
+            gridColumnEnd={8}
+            gridRowStart={1}
+            gridRowEnd={4}
+            imageSrc="/photo_4.png"
+            alt="Wedding Photo 4"
+            aspectRatio="3/4"
+            objectFit="contain"
+            animationDelay={0.3}
+          />
+          
+          {/* Square photo_5 */}
+          <MainPageCard
+            gridColumnStart={8}
+            gridColumnEnd={9}
+            gridRowStart={1}
+            gridRowEnd={2}
+            imageSrc="/photo_5.png"
+            alt="Wedding Photo 5"
+            aspectRatio="1/1"
+            objectFit="contain"
+            animationDelay={0.4}
+          />
+          
+          {/* Romania button */}
+          <MainPageCard
+            gridColumnStart={9}
+            gridColumnEnd={11}
+            gridRowStart={1}
+            gridRowEnd={2}
+            backgroundColor="linear-gradient(135deg, rgba(239, 217, 223, 0.9) 0%, rgba(239, 217, 223, 0.7) 100%)"
+            title={`${t('nav.romania')} 🇷🇴`}
+            href="/romania"
+            animationDelay={0.5}
+            sx={{
+              aspectRatio: '2/1',
+              color: 'white',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              border: `2px solid rgba(239, 217, 223, 0.8)`,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: '1rem',
+              backdropFilter: 'blur(8px)',
+              '&:hover': {
+                backgroundColor: 'rgba(239, 217, 223, 1)',
+                transform: 'translateY(-3px) scale(1.02)',
+                boxShadow: theme.shadows[8],
+              }
+            }}
+          />
+          
+          {/* Wide landscape photo_6 (estimated 16:9 ratio) */}
+          <MainPageCard
+            gridColumnStart={8}
+            gridColumnEnd={11}
+            gridRowStart={2}
+            gridRowEnd={3}
+            imageSrc="/photo_6.png"
+            alt="Wedding Photo 6"
+            animationDelay={0.6}
+            sx={{ 
+              aspectRatio: '16/9',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Square photo_7 (estimated 1:1 ratio) */}
+          <MainPageCard
+            gridColumnStart={5}
+            gridColumnEnd={6}
+            gridRowStart={2}
+            gridRowEnd={3}
+            imageSrc="/photo_7.png"
+            alt="Wedding Photo 7"
+            animationDelay={0.7}
+            sx={{ 
+              aspectRatio: '1/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+
+          {/* CENTER: NameHeader */}
+          <MainPageCard
+            gridColumnStart={3}
+            gridColumnEnd={6}
+            gridRowStart={3}
+            gridRowEnd={4}
+            imageSrc="/NameHeader.png"
+            alt="Wedding Names"
+            animationDelay={0.1}
+            sx={{
+              aspectRatio: '3/1',
+              borderRadius: 0,
+              boxShadow: 'none',
+              border: 'none',
+              overflow: 'visible',
+              zIndex: 20,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              '&:hover': {
+                boxShadow: 'none',
+                transform: 'none',
+              },
+              '& img': {
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%',
+              }
+            }}
+          />
+          
+          {/* Large landscape photo_9 (estimated 16:10 ratio) */}
+          <MainPageCard
+            gridColumnStart={1}
+            gridColumnEnd={3}
+            gridRowStart={3}
+            gridRowEnd={4}
+            imageSrc="/photo_9.png"
+            alt="Wedding Photo 9"
+            animationDelay={0.8}
+            sx={{ 
+              aspectRatio: '16/10',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Portrait photo_10 (estimated 2:3 ratio) */}
+          <MainPageCard
+            gridColumnStart={8}
+            gridColumnEnd={10}
+            gridRowStart={3}
+            gridRowEnd={5}
+            imageSrc="/photo_10.png"
+            alt="Wedding Photo 10"
+            animationDelay={0.9}
+            sx={{ 
+              aspectRatio: '2/3',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Square photo_11 (estimated 1:1 ratio) */}
+          <MainPageCard
+            gridColumnStart={6}
+            gridColumnEnd={7}
+            gridRowStart={3}
+            gridRowEnd={4}
+            imageSrc="/photo_11.png"
+            alt="Wedding Photo 11"
+            animationDelay={1.0}
+            sx={{ 
+              aspectRatio: '1/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Vietnam button */}
+          <MainPageCard
+            gridColumnStart={7}
+            gridColumnEnd={8}
+            gridRowStart={3}
+            gridRowEnd={5}
+            backgroundColor="linear-gradient(135deg, rgba(194, 225, 238, 0.9) 0%, rgba(194, 225, 238, 0.7) 100%)"
+            title={`${t('nav.vietnam')} 🇻🇳`}
+            href="/vietnam"
+            animationDelay={1.1}
+            sx={{
+              aspectRatio: '1/2',
+              color: 'white',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              border: `2px solid rgba(194, 225, 238, 0.8)`,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              backdropFilter: 'blur(8px)',
+              '&:hover': {
+                backgroundColor: 'rgba(194, 225, 238, 1)',
+                transform: 'translateY(-3px) scale(1.02)',
+                boxShadow: theme.shadows[8],
+              }
+            }}
+          />
+          
+          {/* Wide landscape photo_12 (estimated 5:3 ratio) */}
+          <MainPageCard
+            gridColumnStart={1}
+            gridColumnEnd={4}
+            gridRowStart={4}
+            gridRowEnd={5}
+            imageSrc="/photo_12.png"
+            alt="Wedding Photo 12"
+            animationDelay={1.2}
+            sx={{ 
+              aspectRatio: '5/3',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Square photo_13 (estimated 1:1 ratio) */}
+          <MainPageCard
+            gridColumnStart={4}
+            gridColumnEnd={5}
+            gridRowStart={4}
+            gridRowEnd={5}
+            imageSrc="/photo_13.png"
+            alt="Wedding Photo 13"
+            animationDelay={1.3}
+            sx={{ 
+              aspectRatio: '1/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Square photo_14 (estimated 1:1 ratio) */}
+          <MainPageCard
+            gridColumnStart={5}
+            gridColumnEnd={6}
+            gridRowStart={4}
+            gridRowEnd={5}
+            imageSrc="/photo_14.png"
+            alt="Wedding Photo 14"
+            animationDelay={1.4}
+            sx={{ 
+              aspectRatio: '1/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Square photo_15 (estimated 1:1 ratio) */}
+          <MainPageCard
+            gridColumnStart={6}
+            gridColumnEnd={7}
+            gridRowStart={4}
+            gridRowEnd={5}
+            imageSrc="/photo_15.png"
+            alt="Wedding Photo 15"
+            animationDelay={1.5}
+            sx={{ 
+              aspectRatio: '1/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+
+          {/* Contact button */}
+          <MainPageCard
+            gridColumnStart={1}
+            gridColumnEnd={3}
+            gridRowStart={5}
+            gridRowEnd={6}
+            backgroundColor="linear-gradient(135deg, rgba(173, 216, 230, 0.9) 0%, rgba(173, 216, 230, 0.7) 100%)"
+            title={t('nav.contact')}
+            href="/contact"
+            animationDelay={1.6}
+            sx={{
+              aspectRatio: '2/1',
+              color: 'white',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              border: `2px solid rgba(173, 216, 230, 0.8)`,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: '1rem',
+              backdropFilter: 'blur(8px)',
+              '&:hover': {
+                backgroundColor: 'rgba(173, 216, 230, 1)',
+                transform: 'translateY(-3px) scale(1.02)',
+                boxShadow: theme.shadows[8],
+              }
+            }}
+          />
+          
+          {/* Extra wide bottom banner */}
+          <MainPageCard
+            gridColumnStart={3}
+            gridColumnEnd={11}
+            gridRowStart={5}
+            gridRowEnd={6}
+            imageSrc="/photo_6.png"
+            alt="Wedding Photo 6 Banner"
+            animationDelay={1.7}
+            sx={{ 
+              aspectRatio: '8/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+          
+          {/* Final bottom row with remaining photos */}
+          <MainPageCard
+            gridColumnStart={1}
+            gridColumnEnd={11}
+            gridRowStart={6}
+            gridRowEnd={7}
+            imageSrc="/photo_9.png"
+            alt="Wedding Photo 9 Ultra Wide"
+            animationDelay={1.8}
+            sx={{ 
+              aspectRatio: '10/1',
+              '& img': { 
+                objectFit: 'contain !important',
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+
         </Box>
-
-
-        {/* Dynamic Blob Store Images Gallery */}
-        {loading && (
-          <Box
-            component={motion.div}
-            sx={{ display: 'flex', justifyContent: 'center', py: theme.spacing(8) }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <Box
-              sx={{
-                textAlign: 'center',
-                py: theme.spacing(4),
-                backgroundColor: theme.palette.common.white + '1A',
-                backdropFilter: 'blur(4px)',
-                borderRadius: theme.shape.borderRadius * 2,
-                px: theme.spacing(4),
-              }}
-            >
-              <Box
-                className="inline-block animate-spin rounded-full h-12 w-12"
-                sx={{
-                  borderBottom: `4px solid ${theme.palette.primary.main}`,
-                }}
-              />
-              <Typography variant="h6" sx={{ color: theme.palette.text.secondary, mt: theme.spacing(2) }}>
-                {t('common.loading')}
-              </Typography>
-            </Box>
-          </Box>
-        )}
-
-        {!loading && blobImages.length > 0 && (
-          <Box
-            component={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-          > 
-            {/* Masonry-like grid for blob images */}
-            <Box sx={{ 
-              columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, 
-              columnGap: { xs: theme.spacing(2), md: theme.spacing(3) }
-            }}>
-              {randomizedBlobImages.map((image, index) => (
-                <Box
-                  key={image.url}
-                  component={motion.div}
-                  sx={{ 
-                    breakInside: 'avoid', 
-                    mb: { xs: theme.spacing(2), md: theme.spacing(3) },
-                    width: '100%'
-                  }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1, 
-                    rotate: 0 
-                  }}
-                  transition={{ 
-                    delay: index * 0.05,
-                    duration: 0.6,
-                    type: "spring",
-                    stiffness: 100
-                  }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    rotate: 0,
-                    zIndex: 10,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <DynamicPhotoCard
-                    src={image.url}
-                    alt={`Wedding memory ${index + 1}`}
-                    className="w-full"
-                  />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        )}
-
-        {!loading && blobImages.length === 0 && (
-          <Box
-            component={motion.div}
-            sx={{ display: 'flex', justifyContent: 'center', py: theme.spacing(8) }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <TextCard size="medium" variant="accent" sx={{ maxWidth: theme.spacing(60) }}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Box sx={{ maxWidth: "48px", mx: 'auto', mb: theme.spacing(2) }}>
-                  <Image src="/favicon.ico" alt="Wedding icon" width={48} height={48} style={{ width: '100%', height: 'auto' }} />
-                </Box>
-                <Typography variant="h5" component="h3" sx={{ color: theme.palette.primary.main, mb: theme.spacing(1.5) }}>
-                  Memories Coming Soon
-                </Typography>
-              </Box>
-            </TextCard>
-          </Box>
-        )}
 
       </Container>
     </Box>

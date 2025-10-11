@@ -173,7 +173,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   // Invite verification
   if (!guestData) {
     return (
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: 'auto' }}>
+      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed' }}>
         <InviteVerification 
           location={location}
           onVerified={handleInviteVerified}
@@ -184,8 +184,15 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
 
   return (
     <>
-      <ScrollProgress />
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/landmarks.png)`, backgroundRepeat: 'repeat', backgroundSize: 'auto' }}>
+      <ScrollProgress color={isRomania ? '#efd9df' : '#c2e1ee'} />
+      <div className="min-h-screen" style={{ 
+        background: isRomania 
+          ? `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-pink.png)` 
+          : `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-blue.png)`,
+        backgroundRepeat: 'repeat', 
+        backgroundSize: 'contain', 
+        backgroundAttachment: 'fixed' 
+      }}>
         <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
       
         {/* Personalized Welcome Section */}
@@ -196,29 +203,16 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             px: 3,
             textAlign: 'center',
             position: 'relative',
+            minHeight: '500px',
             backgroundImage: `url(${weddingInfo.heroImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: '85% auto',
+            backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
-            borderRadius: { xs: 0, md: 4 },
-            mx: { xs: 0, md: 4 },
-            mt: { xs: 0, md: 3 },
-            boxShadow: { xs: 'none', md: theme.shadows[6] },
-            overflow: 'hidden',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(255, 255, 255, 0.75)',
-              zIndex: 1
-            },
-            '& > *': {
-              position: 'relative',
-              zIndex: 2
-            }
+            opacity: 0.75,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}>
             {/* Personalized Message */}
             {guestData.rsvp.includes(location) ? (
@@ -231,8 +225,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   mb: 3,
                   maxWidth: '900px',
                   mx: 'auto',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.15)',
-                  lineHeight: 1.2
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  lineHeight: 1.2,
+                  position: 'relative',
+                  zIndex: 2
                 }}
               >
                 {t('wedding.welcome.confirmed', { 
@@ -250,8 +246,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   mb: 3,
                   maxWidth: '900px',
                   mx: 'auto',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.15)',
-                  lineHeight: 1.2
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  lineHeight: 1.2,
+                  position: 'relative',
+                  zIndex: 2
                 }}
               >
                 {t('wedding.welcome.pending', { 
@@ -269,15 +267,24 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 fontWeight: 500,
                 maxWidth: '700px',
                 mx: 'auto',
-                textShadow: '0 1px 2px rgba(0,0,0,0.1)',
-                opacity: 0.8
+                textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                opacity: 0.9,
+                position: 'relative',
+                zIndex: 2
               }}
             >
               {weddingInfo.date} • {weddingInfo.location}
             </Typography>
 
             {/* RSVP/Update Button */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: 2,
+              position: 'relative',
+              zIndex: 2
+            }}>
               {guestData.rsvp.includes(location) && (
                 <CheckCircle 
                   sx={{ 

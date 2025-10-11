@@ -87,15 +87,16 @@ export function Parallax({ children, offset = 50, className = '' }: ParallaxProp
 
 interface ScrollProgressProps {
   className?: string;
+  color?: string;
 }
 
-export function ScrollProgress({ className = '' }: ScrollProgressProps) {
+export function ScrollProgress({ className = '', color = '#c2e1ee' }: ScrollProgressProps) {
   const { scrollYProgress } = useScroll();
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-pink-500 origin-left z-50 ${className}`}
-      style={{ scaleX: scrollYProgress }}
+      className={`fixed top-0 left-0 right-0 h-1 origin-left z-50 ${className}`}
+      style={{ scaleX: scrollYProgress, background: `linear-gradient(to right, ${color}, ${color})` }}
     />
   );
 }
