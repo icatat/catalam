@@ -125,9 +125,9 @@ export default function Home() {
             backgroundColor="linear-gradient(135deg, rgba(239, 217, 223, 0.9) 0%, rgba(239, 217, 223, 0.7) 100%)"
             title={`${t('nav.romania')} 🇷🇴`}
             href="/romania"
+            aspectRatio="2/1"
             animationDelay={0.5}
             sx={{
-              aspectRatio: '2/1',
               color: 'white',
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
               border: `2px solid rgba(239, 217, 223, 0.8)`,
@@ -143,7 +143,7 @@ export default function Home() {
             }}
           />
           
-          {/* Wide landscape photo_6 (estimated 16:9 ratio) */}
+          {/* Wide landscape photo_6 */}
           <MainPageCard
             gridColumnStart={8}
             gridColumnEnd={11}
@@ -151,18 +151,12 @@ export default function Home() {
             gridRowEnd={3}
             imageSrc="/photo_6.png"
             alt="Wedding Photo 6"
+            aspectRatio="16/9"
+            objectFit="contain"
             animationDelay={0.6}
-            sx={{ 
-              aspectRatio: '16/9',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Square photo_7 (estimated 1:1 ratio) */}
+          {/* Square photo_7 */}
           <MainPageCard
             gridColumnStart={5}
             gridColumnEnd={6}
@@ -170,15 +164,9 @@ export default function Home() {
             gridRowEnd={3}
             imageSrc="/photo_7.png"
             alt="Wedding Photo 7"
+            aspectRatio="1/1"
+            objectFit="contain"
             animationDelay={0.7}
-            sx={{ 
-              aspectRatio: '1/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
 
           {/* CENTER: NameHeader */}
@@ -189,9 +177,10 @@ export default function Home() {
             gridRowEnd={4}
             imageSrc="/NameHeader.png"
             alt="Wedding Names"
+            aspectRatio="3/1"
+            objectFit="contain"
             animationDelay={0.1}
             sx={{
-              aspectRatio: '3/1',
               borderRadius: 0,
               boxShadow: 'none',
               border: 'none',
@@ -203,16 +192,11 @@ export default function Home() {
               '&:hover': {
                 boxShadow: 'none',
                 transform: 'none',
-              },
-              '& img': {
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%',
               }
             }}
           />
           
-          {/* Large landscape photo_9 (estimated 16:10 ratio) */}
+          {/* Large landscape photo_9 */}
           <MainPageCard
             gridColumnStart={1}
             gridColumnEnd={3}
@@ -220,18 +204,12 @@ export default function Home() {
             gridRowEnd={4}
             imageSrc="/photo_9.png"
             alt="Wedding Photo 9"
+            aspectRatio="16/10"
+            objectFit="contain"
             animationDelay={0.8}
-            sx={{ 
-              aspectRatio: '16/10',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Portrait photo_10 (estimated 2:3 ratio) */}
+          {/* Portrait photo_10 */}
           <MainPageCard
             gridColumnStart={8}
             gridColumnEnd={10}
@@ -239,18 +217,12 @@ export default function Home() {
             gridRowEnd={5}
             imageSrc="/photo_10.png"
             alt="Wedding Photo 10"
+            aspectRatio="2/3"
+            objectFit="contain"
             animationDelay={0.9}
-            sx={{ 
-              aspectRatio: '2/3',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Square photo_11 (estimated 1:1 ratio) */}
+          {/* Square photo_11 */}
           <MainPageCard
             gridColumnStart={6}
             gridColumnEnd={7}
@@ -258,15 +230,9 @@ export default function Home() {
             gridRowEnd={4}
             imageSrc="/photo_11.png"
             alt="Wedding Photo 11"
+            aspectRatio="1/1"
+            objectFit="contain"
             animationDelay={1.0}
-            sx={{ 
-              aspectRatio: '1/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
           {/* Vietnam button */}
@@ -278,9 +244,9 @@ export default function Home() {
             backgroundColor="linear-gradient(135deg, rgba(194, 225, 238, 0.9) 0%, rgba(194, 225, 238, 0.7) 100%)"
             title={`${t('nav.vietnam')} 🇻🇳`}
             href="/vietnam"
+            aspectRatio="1/2"
             animationDelay={1.1}
             sx={{
-              aspectRatio: '1/2',
               color: 'white',
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
               border: `2px solid rgba(194, 225, 238, 0.8)`,
@@ -296,7 +262,7 @@ export default function Home() {
             }}
           />
           
-          {/* Wide landscape photo_12 (estimated 5:3 ratio) */}
+          {/* Wide landscape photo_12 */}
           <MainPageCard
             gridColumnStart={1}
             gridColumnEnd={4}
@@ -304,18 +270,12 @@ export default function Home() {
             gridRowEnd={5}
             imageSrc="/photo_12.png"
             alt="Wedding Photo 12"
+            aspectRatio="5/3"
+            objectFit="contain"
             animationDelay={1.2}
-            sx={{ 
-              aspectRatio: '5/3',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Square photo_13 (estimated 1:1 ratio) */}
+          {/* Square photo_13 */}
           <MainPageCard
             gridColumnStart={4}
             gridColumnEnd={5}
@@ -323,18 +283,12 @@ export default function Home() {
             gridRowEnd={5}
             imageSrc="/photo_13.png"
             alt="Wedding Photo 13"
+            aspectRatio="1/1"
+            objectFit="contain"
             animationDelay={1.3}
-            sx={{ 
-              aspectRatio: '1/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Square photo_14 (estimated 1:1 ratio) */}
+          {/* Square photo_14 */}
           <MainPageCard
             gridColumnStart={5}
             gridColumnEnd={6}
@@ -342,18 +296,12 @@ export default function Home() {
             gridRowEnd={5}
             imageSrc="/photo_14.png"
             alt="Wedding Photo 14"
+            aspectRatio="1/1"
+            objectFit="contain"
             animationDelay={1.4}
-            sx={{ 
-              aspectRatio: '1/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Square photo_15 (estimated 1:1 ratio) */}
+          {/* Square photo_15 */}
           <MainPageCard
             gridColumnStart={6}
             gridColumnEnd={7}
@@ -361,15 +309,9 @@ export default function Home() {
             gridRowEnd={5}
             imageSrc="/photo_15.png"
             alt="Wedding Photo 15"
+            aspectRatio="1/1"
+            objectFit="contain"
             animationDelay={1.5}
-            sx={{ 
-              aspectRatio: '1/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
 
           {/* Contact button */}
@@ -381,9 +323,9 @@ export default function Home() {
             backgroundColor="linear-gradient(135deg, rgba(173, 216, 230, 0.9) 0%, rgba(173, 216, 230, 0.7) 100%)"
             title={t('nav.contact')}
             href="/contact"
+            aspectRatio="2/1"
             animationDelay={1.6}
             sx={{
-              aspectRatio: '2/1',
               color: 'white',
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
               border: `2px solid rgba(173, 216, 230, 0.8)`,
@@ -407,18 +349,12 @@ export default function Home() {
             gridRowEnd={6}
             imageSrc="/photo_6.png"
             alt="Wedding Photo 6 Banner"
+            aspectRatio="8/1"
+            objectFit="contain"
             animationDelay={1.7}
-            sx={{ 
-              aspectRatio: '8/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
           
-          {/* Final bottom row with remaining photos */}
+          {/* Final bottom row */}
           <MainPageCard
             gridColumnStart={1}
             gridColumnEnd={11}
@@ -426,15 +362,9 @@ export default function Home() {
             gridRowEnd={7}
             imageSrc="/photo_9.png"
             alt="Wedding Photo 9 Ultra Wide"
+            aspectRatio="10/1"
+            objectFit="contain"
             animationDelay={1.8}
-            sx={{ 
-              aspectRatio: '10/1',
-              '& img': { 
-                objectFit: 'contain !important',
-                width: '100%',
-                height: '100%'
-              }
-            }}
           />
 
         </Box>
