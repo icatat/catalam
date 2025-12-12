@@ -16,7 +16,6 @@ interface LanguageToggleProps {
 }
 
 export default function LanguageToggle({ 
-  variant = 'navigation', 
   size = 'medium' 
 }: LanguageToggleProps) {
   const { language, setLanguage } = useLanguage();
