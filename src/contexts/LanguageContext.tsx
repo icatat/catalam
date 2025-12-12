@@ -99,7 +99,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // About page
     'about.title': 'Our Story',
-    'about.description': 'What happens when a Romanian girls and Vietnamese guy meet at a college party in America.',
+    'about.description': 'What happens when a Romanian girl and Vietnamese guy meet at a college in America.',
     'about.subtitle': '',
     'about.sort.newest': 'Newest First',
     'about.sort.oldest': 'Oldest First',
@@ -152,6 +152,7 @@ const translations: Record<Language, Record<string, string>> = {
     'rsvp.placeholder.message': 'Any special message for the couple...',
     'rsvp.placeholder.phone': '123 456 7890',
     'rsvp.submitting': 'Submitting...',
+    'rsvp.submit.another': 'Submit Another Answer',
     
     // RSVP Confirmation
     'confirmation.title.confirmed': 'RSVP Confirmed!',
@@ -348,6 +349,7 @@ const translations: Record<Language, Record<string, string>> = {
     'rsvp.placeholder.dietary': 'Vegetarian, alergii, etc.',
     'rsvp.placeholder.message': 'Mesaj pentru cuplul ...',
     'rsvp.submitting': 'Se trimite...',
+    'rsvp.submit.another': 'Trimite Alt Răspuns',
     
     // RSVP Confirmation
     'confirmation.title.confirmed': 'Confirmat!',
@@ -558,6 +560,7 @@ const translations: Record<Language, Record<string, string>> = {
     'rsvp.placeholder.dietary': 'Chay, dị ứng, v.v.',
     'rsvp.placeholder.message': 'Lời nhắn đặc biệt cho cặp đôi...',
     'rsvp.submitting': 'Đang gửi...',
+    'rsvp.submit.another': 'Gửi Câu Trả Lời Khác',
     
     // RSVP Confirmation
     'confirmation.title.confirmed': 'Đã Xác Nhận!',

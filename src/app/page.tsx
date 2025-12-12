@@ -2,12 +2,16 @@
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
+import { NavigationButton } from '@/components/NavigationButton';
+import { ClickableMap } from '@/components/ClickableMap';
 import { Box, useTheme, Container } from '@mui/material';
 import { MainPageCard } from '@/components/MainPageCard';
+import Image from 'next/image';
 
 export default function Home() {
   const { t } = useLanguage();
   const theme = useTheme();
+  
 
   return (
     <Box 
@@ -32,339 +36,79 @@ export default function Home() {
         zIndex: theme.zIndex.appBar 
       }}>
         <LanguageToggle variant="subtle" size="small" />
+        
+        <NavigationButton href="/about">
+          {t('nav.about')}
+        </NavigationButton>
+        
+        <NavigationButton href="/contact">
+          {t('nav.contact')}
+        </NavigationButton>
       </Box>
       
-      <Container maxWidth="xl" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        
-        {/* Random Grid Layout with photo-shaped cards */}
+      <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
+        {/* Centered Polaroid Container with Maps */}
         <Box
           sx={{
-            flex: 1,
-            display: 'grid',
-            gridTemplateColumns: 'repeat(10, 1fr)',
-            gridTemplateRows: 'repeat(6, 1fr)',
-            gap: theme.spacing(0.3),
-            p: theme.spacing(0.5),
-            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             height: '100%',
-            overflow: 'hidden'
+            position: 'relative',
+            overflow: 'hidden',
+            gap: 8
           }}
         >
-          {/* Large landscape photo_2 */}
-          <MainPageCard
-            gridColumnStart={1}
-            gridColumnEnd={5}
-            gridRowStart={1}
-            gridRowEnd={3}
-            imageSrc="/photo_2.png"
-            alt="Wedding Photo 2"
-            aspectRatio="4/3"
-            objectFit="contain"
-            animationDelay={0.1}
-          />
-          
-          {/* About button */}
-          <MainPageCard
-            gridColumnStart={5}
-            gridColumnEnd={6}
-            gridRowStart={1}
-            gridRowEnd={2}
-            backgroundColor="linear-gradient(135deg, rgba(255, 182, 193, 0.9) 0%, rgba(255, 182, 193, 0.7) 100%)"
-            title={t('nav.about')}
-            href="/about"
-            aspectRatio="1/1"
-            animationDelay={0.2}
-            sx={{
-              color: 'white',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              border: `2px solid rgba(255, 182, 193, 0.8)`,
-              borderRadius: 2,
-              fontWeight: 600,
-              fontSize: '0.8rem',
-              backdropFilter: 'blur(8px)',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 182, 193, 1)',
-                transform: 'translateY(-3px) scale(1.02)',
-                boxShadow: theme.shadows[8],
-              }
-            }}
-          />
-          
-          {/* Portrait photo_4 */}
-          <MainPageCard
-            gridColumnStart={6}
-            gridColumnEnd={8}
-            gridRowStart={1}
-            gridRowEnd={4}
-            imageSrc="/photo_4.png"
-            alt="Wedding Photo 4"
-            aspectRatio="3/4"
-            objectFit="contain"
-            animationDelay={0.3}
-          />
-          
-          {/* Square photo_5 */}
-          <MainPageCard
-            gridColumnStart={8}
-            gridColumnEnd={9}
-            gridRowStart={1}
-            gridRowEnd={2}
-            imageSrc="/photo_5.png"
-            alt="Wedding Photo 5"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={0.4}
-          />
-          
-          {/* Romania button */}
-          <MainPageCard
-            gridColumnStart={9}
-            gridColumnEnd={11}
-            gridRowStart={1}
-            gridRowEnd={2}
-            backgroundColor="linear-gradient(135deg, rgba(239, 217, 223, 0.9) 0%, rgba(239, 217, 223, 0.7) 100%)"
-            title={`${t('nav.romania')} 🇷🇴`}
+          {/* Romania Map - Left */}
+          <ClickableMap
+            imageSrc="/Romania_Map.png"
+            alt="Romania Map"
             href="/romania"
-            aspectRatio="2/1"
-            animationDelay={0.5}
-            sx={{
-              color: 'white',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              border: `2px solid rgba(239, 217, 223, 0.8)`,
-              borderRadius: 2,
-              fontWeight: 600,
-              fontSize: '1rem',
-              backdropFilter: 'blur(8px)',
-              '&:hover': {
-                backgroundColor: 'rgba(239, 217, 223, 1)',
-                transform: 'translateY(-3px) scale(1.02)',
-                boxShadow: theme.shadows[8],
-              }
-            }}
+            animationDelay={0.3}
+            width={120}
+            height={120}
           />
           
-          {/* Wide landscape photo_6 */}
-          <MainPageCard
-            gridColumnStart={8}
-            gridColumnEnd={11}
-            gridRowStart={2}
-            gridRowEnd={3}
-            imageSrc="/photo_6.png"
-            alt="Wedding Photo 6"
-            aspectRatio="16/9"
-            objectFit="contain"
-            animationDelay={0.6}
-          />
-          
-          {/* Square photo_7 */}
-          <MainPageCard
-            gridColumnStart={5}
-            gridColumnEnd={6}
-            gridRowStart={2}
-            gridRowEnd={3}
-            imageSrc="/photo_7.png"
-            alt="Wedding Photo 7"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={0.7}
-          />
-
-          {/* CENTER: NameHeader */}
-          <MainPageCard
-            gridColumnStart={3}
-            gridColumnEnd={6}
-            gridRowStart={3}
-            gridRowEnd={4}
-            imageSrc="/NameHeader.png"
-            alt="Wedding Names"
-            aspectRatio="3/1"
-            objectFit="contain"
-            animationDelay={0.1}
+          {/* Center Column with Polaroid and Header */}
+          <Box
             sx={{
-              borderRadius: 0,
-              boxShadow: 'none',
-              border: 'none',
-              overflow: 'visible',
-              zIndex: 20,
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              '&:hover': {
-                boxShadow: 'none',
-                transform: 'none',
-              }
+              position: 'relative'
             }}
-          />
+          >
+            {/* Centered bigger polaroid with NameHeader */}
+            <MainPageCard
+              polaroid={true}
+              imageSrc="/photo_4.png"
+              alt="Wedding Photo"
+              animationDelay={0.1}
+              bottomContent={
+                <Image
+                  src="/NameHeader.png"
+                  alt="Wedding Names"
+                  width={100}
+                  height={0}
+                  sizes="100vw"
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                    maxWidth: '100%'
+                  }}
+                />
+              }
+            />
+          </Box>
           
-          {/* Large landscape photo_9 */}
-          <MainPageCard
-            gridColumnStart={1}
-            gridColumnEnd={3}
-            gridRowStart={3}
-            gridRowEnd={4}
-            imageSrc="/photo_9.png"
-            alt="Wedding Photo 9"
-            aspectRatio="16/10"
-            objectFit="contain"
-            animationDelay={0.8}
-          />
-          
-          {/* Portrait photo_10 */}
-          <MainPageCard
-            gridColumnStart={8}
-            gridColumnEnd={10}
-            gridRowStart={3}
-            gridRowEnd={5}
-            imageSrc="/photo_10.png"
-            alt="Wedding Photo 10"
-            aspectRatio="2/3"
-            objectFit="contain"
-            animationDelay={0.9}
-          />
-          
-          {/* Square photo_11 */}
-          <MainPageCard
-            gridColumnStart={6}
-            gridColumnEnd={7}
-            gridRowStart={3}
-            gridRowEnd={4}
-            imageSrc="/photo_11.png"
-            alt="Wedding Photo 11"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={1.0}
-          />
-          
-          {/* Vietnam button */}
-          <MainPageCard
-            gridColumnStart={7}
-            gridColumnEnd={8}
-            gridRowStart={3}
-            gridRowEnd={5}
-            backgroundColor="linear-gradient(135deg, rgba(194, 225, 238, 0.9) 0%, rgba(194, 225, 238, 0.7) 100%)"
-            title={`${t('nav.vietnam')} 🇻🇳`}
+          {/* Vietnam Map - Right */}
+          <ClickableMap
+            imageSrc="/Vietnam_Map.png"
+            alt="Vietnam Map"
             href="/vietnam"
-            aspectRatio="1/2"
-            animationDelay={1.1}
-            sx={{
-              color: 'white',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              border: `2px solid rgba(194, 225, 238, 0.8)`,
-              borderRadius: 2,
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              backdropFilter: 'blur(8px)',
-              '&:hover': {
-                backgroundColor: 'rgba(194, 225, 238, 1)',
-                transform: 'translateY(-3px) scale(1.02)',
-                boxShadow: theme.shadows[8],
-              }
-            }}
-          />
-          
-          {/* Wide landscape photo_12 */}
-          <MainPageCard
-            gridColumnStart={1}
-            gridColumnEnd={4}
-            gridRowStart={4}
-            gridRowEnd={5}
-            imageSrc="/photo_12.png"
-            alt="Wedding Photo 12"
-            aspectRatio="5/3"
-            objectFit="contain"
-            animationDelay={1.2}
-          />
-          
-          {/* Square photo_13 */}
-          <MainPageCard
-            gridColumnStart={4}
-            gridColumnEnd={5}
-            gridRowStart={4}
-            gridRowEnd={5}
-            imageSrc="/photo_13.png"
-            alt="Wedding Photo 13"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={1.3}
-          />
-          
-          {/* Square photo_14 */}
-          <MainPageCard
-            gridColumnStart={5}
-            gridColumnEnd={6}
-            gridRowStart={4}
-            gridRowEnd={5}
-            imageSrc="/photo_14.png"
-            alt="Wedding Photo 14"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={1.4}
-          />
-          
-          {/* Square photo_15 */}
-          <MainPageCard
-            gridColumnStart={6}
-            gridColumnEnd={7}
-            gridRowStart={4}
-            gridRowEnd={5}
-            imageSrc="/photo_15.png"
-            alt="Wedding Photo 15"
-            aspectRatio="1/1"
-            objectFit="contain"
-            animationDelay={1.5}
-          />
-
-          {/* Contact button */}
-          <MainPageCard
-            gridColumnStart={1}
-            gridColumnEnd={3}
-            gridRowStart={5}
-            gridRowEnd={6}
-            backgroundColor="linear-gradient(135deg, rgba(173, 216, 230, 0.9) 0%, rgba(173, 216, 230, 0.7) 100%)"
-            title={t('nav.contact')}
-            href="/contact"
-            aspectRatio="2/1"
-            animationDelay={1.6}
-            sx={{
-              color: 'white',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              border: `2px solid rgba(173, 216, 230, 0.8)`,
-              borderRadius: 2,
-              fontWeight: 600,
-              fontSize: '1rem',
-              backdropFilter: 'blur(8px)',
-              '&:hover': {
-                backgroundColor: 'rgba(173, 216, 230, 1)',
-                transform: 'translateY(-3px) scale(1.02)',
-                boxShadow: theme.shadows[8],
-              }
-            }}
-          />
-          
-          {/* Extra wide bottom banner */}
-          <MainPageCard
-            gridColumnStart={3}
-            gridColumnEnd={11}
-            gridRowStart={5}
-            gridRowEnd={6}
-            imageSrc="/photo_6.png"
-            alt="Wedding Photo 6 Banner"
-            aspectRatio="8/1"
-            objectFit="contain"
-            animationDelay={1.7}
-          />
-          
-          {/* Final bottom row */}
-          <MainPageCard
-            gridColumnStart={1}
-            gridColumnEnd={11}
-            gridRowStart={6}
-            gridRowEnd={7}
-            imageSrc="/photo_9.png"
-            alt="Wedding Photo 9 Ultra Wide"
-            aspectRatio="10/1"
-            objectFit="contain"
-            animationDelay={1.8}
+            animationDelay={0.4}
+            width={120}
+            height={120}
           />
 
         </Box>

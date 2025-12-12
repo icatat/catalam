@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { Location } from '@/models/RSVP';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CustomButton from '@/components/Button';
-import { Edit } from 'lucide-react';
+import { Edit, RefreshCcw } from 'lucide-react';
 import { Box, Card, CardContent, Typography, useTheme, Avatar } from '@mui/material';
 import { CheckCircleOutline, Cancel, EmailOutlined } from '@mui/icons-material';
 import { getUnifiedColors } from '@/lib/mui-theme';
+import Cookies from 'js-cookie';
 
 interface RSVPConfirmationProps {
   isVisible: boolean;
@@ -17,6 +18,7 @@ interface RSVPConfirmationProps {
   location: Location;
   onModify: () => void;
   onClose: () => void;
+  onSubmitAnother?: () => void;
   variant?: 'primary' | 'secondary' | 'accent';
   emailSent?: boolean;
 }
@@ -29,6 +31,7 @@ export default function RSVPConfirmation({
   location,
   onModify,
   onClose,
+  onSubmitAnother,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   variant = 'primary', // Keep parameter but we don't use it for colors anymore
   emailSent = false
@@ -38,6 +41,19 @@ export default function RSVPConfirmation({
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
   if (!isVisible) return null;
+
+  const handleSubmitAnother = () => {
+    // Clear the invite_id cookie to allow fresh RSVP
+    Cookies.remove('invite_id');
+    
+    // Call the parent callback if provided
+    if (onSubmitAnother) {
+      onSubmitAnother();
+    } else {
+      // Default behavior: reload the page to start fresh
+      window.location.reload();
+    }
+  };
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
   const colors = getUnifiedColors();
@@ -165,25 +181,45 @@ export default function RSVPConfirmation({
           </Card>
 
           {/* Action buttons */}
-          <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <CustomButton
+                onClick={onModify}
+                variant="outlined"
+                size="medium"
+                weddingVariant="primary"
+                sx={{ flex: 1 }}
+                startIcon={<Edit />}
+              >
+                {t('common.modify')}
+              </CustomButton>
+              <CustomButton
+                onClick={onClose}
+                variant="contained"
+                size="medium"
+                weddingVariant="primary"
+                sx={{ flex: 1 }}
+              >
+                {t('common.done')}
+              </CustomButton>
+            </Box>
+            
+            {/* Submit Another Answer button */}
             <CustomButton
-              onClick={onModify}
-              variant="outlined"
-              size="medium"
+              onClick={handleSubmitAnother}
+              variant="text"
+              size="small"
               weddingVariant="primary"
-              sx={{ flex: 1 }}
-              startIcon={<Edit />}
+              startIcon={<RefreshCcw />}
+              sx={{
+                fontSize: '0.875rem',
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: theme.palette.action.hover
+                }
+              }}
             >
-              {t('common.modify')}
-            </CustomButton>
-            <CustomButton
-              onClick={onClose}
-              variant="contained"
-              size="medium"
-              weddingVariant="primary"
-              sx={{ flex: 1 }}
-            >
-              {t('common.done')}
+              {t('rsvp.submit.another')}
             </CustomButton>
           </Box>
 

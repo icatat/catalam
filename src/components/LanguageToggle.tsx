@@ -28,8 +28,6 @@ export default function LanguageToggle({
     setLanguage(event.target.value as Language);
   };
 
-  const isSubtle = variant === 'subtle';
-
   return (
     <FormControl size={size}>
       <Select
@@ -44,7 +42,7 @@ export default function LanguageToggle({
               variant="body2" 
               sx={{ 
                 fontWeight: 500,
-                color: isSubtle ? 'white' : 'text.primary',
+                color: 'text.primary',
                 display: { xs: 'none', sm: 'block' }
               }}
             >
@@ -55,27 +53,19 @@ export default function LanguageToggle({
         sx={{
           minWidth: 140,
           height: 40,
-          backgroundColor: isSubtle 
-            ? 'rgba(255, 255, 255, 0.1)' 
-            : 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(8px)',
-          border: isSubtle 
-            ? '1px solid rgba(255, 255, 255, 0.2)'
-            : '1px solid rgba(0, 0, 0, 0.1)',
-          borderRadius: isSubtle ? '24px' : '12px',
-          color: isSubtle ? 'white' : 'text.primary',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(15px)',
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+          borderRadius: 2,
+          color: theme.palette.primary.main,
+          fontWeight: 600,
+          fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
           '&:hover': {
-            backgroundColor: isSubtle 
-              ? 'rgba(255, 255, 255, 0.2)' 
-              : 'rgba(255, 255, 255, 0.9)',
-            borderColor: isSubtle 
-              ? 'rgba(255, 255, 255, 0.3)' 
-              : 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            boxShadow: theme.shadows[4],
           },
           '&.Mui-focused': {
-            backgroundColor: isSubtle 
-              ? 'rgba(255, 255, 255, 0.2)' 
-              : 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: 'rgba(255, 255, 255, 1)',
           },
           '& .MuiOutlinedInput-notchedOutline': {
             border: 'none',
@@ -88,7 +78,7 @@ export default function LanguageToggle({
             paddingX: 2,
           },
           '& .MuiSelect-icon': {
-            color: isSubtle ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
+            color: 'rgba(0, 0, 0, 0.54)',
           },
         }}
         MenuProps={{
