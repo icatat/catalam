@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
+import { MainPageCard } from '@/components/MainPageCard';
 import ContactForm from '@/components/ContactForm';
-import { useLanguage } from '@/contexts/LanguageContext';
 import CustomButton from '@/components/Button';
 import { Box, Card, CardContent, Typography, Grid, Container, Avatar, useTheme } from '@mui/material';
 import { Email, LocationOn, CheckCircle } from '@mui/icons-material';
@@ -17,7 +17,6 @@ interface ContactFormData {
 }
 
 export default function ContactPage() {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -29,7 +28,7 @@ export default function ContactPage() {
     });
 
     if (!response.ok) {
-      throw new Error(t('error.contact'));
+      throw new Error('Failed to send message. Please try again.');
     }
   };
 
@@ -39,7 +38,8 @@ export default function ContactPage() {
 
   if (showConfirmation) {
     return (
-      <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed' }}>
+      <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed', position: 'relative' }}>
+
         <Navigation currentPage="contact" />
         
         <Container maxWidth="md" sx={{ py: 10 }}>
@@ -64,14 +64,14 @@ export default function ContactPage() {
                   gutterBottom 
                   sx={{ color: theme.palette.primary.main, fontWeight: 600 }}
                 >
-                  {t('contact.sent.title')}
+                  Message Sent!
                 </Typography>
-                
-                <Typography 
-                  variant="body1" 
+
+                <Typography
+                  variant="body1"
                   sx={{ color: theme.palette.text.secondary, mb: 4 }}
                 >
-                  {t('contact.sent.message')}
+                  Thank you for reaching out! We'll get back to you soon.
                 </Typography>
                 
                 <Box sx={{ display: 'flex', gap: 2 }}>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                     size="medium"
                     sx={{ flex: 1 }}
                   >
-                    {t('contact.sent.another')}
+                    Send Another Message
                   </CustomButton>
                   <CustomButton
                     onClick={() => {window.location.href = '/';}}
@@ -89,7 +89,7 @@ export default function ContactPage() {
                     size="medium"
                     sx={{ flex: 1 }}
                   >
-                    {t('contact.sent.home')}
+                    Back to Home
                   </CustomButton>
                 </Box>
               </CardContent>
@@ -101,7 +101,29 @@ export default function ContactPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed' }}>
+    <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed', position: 'relative' }}>
+      {/* Top-left NameHeader */}
+      <Box sx={{ 
+        position: 'absolute', 
+        top: theme.spacing(2), 
+        left: theme.spacing(2), 
+        zIndex: theme.zIndex.appBar 
+      }}>
+        <MainPageCard
+          sx={{
+            border: 'none !important',
+            boxShadow: 'none !important',
+            backgroundColor: 'transparent !important',
+            '&:hover': {
+              transform: 'none !important',
+              boxShadow: 'none !important',
+            }
+          }}
+          imageSrc="/NameHeader.png"
+          alt="Wedding Names"
+        />
+      </Box>
+
       <Navigation currentPage="contact" />
       
       <Container maxWidth="xl" sx={{ py: 10 }}>
@@ -114,13 +136,13 @@ export default function ContactPage() {
               gutterBottom 
               sx={{ color: theme.palette.primary.main, fontWeight: 700 }}
             >
-              {t('contact.title')}
+              Get in Touch
             </Typography>
-            <Typography 
-              variant="h6" 
+            <Typography
+              variant="h6"
               sx={{ color: theme.palette.text.secondary, maxWidth: 600, mx: 'auto' }}
             >
-              {t('contact.description')}
+              We'd love to hear from you! Send us a message and we'll respond as soon as possible.
             </Typography>
           </Box>
 
@@ -139,7 +161,7 @@ export default function ContactPage() {
                   <Card elevation={3} sx={{ borderRadius: 3 }}>
                     <CardContent sx={{ p: 4 }}>
                       <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 600, color: 'primary.main', mb: 3 }}>
-                        {t('contact.info.title')}
+                        Contact Information
                       </Typography>
                       
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -147,7 +169,7 @@ export default function ContactPage() {
                           <Email sx={{ color: 'primary.main', fontSize: '1.25rem', mt: 0.25 }} />
                           <Box>
                             <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
-                              {t('common.email')}
+                              Email
                             </Typography>
                             <Typography
                               component="a"
@@ -168,13 +190,13 @@ export default function ContactPage() {
                           <LocationOn sx={{ color: 'secondary.main', fontSize: '1.25rem', mt: 0.25 }} />
                           <Box>
                             <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
-                              {t('contact.info.locations')}
+                              Wedding Locations
                             </Typography>
                             <Typography variant="body1" color="text.secondary" sx={{ mb: 0.5 }}>
-                              📍 {t('contact.info.romania')}
+                              📍 Oradea, Romania
                             </Typography>
                             <Typography variant="body1" color="text.secondary">
-                              📍 {t('contact.info.vietnam')}
+                              📍 Cam Ranh, Vietnam
                             </Typography>
                           </Box>
                         </Box>
@@ -185,7 +207,7 @@ export default function ContactPage() {
                   <Card elevation={3} sx={{ borderRadius: 3 }}>
                     <CardContent sx={{ p: 4 }}>
                       <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 600, color: 'primary.main', mb: 2 }}>
-                        {t('contact.links.title')}
+                        Quick Links
                       </Typography>
                       
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
@@ -200,7 +222,7 @@ export default function ContactPage() {
                             display: 'block',
                           }}
                         >
-                          → {t('contact.links.romania')}
+                          → Romania Wedding Details
                         </Typography>
                         <Typography
                           component="a"
@@ -213,7 +235,7 @@ export default function ContactPage() {
                             display: 'block',
                           }}
                         >
-                          → {t('contact.links.vietnam')}
+                          → Vietnam Wedding Details
                         </Typography>
                         <Typography
                           component={Link}
@@ -226,7 +248,7 @@ export default function ContactPage() {
                             display: 'block',
                           }}
                         >
-                          → {t('contact.links.home')}
+                          → Back to Home
                         </Typography>
                       </Box>
                     </CardContent>

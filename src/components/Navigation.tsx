@@ -23,17 +23,16 @@ import {
   Public,
   Email,
   Timeline,
+  Article,
 } from '@mui/icons-material';
 import Link from 'next/link';
-import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from './LanguageToggle';
 
 interface NavigationProps {
-  currentPage?: 'home' | 'vietnam' | 'romania' | 'contact' | 'about';
+  currentPage?: 'home' | 'vietnam' | 'romania' | 'contact' | 'about' | 'blog';
 }
 
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -42,38 +41,45 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   };
 
   const navItems = [
-    { 
-      key: 'home', 
-      label: t('nav.home'), 
-      href: '/', 
+    {
+      key: 'home',
+      label: 'Home',
+      href: '/',
       icon: <Home />,
       color: theme.palette.text.primary
     },
-    { 
-      key: 'about', 
-      label: t('nav.about') || 'About Us', 
-      href: '/about', 
+    {
+      key: 'about',
+      label: 'About Us',
+      href: '/about',
       icon: <Timeline />,
       color: theme.palette.success.main
     },
-    { 
-      key: 'romania', 
-      label: t('nav.romania'), 
-      href: '/romania', 
+    {
+      key: 'blog',
+      label: 'Travel Blog',
+      href: '/blog',
+      icon: <Article />,
+      color: theme.palette.warning.main
+    },
+    {
+      key: 'romania',
+      label: 'Romania',
+      href: '/romania',
       icon: <Favorite />,
       color: theme.palette.primary.main
     },
-    { 
-      key: 'vietnam', 
-      label: t('nav.vietnam'), 
-      href: '/vietnam', 
+    {
+      key: 'vietnam',
+      label: 'Vietnam',
+      href: '/vietnam',
       icon: <Public />,
       color: theme.palette.secondary.main
     },
-    { 
-      key: 'contact', 
-      label: t('nav.contact'), 
-      href: '/contact', 
+    {
+      key: 'contact',
+      label: 'Contact',
+      href: '/contact',
       icon: <Email />,
       color: theme.palette.info.main
     },
@@ -158,7 +164,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
 
       <Box sx={{ position: 'absolute', bottom: 20, left: 20, right: 20, textAlign: 'center' }}>
         <Typography variant="caption" color="text.secondary">
-          {t('nav.footer.wedding')}
+          Catalina & Lam Wedding 2026
         </Typography>
       </Box>
     </Box>

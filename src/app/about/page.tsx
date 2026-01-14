@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Box, useTheme, Container, Typography, Button } from '@mui/material';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { MainPageCard } from '@/components/MainPageCard';
 import Navigation from '@/components/Navigation';
 import Timeline from '@/components/Timeline';
 import TimelineUpload from '@/components/TimelineUpload';
@@ -24,7 +24,6 @@ interface TimelineEvent {
 }
 
 export default function AboutPage() {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -108,6 +107,7 @@ export default function AboutPage() {
         position: 'relative'
       }}
     >
+
       <Navigation currentPage="about" />
       
       <Container maxWidth="xl" sx={{ py: 10 }}>
@@ -139,18 +139,18 @@ export default function AboutPage() {
               mb: 3
             }}
           >
-            {t('about.title')}
+            Our Story
           </Typography>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              color: theme.palette.text.secondary, 
-              maxWidth: 600, 
+          <Typography
+            variant="h5"
+            sx={{
+              color: theme.palette.text.secondary,
+              maxWidth: 600,
               mx: 'auto',
               lineHeight: 1.6
             }}
           >
-            {t('about.description')}
+            A timeline of our journey together
           </Typography>
         </Box>
 
@@ -184,7 +184,7 @@ export default function AboutPage() {
               transition: 'all 0.3s ease'
             }}
           >
-            {reverseOrder ? t('timeline.newest') : t('timeline.oldest')} {t('common.first')}
+            {reverseOrder ? 'Newest' : 'Oldest'} First
           </Button>
           
           {guestData && (
@@ -223,7 +223,7 @@ export default function AboutPage() {
           {loading ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
               <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-                {t('common.loading')}
+                Loading...
               </Typography>
             </Box>
           ) : timelineEvents.length > 0 ? (
@@ -245,17 +245,17 @@ export default function AboutPage() {
                   textAlign: 'center'
                 }}
               >
-                {t('timeline.empty.title')}
+                Our Story Begins Here
               </Typography>
-              <Typography 
-                variant="body1" 
-                sx={{ 
+              <Typography
+                variant="body1"
+                sx={{
                   color: theme.palette.text.secondary,
                   textAlign: 'center',
                   maxWidth: 400
                 }}
               >
-                {t('timeline.empty.message')}
+                Check back soon for special moments and memories from our journey
               </Typography>
             </Box>
           )}

@@ -1,6 +1,5 @@
 'use client';
 
-import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import { NavigationButton } from '@/components/NavigationButton';
 import { ClickableMap } from '@/components/ClickableMap';
@@ -9,7 +8,6 @@ import { MainPageCard } from '@/components/MainPageCard';
 import Image from 'next/image';
 
 export default function Home() {
-  const { t } = useLanguage();
   const theme = useTheme();
   
 
@@ -26,23 +24,27 @@ export default function Home() {
       }}
     >
       {/* Top-right controls */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: theme.spacing(2), 
-        right: theme.spacing(2), 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: theme.spacing(1.5), 
-        zIndex: theme.zIndex.appBar 
+      <Box sx={{
+        position: 'absolute',
+        top: theme.spacing(2),
+        right: theme.spacing(2),
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1.5),
+        zIndex: theme.zIndex.appBar
       }}>
         <LanguageToggle variant="subtle" size="small" />
-        
+
         <NavigationButton href="/about">
-          {t('nav.about')}
+          About Us
         </NavigationButton>
-        
+
+        <NavigationButton href="/blog">
+          Travel Blog
+        </NavigationButton>
+
         <NavigationButton href="/contact">
-          {t('nav.contact')}
+          Contact
         </NavigationButton>
       </Box>
       

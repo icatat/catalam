@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import { NavigationButton } from '@/components/NavigationButton';
 import { MainPageCard } from '@/components/MainPageCard';
@@ -23,7 +22,6 @@ import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
 import CustomButton from '@/components/Button';
 
 export default function RomaniaWedding() {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
@@ -152,7 +150,7 @@ export default function RomaniaWedding() {
               borderBottom: `2px solid ${theme.palette.primary.main}`,
             }}
           />
-          <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>{t('wedding.verification.loading')}</Typography>
+          <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>Loading...</Typography>
         </div>
       </div>
     );
@@ -187,6 +185,28 @@ export default function RomaniaWedding() {
         position: 'relative'
       }}
     >
+      {/* Top-left NameHeader */}
+      <Box sx={{ 
+        position: 'absolute', 
+        top: theme.spacing(2), 
+        left: theme.spacing(2), 
+        zIndex: theme.zIndex.appBar 
+      }}>
+        <MainPageCard
+          sx={{
+            border: 'none !important',
+            boxShadow: 'none !important',
+            backgroundColor: 'transparent !important',
+            '&:hover': {
+              transform: 'none !important',
+              boxShadow: 'none !important',
+            }
+          }}
+          imageSrc="/NameHeader.png"
+          alt="Wedding Names"
+        />
+      </Box>
+
       {/* Top-right controls */}
       <Box sx={{ 
         position: 'absolute', 
@@ -199,10 +219,14 @@ export default function RomaniaWedding() {
       }}>
         <LanguageToggle size="small" />
         <NavigationButton href="/about">
-          {t('nav.about')}
+          About Us
         </NavigationButton>
         <NavigationButton href="/contact">
-          {t('nav.contact')}
+          Contact
+        </NavigationButton>
+
+        <NavigationButton href="/">
+          Home
         </NavigationButton>
       </Box>
 
@@ -223,15 +247,9 @@ export default function RomaniaWedding() {
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
             }}
           >
-            {guestData.rsvp.includes(location) 
-              ? t('wedding.welcome.confirmed', { 
-                  name: guestData.full_name.split(' ')[0],
-                  location: 'Romania' 
-                })
-              : t('wedding.welcome.pending', { 
-                  name: guestData.full_name.split(' ')[0],
-                  location: 'Romania' 
-                })
+            {guestData.rsvp.includes(location)
+              ? `Welcome back, ${guestData.full_name.split(' ')[0]}! Your RSVP for Romania has been confirmed.`
+              : `Welcome, ${guestData.full_name.split(' ')[0]}! Please RSVP for our Romania wedding.`
             }
           </Typography>
         </Box>
@@ -300,9 +318,9 @@ export default function RomaniaWedding() {
                 transition: 'all 0.3s ease'
               }}
             >
-              {guestData.rsvp.includes(location) 
-                ? t('rsvp.button.update')
-                : t('rsvp.button.now')
+              {guestData.rsvp.includes(location)
+                ? 'Update RSVP'
+                : 'RSVP Now'
               }
             </CustomButton>
           </Box>
@@ -318,7 +336,7 @@ export default function RomaniaWedding() {
                 mb: 6, 
                 textAlign: 'center' 
               }}>
-                {t('wedding.location.title')}
+                Wedding Location
               </Typography>
               
               <Box sx={{ 
@@ -357,15 +375,15 @@ export default function RomaniaWedding() {
                     borderRadius: 2, 
                     border: `1px solid ${theme.palette.grey[200]}` 
                   }}>
-                    <Typography variant="h6" sx={{ 
-                      color: theme.palette.primary.main, 
-                      fontWeight: 600, 
-                      mb: 1 
+                    <Typography variant="h6" sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: 600,
+                      mb: 1
                     }}>
-                      {t('wedding.venue.title')}
+                      Venue
                     </Typography>
                     <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
-                      {t('wedding.venue.tbd')}
+                      Details coming soon!
                     </Typography>
                   </Box>
                 </Box>
