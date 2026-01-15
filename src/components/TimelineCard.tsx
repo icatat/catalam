@@ -259,7 +259,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                     borderRadius: 1
                   }}
                 >
-                  {From} {event.tag}
+                  {event.tag}
                 </Typography>
               </Box>
             )}

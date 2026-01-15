@@ -1,207 +1,226 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { Location } from '@/models/RSVP';
 
-export async function POST(request: NextRequest) {
+// Email template functions
+function getPositiveEmailTemplate(name: string, location: Location): string {
+  const isRomania = location === Location.ROMANIA;
+  const locationName = isRomania ? 'Romania' : 'Vietnam';
+  const headerImage = isRomania ? "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_3.png" : "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_0.png"
+  const date = isRomania ? 'September 11-12, 2026' : 'September 26, 2026';
+  const city = isRomania ? 'Oradea, Romania' : 'Hanoi, Vietnam';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Wedding Confirmation - Cata & Lam</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <!-- Header Image -->
+            <div style="height: 250px; position: relative; overflow: hidden;">
+                <img src="${headerImage}" alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3));"></div>
+                <div style="position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                    <h1 style="margin: 0; font-size: 28px; font-weight: bold;">✨ You're Coming! ✨</h1>
+                    <p style="margin: 5px 0 0 0; font-size: 16px;">${locationName} Wedding Celebration</p>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 30px; text-align: center;">
+                <h2 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-bottom: 20px; font-size: 24px;">
+                    🎉 We're So Excited! 💃🕺
+                </h2>
+                
+                <p style="font-size: 18px; color: #374151; line-height: 1.6; margin-bottom: 20px;">
+                    Hi <strong>${name}</strong>! 
+                </p>
+                
+                <div style="background-color: #f0fdf4; border: 2px solid #; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                    <p style="font-size: 16px; color: #166534; margin: 0; line-height: 1.6;">
+                        <strong>🎊 CONFIRMED:</strong> You're attending our ${locationName} wedding! 
+                        We can't wait to celebrate with you!
+                    </p>
+                </div>
+                
+                <div style="background-color: #fef9e7; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left;">
+                    <h3 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-top: 0; display: flex; align-items: center;">
+                        📅 Wedding Details
+                    </h3>
+                    <p style="margin: 8px 0; color: #374151;"><strong>📍 Location:</strong> ${city}</p>
+                    <p style="margin: 8px 0; color: #374151;"><strong>🗓️ Date:</strong> ${date}</p>
+                </div>
+                
+                <p style="font-size: 16px; color: #6b7280; line-height: 1.6; margin: 20px 0;">
+                    We'll send you more details as the date approaches, including venue information, 
+                    accommodation suggestions, and what to expect! 📬
+                </p>
+                
+                <div style="border-top: 2px solid #e5e7eb; padding-top: 20px; margin-top: 30px;">
+                    <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
+                        With all our love and excitement, 💕
+                    </p>
+                    <p style="font-size: 18px; color: ${isRomania ? '#dc2626' : '#059669'}; font-weight: bold; margin: 0;">
+                      <img src="/NameHeader.png" style="width: 25%; object-fit: cover; display: block;" />
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+            <p>This email was sent because you RSVP'd for our wedding. 💌</p>
+        </div>
+    </body>
+    </html>
+  `;
+}
+
+function getNegativeEmailTemplate(name: string, location: Location): string {
+  const isRomania = location === Location.ROMANIA;
+  const headerImage = isRomania ? "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_3.png" : "https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/photo_0.png"
+  const locationName = isRomania ? 'Romania' : 'Vietnam';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Wedding RSVP - Cata & Lam</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <!-- Header Image -->
+            <div style="height: 250px; position: relative; overflow: hidden;">
+                <img src=${headerImage} alt="${locationName} Wedding" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));"></div>
+                <div style="position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                    <h1 style="margin: 0; font-size: 28px; font-weight: bold;">💝 We'll Miss You 💝</h1>
+                    <p style="margin: 5px 0 0 0; font-size: 16px;">${locationName} Wedding Celebration</p>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 30px; text-align: center;">
+                <h2 style="color: ${isRomania ? '#dc2626' : '#059669'}; margin-bottom: 20px; font-size: 24px;">
+                    😢 We Understand 🤗
+                </h2>
+                
+                <p style="font-size: 18px; color: #374151; line-height: 1.6; margin-bottom: 20px;">
+                    Hi <strong>${name}</strong>! 👋
+                </p>
+                
+                <div style="background-color: #fef2f2; border: 2px solid #f87171; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                    <p style="font-size: 16px; color: #7f1d1d; margin: 0; line-height: 1.6;">
+                        We received your RSVP and understand you won't be able to join us in ${locationName}. 
+                        While we're sad you can't be there, we completely understand! 💙
+                    </p>
+                </div>
+                
+                <div style="background-color: #f0f9ff; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                    <p style="font-size: 16px; color: #374151; line-height: 1.6; margin: 0;">
+                        Even though you can't be with us physically, you'll be in our hearts on our special day! 💕 
+                        We hope to celebrate with you in another way soon! 🥂
+                    </p>
+                </div>
+                
+                <p style="font-size: 16px; color: #6b7280; line-height: 1.6; margin: 20px 0;">
+                    Thank you for letting us know, and we look forward to sharing photos and stories 
+                    with you after our celebration! 📸✨
+                </p>
+                
+                <div style="border-top: 2px solid #e5e7eb; padding-top: 20px; margin-top: 30px;">
+                    <p style="font-size: 16px; color: #374151; font-style: italic; margin-bottom: 10px;">
+                        Sending you love and hugs, 🤗💕
+                    </p>
+                    <p style="font-size: 18px; color: ${isRomania ? '#dc2626' : '#059669'}; font-weight: bold; margin: 0;">
+                      <img src="/NameHeader.png" style="width: 25%; object-fit: cover; display: block;" />
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+            <p>This email was sent because you RSVP'd for our wedding.</p>
+        </div>
+    </body>
+    </html>
+  `;
+}
+
+export async function POST(request: Request) {
   try {
     const { name, email, attending, location } = await request.json();
-
-    // Validate required fields
-    if (!name || !email || typeof attending !== 'boolean' || !location) {
+    if (!name || !email || !location) {
       return NextResponse.json(
-        { success: false, error: 'All fields are required' },
+        { error: 'Name, email, and location are required' },
         { status: 400 }
       );
     }
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    if (!process.env.EMAIL_USER) {
+        return NextResponse.json(
+        { error: "An internal error occurred - missing EMAIL_USER variable." },
+        { status: 500 }
+      );
+    }
+    if (!process.env.EMAIL_PASS) {
+        return NextResponse.json(
+        { error: "An internal error occurred - missing EMAIL_USER variable." },
+        { status: 500 }
+      );
+    }
+    try {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL_USER!,
+          pass: process.env.EMAIL_PASS!,
+        },
+      });
 
-    // Determine location details
-    const locationDetails = location === Location.ROMANIA
-      ? { name: 'Romania', flag: '🇷🇴', date: 'September 11-12, 2026', city: 'Oradea' }
-      : { name: 'Vietnam', flag: '🇻🇳', date: 'September 22-24, 2026', city: 'Cam Ranh' };
+      const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
+      const emailTemplate = attending 
+        ? getPositiveEmailTemplate(name, location)
+        : getNegativeEmailTemplate(name, location);
 
-    const otherLocationDetails = location === Location.ROMANIA
-      ? { name: 'Vietnam', flag: '🇻🇳', date: 'September 22-24, 2026', url: 'https://catalam.com/vietnam' }
-      : { name: 'Romania', flag: '🇷🇴', date: 'September 11-12, 2026', url: 'https://catalam.com/romania' };
+      // Email to guest
+      await transporter.sendMail({
+        from: `"Cata & Lam - ${locationName} Wedding 💒" <${process.env.EMAIL_USER!}>`,
+        to: email,
+        subject: attending 
+          ? `🎉 See you in ${locationName}! Wedding Confirmation 💒`
+          : `💝 Thank you for your RSVP - We'll miss you! 🤗`,
+        html: emailTemplate,
+      });
 
-    // Email template for guest
-    const guestEmailHtml = attending
-      ? `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #efd9df; font-family: Georgia, serif;">Cata & Lam</h1>
-            <p style="color: #059669; font-style: italic;">Wedding Celebration 2026</p>
-          </div>
-
-          <h2 style="color: #374151; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">
-            Thank you for your RSVP! 🎉
-          </h2>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            Dear ${name},
-          </p>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            We're thrilled to confirm your attendance at our ${locationDetails.name} wedding celebration!
-          </p>
-
-          <div style="background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 100%); padding: 25px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #efd9df;">
-            <h3 style="margin-top: 0; color: #374151; font-size: 18px;">
-              ${locationDetails.flag} ${locationDetails.name} Wedding
-            </h3>
-            <p style="margin: 10px 0; color: #4b5563; font-size: 16px;">
-              <strong>Date:</strong> ${locationDetails.date}
-            </p>
-            <p style="margin: 10px 0; color: #4b5563; font-size: 16px;">
-              <strong>Location:</strong> ${locationDetails.city}, ${locationDetails.name}
-            </p>
-            <p style="margin: 15px 0 0 0; color: #6b7280; font-size: 14px; font-style: italic;">
-              More details about the venue and schedule will be sent closer to the date.
-            </p>
-          </div>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            We're also celebrating in ${otherLocationDetails.name}! If you'd like to join us there as well,
-            <a href="${otherLocationDetails.url}" style="color: #efd9df; text-decoration: none;">click here to RSVP</a>.
-          </p>
-
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 25px 0;">
-            <h3 style="margin-top: 0; color: #374151;">What's Next?</h3>
-            <ul style="line-height: 1.8; color: #4b5563;">
-              <li>Keep an eye on your inbox for updates and detailed information</li>
-              <li>Visit our website for the latest information about both celebrations</li>
-              <li>Feel free to reach out to us at catalam@catalam.com if you have any questions</li>
-            </ul>
-          </div>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            We can't wait to celebrate with you!
-          </p>
-
-          <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 100%); border-radius: 8px;">
-            <p style="margin: 10px 0 0 0; font-weight: bold; color: #374151;">
-              With love and excitement,<br />
-              Cata & Lam ❤️
-            </p>
-          </div>
-
-          <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 15px;">
-            <p>
-              This is an automated confirmation. For questions, contact us at catalam@catalam.com
-            </p>
-          </div>
-        </div>
-      `
-      : `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #efd9df; font-family: Georgia, serif;">Cata & Lam</h1>
-            <p style="color: #059669; font-style: italic;">Wedding Celebration 2026</p>
-          </div>
-
-          <h2 style="color: #374151; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">
-            Thank you for letting us know
-          </h2>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            Dear ${name},
-          </p>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            Thank you for letting us know you won't be able to join us for our ${locationDetails.name} wedding celebration.
-            We'll miss you, but we completely understand!
-          </p>
-
-          <div style="background: #f9f9f9; padding: 25px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #efd9df;">
-            <p style="margin: 0; color: #4b5563; line-height: 1.6;">
-              ${locationDetails.flag} ${locationDetails.name} Wedding - ${locationDetails.date}
-            </p>
-          </div>
-
-          <p style="line-height: 1.6; color: #4b5563;">
-            We're also celebrating in ${otherLocationDetails.name} on ${otherLocationDetails.date}.
-            If you'd like to join us there,
-            <a href="${otherLocationDetails.url}" style="color: #efd9df; text-decoration: none;">click here to RSVP</a>.
-          </p>
-
-          <p style="line-height: 1.6; color: #4b5563; margin-top: 25px;">
-            Even though you can't make it to ${locationDetails.name}, you're still in our thoughts.
-            We hope to celebrate with you another time!
-          </p>
-
-          <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 100%); border-radius: 8px;">
-            <p style="margin: 10px 0 0 0; font-weight: bold; color: #374151;">
-              With love,<br />
-              Cata & Lam ❤️
-            </p>
-          </div>
-
-          <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 15px;">
-            <p>
-              This is an automated confirmation. For questions, contact us at catalam@catalam.com
-            </p>
-          </div>
-        </div>
-      `;
-
-    // Send confirmation email to guest
-    const guestMailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: attending
-        ? `RSVP Confirmed: ${locationDetails.name} Wedding - Cata & Lam`
-        : `RSVP Received - Cata & Lam Wedding`,
-      html: guestEmailHtml,
-    };
-
-    await transporter.sendMail(guestMailOptions);
-
-    // Send notification to Cata & Lam
-    const notificationMailOptions = {
-      from: process.env.EMAIL_USER,
-      to: 'catalam@catalam.com',
-      subject: `RSVP ${attending ? 'Confirmed' : 'Declined'}: ${name} - ${locationDetails.name}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: ${attending ? '#059669' : '#ef4444'}; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">
-            ${attending ? '✅' : '❌'} RSVP ${attending ? 'Confirmed' : 'Declined'}
-          </h2>
-
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Guest:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Event:</strong> ${locationDetails.flag} ${locationDetails.name} Wedding</p>
-            <p><strong>Status:</strong> ${attending ? 'ATTENDING' : 'NOT ATTENDING'}</p>
-          </div>
-
-          <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">
-            Sent from CataLam Wedding Website
-          </p>
-        </div>
-      `,
-    };
-
-    await transporter.sendMail(notificationMailOptions);
-
-    return NextResponse.json({
-      success: true,
-      message: 'RSVP confirmation email sent successfully'
-    });
-
+      // CC notification to couple
+      await transporter.sendMail({
+        from: `"Wedding RSVP Bot 🤖" <${process.env.EMAIL_USER!}>`,
+        to: process.env.EMAIL_USER!,
+        subject: `${attending ? '🎉' : '😢'} New RSVP from ${name}`,
+        text: `${name} (${email}) is ${attending ? 'attending 🎉' : 'not attending 😢'} the ${locationName} wedding.`,
+      });
+      
+      return NextResponse.json(
+        { success: 'Successfully sent the RSVP confirmation!' },
+        { status: 200 }
+      );
+    } catch (emailError) {
+      console.error('Email error:', emailError);
+      return NextResponse.json(
+        { error: 'Failed to send confirmation email' },
+        { status: 500 }
+      );
+    }
   } catch (error) {
-    console.error('RSVP confirmation email error:', error);
+    console.error('Error in send-rsvp-confirmation:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to send RSVP confirmation email' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

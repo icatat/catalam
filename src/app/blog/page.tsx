@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Box, useTheme, Container, Typography, Card, CardContent, CardMedia, Chip } from '@mui/material';
-import { MainPageCard } from '@/components/MainPageCard';
 import Navigation from '@/components/Navigation';
 import { MapPin, Calendar, Tag } from 'lucide-react';
 import Link from 'next/link';

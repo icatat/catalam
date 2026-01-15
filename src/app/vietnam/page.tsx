@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { NavigationButton } from '@/components/NavigationButton';
+import Navigation from '@/components/Navigation';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
@@ -184,50 +184,7 @@ export default function VietnamWedding() {
         position: 'relative'
       }}
     >
-      {/* Top-left NameHeader */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: theme.spacing(2), 
-        left: theme.spacing(2), 
-        zIndex: theme.zIndex.appBar 
-      }}>
-        <MainPageCard
-          sx={{
-            border: 'none !important',
-            boxShadow: 'none !important',
-            backgroundColor: 'transparent !important',
-            '&:hover': {
-              transform: 'none !important',
-              boxShadow: 'none !important',
-            }
-          }}
-          imageSrc="/NameHeader.png"
-          alt="Wedding Names"
-        />
-      </Box>
-
-      {/* Top-right controls */}
-      <Box sx={{
-        position: 'absolute',
-        top: theme.spacing(2),
-        right: theme.spacing(2),
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1.5),
-        zIndex: theme.zIndex.appBar
-      }}>
-        <NavigationButton href="/about">
-          About Us
-        </NavigationButton>
-        <NavigationButton href="/contact">
-          Contact
-        </NavigationButton>
-
-        <NavigationButton href="/">
-          Home
-        </NavigationButton>
-      </Box>
-
+      <Navigation currentPage="vietnam" />
       <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
         {/* Welcome Message */}
         <Box sx={{ 
