@@ -6,6 +6,7 @@ import ContactForm from '@/components/ContactForm';
 import CustomButton from '@/components/Button';
 import { Box, Card, CardContent, Typography, Grid, Container, Avatar, useTheme } from '@mui/material';
 import { Email, LocationOn, CheckCircle } from '@mui/icons-material';
+import { useInviteAccess } from '@/hooks/useInviteAccess';
 
 interface ContactFormData {
   name: string;
@@ -17,6 +18,7 @@ interface ContactFormData {
 export default function ContactPage() {
   const theme = useTheme();
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const { showRomania, showVietnam } = useInviteAccess();
 
   const handleSubmit = async (data: ContactFormData) => {
     const response = await fetch('/api/contact', {
@@ -38,7 +40,7 @@ export default function ContactPage() {
     return (
       <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed', position: 'relative' }}>
 
-        <Navigation currentPage="contact" />
+        <Navigation currentPage="contact" showRomania={showRomania} showVietnam={showVietnam} />
         
         <Container maxWidth="md" sx={{ py: 10 }}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>

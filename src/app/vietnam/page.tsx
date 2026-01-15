@@ -1,27 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
-import { InviteVerification } from '@/components/InviteVerification';
 import { Box, useTheme, Container, Typography } from '@mui/material';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
 import { RSVPFormData } from '@/types/wedding';
-import { 
-  handleReconfirmation, 
-  submitRSVP, 
+import {
+  handleReconfirmation,
+  submitRSVP,
   createEmailPromise,
-  RSVPHandlerOptions 
+  RSVPHandlerOptions
 } from '@/lib/rsvpUtils';
 import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
 import CustomButton from '@/components/Button';
 
 export default function VietnamWedding() {
   const theme = useTheme();
+  const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
@@ -37,36 +38,35 @@ export default function VietnamWedding() {
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
-    if (savedInviteId) {
-      fetch('/api/guest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invite_id: savedInviteId }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.location?.includes(location)) {
-            setGuestData({
-              invite_id: savedInviteId,
-              full_name: data.full_name,
-              location: data.location,
-              rsvp: data.rsvp || []
-            });
-          }
-          setIsVerifying(false);
-        })
-        .catch(() => {
-          Cookies.remove('invite_id');
-          setIsVerifying(false);
-        });
-    } else {
-      setIsVerifying(false);
+    if (!savedInviteId) {
+      router.push('/');
+      return;
     }
-  }, [location]);
 
-  const handleInviteVerified = (data: GuestData) => {
-    setGuestData(data);
-  };
+    fetch('/api/guest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invite_id: savedInviteId }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.location?.includes(location)) {
+          setGuestData({
+            invite_id: savedInviteId,
+            full_name: data.full_name,
+            location: data.location,
+            rsvp: data.rsvp || []
+          });
+          setIsVerifying(false);
+        } else {
+          router.push('/');
+        }
+      })
+      .catch(() => {
+        Cookies.remove('invite_id');
+        router.push('/');
+      });
+  }, [location, router]);
 
   const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
     if (!guestData) return;
@@ -139,7 +139,7 @@ export default function VietnamWedding() {
   };
 
   // Loading state
-  if (isVerifying) {
+  if (isVerifying || !guestData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -151,23 +151,6 @@ export default function VietnamWedding() {
           />
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>Loading...</Typography>
         </div>
-      </div>
-    );
-  }
-
-  // Invite verification
-  if (!guestData) {
-    return (
-      <div className="min-h-screen" style={{ 
-        background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.png)`, 
-        backgroundRepeat: 'repeat', 
-        backgroundSize: 'contain', 
-        backgroundAttachment: 'fixed' 
-      }}>
-        <InviteVerification 
-          location={location}
-          onVerified={handleInviteVerified}
-        />
       </div>
     );
   }
@@ -184,7 +167,7 @@ export default function VietnamWedding() {
         position: 'relative'
       }}
     >
-      <Navigation currentPage="vietnam" />
+      <Navigation currentPage="vietnam" showRomania={guestData?.location.includes(Location.ROMANIA) || false} showVietnam={true} />
       <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
         {/* Welcome Message */}
         <Box sx={{ 

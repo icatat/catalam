@@ -11,6 +11,7 @@ import { Heart, ArrowUpDown, Upload } from 'lucide-react';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
+import { useInviteAccess } from '@/hooks/useInviteAccess';
 
 interface TimelineEvent {
   id: string;
@@ -30,6 +31,7 @@ export default function AboutPage() {
   const [reverseOrder, setReverseOrder] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [guestData, setGuestData] = useState<GuestData | null>(null);
+  const { showRomania, showVietnam } = useInviteAccess();
 
   useEffect(() => {
     fetchTimelineData();
@@ -108,7 +110,7 @@ export default function AboutPage() {
       }}
     >
 
-      <Navigation currentPage="about" />
+      <Navigation currentPage="about" showRomania={showRomania} showVietnam={showVietnam} />
       
       <Container maxWidth="xl" sx={{ py: 10 }}>
         {/* Header */}

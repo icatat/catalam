@@ -7,19 +7,27 @@ import { NavigationButton } from './NavigationButton';
 
 interface NavigationProps {
   currentPage?: 'home' | 'vietnam' | 'romania' | 'contact' | 'about' | 'blog';
+  showRomania?: boolean;
+  showVietnam?: boolean;
 }
 
-export default function Navigation({ currentPage = 'home' }: NavigationProps) {
+export default function Navigation({
+  currentPage = 'home',
+  showRomania = false,
+  showVietnam = false
+}: NavigationProps) {
   const theme = useTheme();
 
-  const navItems = [
-    { key: 'home', label: 'Home', href: '/' },
-    { key: 'about', label: 'About Us', href: '/about' },
-    { key: 'blog', label: 'Travel Blog', href: '/blog' },
-    { key: 'romania', label: 'Romania', href: '/romania' },
-    { key: 'vietnam', label: 'Vietnam', href: '/vietnam' },
-    { key: 'contact', label: 'Contact', href: '/contact' },
+  const allNavItems = [
+    { key: 'home', label: 'Home', href: '/', alwaysShow: true },
+    { key: 'about', label: 'About Us', href: '/about', alwaysShow: true },
+    { key: 'blog', label: 'Travel Blog', href: '/blog', alwaysShow: true },
+    { key: 'romania', label: 'Romania', href: '/romania', alwaysShow: false, show: showRomania },
+    { key: 'vietnam', label: 'Vietnam', href: '/vietnam', alwaysShow: false, show: showVietnam },
+    { key: 'contact', label: 'Contact', href: '/contact', alwaysShow: true },
   ];
+
+  const navItems = allNavItems.filter(item => item.alwaysShow || item.show);
 
   return (
     <>

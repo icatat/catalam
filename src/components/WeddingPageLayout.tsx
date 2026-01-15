@@ -191,7 +191,11 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         backgroundSize: 'contain', 
         backgroundAttachment: 'fixed' 
       }}>
-        <Navigation currentPage={isRomania ? "romania" : "vietnam"} />
+        <Navigation
+          currentPage={isRomania ? "romania" : "vietnam"}
+          showRomania={isRomania || guestData?.location.includes(Location.ROMANIA) || false}
+          showVietnam={!isRomania || guestData?.location.includes(Location.VIETNAM) || false}
+        />
       
         {/* Personalized Welcome Section */}
         {guestData && (

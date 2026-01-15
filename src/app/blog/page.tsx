@@ -8,11 +8,13 @@ import { MapPin, Calendar, Tag } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/types/blog';
+import { useInviteAccess } from '@/hooks/useInviteAccess';
 
 export default function BlogPage() {
   const theme = useTheme();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showRomania, showVietnam } = useInviteAccess();
 
   useEffect(() => {
     fetchBlogPosts();
@@ -48,7 +50,7 @@ export default function BlogPage() {
       }}
     >
 
-      <Navigation currentPage="blog" />
+      <Navigation currentPage="blog" showRomania={showRomania} showVietnam={showVietnam} />
 
       <Container maxWidth="xl" sx={{ py: 10 }}>
         {/* Header */}
