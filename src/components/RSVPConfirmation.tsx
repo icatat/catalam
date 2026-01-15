@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Location } from '@/models/RSVP';
-import { useLanguage } from '@/contexts/LanguageContext';
 import CustomButton from '@/components/Button';
 import { Edit, RefreshCcw } from 'lucide-react';
 import { Box, Card, CardContent, Typography, useTheme, Avatar } from '@mui/material';
@@ -36,7 +35,6 @@ export default function RSVPConfirmation({
   variant = 'primary', // Keep parameter but we don't use it for colors anymore
   emailSent = false
 }: RSVPConfirmationProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
@@ -95,15 +93,15 @@ export default function RSVPConfirmation({
             )}
           </Avatar>
 
-          <Typography 
-            variant="h4" 
-            component="h2" 
-            gutterBottom 
+          <Typography
+            variant="h4"
+            component="h2"
+            gutterBottom
             sx={{ color: attending ? variantColors.primary : theme.palette.text.primary, fontWeight: 600 }}
           >
-            {attending 
-              ? t('confirmation.title.confirmed')
-              : t('confirmation.title.updated')
+            {attending
+              ? 'RSVP Confirmed!'
+              : 'RSVP Updated!'
             }
           </Typography>
 
@@ -112,8 +110,8 @@ export default function RSVPConfirmation({
             sx={{ color: theme.palette.text.secondary, mb: 3 }}
           >
             {attending 
-              ? t('confirmation.message.attending', { name: guestName, location: locationName })
-              : t('confirmation.message.not.attending', { name: guestName, location: locationName })
+              ? `Thank you, ${guestName}! We're so excited to celebrate with you in ${locationName}!`
+              : `Thank you for letting us know, ${guestName}. We'll miss you at our ${locationName} celebration.`
             }
           </Typography>
 
@@ -136,8 +134,8 @@ export default function RSVPConfirmation({
                   }}
                 >
                   {emailSent 
-                    ? t('confirmation.email.sent')
-                    : t('confirmation.email.sending')
+                    ? 'Email sent!'
+                    : 'Sending email...'
                   }
                 </Typography>
               </Box>
@@ -155,24 +153,24 @@ export default function RSVPConfirmation({
                   '&:hover': { color: theme.palette.primary.dark }
                 }}
               >
-                {showEmailDetails ? t('confirmation.email.hide') : t('confirmation.email.details')}
+                {showEmailDetails ? 'Hide Details' : 'Email Details'}
               </Typography>
 
               {showEmailDetails && (
                 <Box sx={{ mt: 2, textAlign: 'left' }}>
                   <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                    <strong>{t('confirmation.email.to')}:</strong> {email}
+                    <strong>{'To'}:</strong> {email}
                   </Typography>
                   <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                    <strong>{t('confirmation.email.subject')}:</strong> Wedding RSVP Confirmation - {locationName}
+                    <strong>{'Subject'}:</strong> Wedding RSVP Confirmation - {locationName}
                   </Typography>
                   {emailSent ? (
                     <Typography variant="body2" sx={{ color: theme.palette.success.main, mt: 1 }}>
-                      ✓ {t('confirmation.email.check')}
+                      ✓ {'Check your inbox'}
                     </Typography>
                   ) : (
                     <Typography variant="body2" sx={{ color: theme.palette.warning.main, mt: 1 }}>
-                      ⏳ {t('confirmation.email.arrive')}
+                      ⏳ {'Email may take a few minutes'}
                     </Typography>
                   )}
                 </Box>
@@ -191,7 +189,7 @@ export default function RSVPConfirmation({
                 sx={{ flex: 1 }}
                 startIcon={<Edit />}
               >
-                {t('common.modify')}
+                {'Modify RSVP'}
               </CustomButton>
               <CustomButton
                 onClick={onClose}
@@ -200,7 +198,7 @@ export default function RSVPConfirmation({
                 weddingVariant="primary"
                 sx={{ flex: 1 }}
               >
-                {t('common.done')}
+                {'Done'}
               </CustomButton>
             </Box>
             
@@ -219,13 +217,13 @@ export default function RSVPConfirmation({
                 }
               }}
             >
-              {t('rsvp.submit.another')}
+              {'Submit Another RSVP'}
             </CustomButton>
           </Box>
 
           {/* Contact info */}
           <Typography variant="body2" sx={{ color: theme.palette.text.disabled, mt: 2 }}>
-            {t('questions.text')}
+            {'Have questions?'}
           </Typography>
         </CardContent>
       </Card>

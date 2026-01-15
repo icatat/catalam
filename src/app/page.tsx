@@ -1,6 +1,5 @@
 'use client';
 
-import LanguageToggle from '@/components/LanguageToggle';
 import { NavigationButton } from '@/components/NavigationButton';
 import { ClickableMap } from '@/components/ClickableMap';
 import { Box, useTheme, Container } from '@mui/material';
@@ -33,8 +32,6 @@ export default function Home() {
         gap: theme.spacing(1.5),
         zIndex: theme.zIndex.appBar
       }}>
-        <LanguageToggle variant="subtle" size="small" />
-
         <NavigationButton href="/about">
           About Us
         </NavigationButton>

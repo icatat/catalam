@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
-import { MainPageCard } from '@/components/MainPageCard';
 import ContactForm from '@/components/ContactForm';
 import CustomButton from '@/components/Button';
 import { Box, Card, CardContent, Typography, Grid, Container, Avatar, useTheme } from '@mui/material';
@@ -102,27 +101,6 @@ export default function ContactPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed', position: 'relative' }}>
-      {/* Top-left NameHeader */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: theme.spacing(2), 
-        left: theme.spacing(2), 
-        zIndex: theme.zIndex.appBar 
-      }}>
-        <MainPageCard
-          sx={{
-            border: 'none !important',
-            boxShadow: 'none !important',
-            backgroundColor: 'transparent !important',
-            '&:hover': {
-              transform: 'none !important',
-              boxShadow: 'none !important',
-            }
-          }}
-          imageSrc="/NameHeader.png"
-          alt="Wedding Names"
-        />
-      </Box>
 
       <Navigation currentPage="contact" />
       
@@ -200,56 +178,6 @@ export default function ContactPage() {
                             </Typography>
                           </Box>
                         </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-
-                  <Card elevation={3} sx={{ borderRadius: 3 }}>
-                    <CardContent sx={{ p: 4 }}>
-                      <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 600, color: 'primary.main', mb: 2 }}>
-                        Quick Links
-                      </Typography>
-                      
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                        <Typography
-                          component="a"
-                          href="/romania"
-                          variant="body1"
-                          sx={{
-                            color: 'primary.main',
-                            textDecoration: 'underline',
-                            '&:hover': { color: 'primary.dark' },
-                            display: 'block',
-                          }}
-                        >
-                          → Romania Wedding Details
-                        </Typography>
-                        <Typography
-                          component="a"
-                          href="/vietnam"
-                          variant="body1"
-                          sx={{
-                            color: 'secondary.main',
-                            textDecoration: 'underline',
-                            '&:hover': { color: 'secondary.dark' },
-                            display: 'block',
-                          }}
-                        >
-                          → Vietnam Wedding Details
-                        </Typography>
-                        <Typography
-                          component={Link}
-                          href="/"
-                          variant="body1"
-                          sx={{
-                            color: 'text.secondary',
-                            textDecoration: 'underline',
-                            '&:hover': { color: 'text.primary' },
-                            display: 'block',
-                          }}
-                        >
-                          → Back to Home
-                        </Typography>
                       </Box>
                     </CardContent>
                   </Card>

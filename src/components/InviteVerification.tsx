@@ -7,7 +7,6 @@ import { Box, Typography, TextField, useTheme, Alert, CircularProgress } from '@
 import { TextCard } from '@/components/ui/photo-card';
 import Cookies from 'js-cookie';
 import { Location } from '@/models/RSVP';
-import { useLanguage } from '@/contexts/LanguageContext';
 import CustomButton from '@/components/Button';
 
 interface InviteVerificationProps {
@@ -21,7 +20,6 @@ interface InviteVerificationProps {
 }
 
 export function InviteVerification({ location, onVerified }: InviteVerificationProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [inviteId, setInviteId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,7 +28,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inviteId.trim()) {
-      setError(t('invite.error.empty'));
+      setError('Please enter your invite code');
       return;
     }
 
@@ -49,12 +47,12 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || t('invite.error.invalid'));
+        throw new Error(data.error || 'Invalid invite code');
       }
 
       // Check if guest is invited to this location
       if (!data.location.includes(location)) {
-        setError(t('invite.error.location', { location: location.toLowerCase() }));
+        setError(`This invitation is not valid for the ${location.toLowerCase()} wedding`);
         return;
       }
 
@@ -68,7 +66,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
         rsvp: data.rsvp || [],
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('invite.error.invalid'));
+      setError(err instanceof Error ? err.message : 'Invalid invite code');
     } finally {
       setLoading(false);
     }
@@ -95,11 +93,11 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
             </Box>
             
             <Typography variant="h3" sx={{ color: theme.palette.primary.main, fontWeight: 600, mb: 4 }}>
-              {t('invite.welcome.title', { location: location === Location.ROMANIA ? 'Romanian' : 'Vietnamese' })}
+              Welcome to our {location === Location.ROMANIA ? 'Romanian' : 'Vietnamese'} Wedding!
             </Typography>
-            
+
             <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 6 }}>
-              {t('invite.welcome.description')}
+              Please enter your invitation code to continue
             </Typography>
 
             <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -107,7 +105,7 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
                 type="text"
                 value={inviteId}
                 onChange={(e) => setInviteId(e.target.value.toUpperCase())}
-                placeholder={t('invite.field.placeholder')}
+                placeholder="Enter your invite code"
                 disabled={loading}
                 variant="outlined"
                 fullWidth
@@ -156,13 +154,13 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
                     fontWeight: 600,
                   }}
                 >
-                  {loading ? t('invite.button.verifying') : t('invite.button.continue')}
+                  {loading ? 'Verifying...' : 'Continue'}
                 </CustomButton>
               </motion.div>
             </Box>
 
             <Typography variant="caption" sx={{ color: 'text.disabled', mt: 3, textAlign: 'center' }}>
-              {t('invite.help')}
+              Need help? Contact us
             </Typography>
           </Box>
         </TextCard>

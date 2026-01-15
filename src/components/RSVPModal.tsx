@@ -25,7 +25,6 @@ import {
 } from '@mui/material';
 import { Close, Person, Email, Phone, Group, Restaurant, Message } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { RSVPFormData } from '@/types/wedding';
 import { Location, GuestData } from '@/models/RSVP';
 import Button from './Button';
@@ -58,7 +57,6 @@ export default function RSVPModal({
   location,
   variant = 'primary'
 }: RSVPModalProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [formData, setFormData] = useState<RSVPFormData>({
     name: guestData.full_name || '',
@@ -121,17 +119,17 @@ export default function RSVPModal({
     const newErrors: Partial<RSVPFormData> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = t('common.required');
+      newErrors.name = 'Required';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = t('common.required');
+      newErrors.email = 'Required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('validation.email.invalid');
+      newErrors.email = 'Please enter a valid email';
     }
 
     if (!formData.rsvp) {
-      newErrors.rsvp = t('common.required');
+      newErrors.rsvp = 'Required';
     }
 
     setErrors(newErrors);
@@ -192,10 +190,10 @@ export default function RSVPModal({
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
             <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: 'primary.main' }}>
-              {hasExistingRSVP ? t('rsvp.modal.title.modify') : t('rsvp.modal.title')}
+              {hasExistingRSVP ? 'Modify Your RSVP' : 'RSVP'}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {t('wedding.hero.title', { location: locationName })}
+              {`${locationName} Wedding RSVP`}
             </Typography>
           </Box>
           <IconButton onClick={onClose} size="small" sx={{ color: 'text.secondary' }}>
@@ -206,7 +204,7 @@ export default function RSVPModal({
         <Box sx={{ mt: 2 }}>
           <Chip 
             icon={<Person />}
-            label={`${t('rsvp.modal.welcome', { name: guestData.full_name })}`}
+            label={`${`Welcome, ${guestData.full_name}!`}`}
             variant="outlined"
             color={variant === 'primary' ? 'primary' : 'secondary'}
             sx={{ borderRadius: 2 }}
@@ -219,7 +217,7 @@ export default function RSVPModal({
       <DialogContent sx={{ pt: 3 }}>
         {hasExistingRSVP && (
           <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-            {t('rsvp.modal.already.message')}
+            You've already RSVP'd for this event
           </Alert>
         )}
 
@@ -228,7 +226,7 @@ export default function RSVPModal({
             {/* Name Field */}
             <TextField
               fullWidth
-              label={`${t('common.name')} *`}
+              label="Name *"
               value={formData.name}
               onChange={handleInputChange('name')}
               error={!!errors.name}
@@ -243,7 +241,7 @@ export default function RSVPModal({
             <TextField
               fullWidth
               type="email"
-              label={`${t('rsvp.field.email')} *`}
+              label="Email *"
               value={formData.email}
               onChange={handleInputChange('email')}
               error={!!errors.email}
@@ -257,12 +255,12 @@ export default function RSVPModal({
             {/* Phone Field with Country Prefix */}
             <Box sx={{ display: 'flex', gap: 1 }}>
               <FormControl sx={{ minWidth: 140 }}>
-                <InputLabel>{t('rsvp.field.country')}</InputLabel>
+                <InputLabel>Country</InputLabel>
                 <Select
                   value={phonePrefix}
                   onChange={(e) => setPhonePrefix(e.target.value)}
                   disabled={isSubmitting}
-                  label={t('rsvp.field.country')}
+                  label="Country"
                 >
                   {phoneOptions.map((option) => (
                     <MenuItem key={option.code} value={option.code}>
@@ -276,11 +274,11 @@ export default function RSVPModal({
               </FormControl>
               <TextField
                 fullWidth
-                label={t('rsvp.field.phone')}
+                label="Phone Number"
                 value={formData.phone}
                 onChange={handleInputChange('phone')}
                 disabled={isSubmitting}
-                placeholder={t('rsvp.placeholder.phone')}
+                placeholder="Your phone number"
                 InputProps={{
                   startAdornment: <Phone sx={{ color: 'text.secondary', mr: 1 }} />,
                 }}
@@ -290,7 +288,7 @@ export default function RSVPModal({
             {/* Attendance Selection */}
             <FormControl error={!!errors.rsvp}>
               <FormLabel component="legend" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                {t('rsvp.field.attending')} *
+                Will you be attending? *
               </FormLabel>
               <RadioGroup
                 value={formData.rsvp}
@@ -300,13 +298,13 @@ export default function RSVPModal({
                 <FormControlLabel
                   value="true"
                   control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                  label={t('rsvp.option.yes')}
+                  label="Yes, I'll be there!"
                   disabled={isSubmitting}
                 />
                 <FormControlLabel
                   value="false"
                   control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                  label={t('rsvp.option.no')}
+                  label="Sorry, I can't make it"
                   disabled={isSubmitting}
                 />
               </RadioGroup>
@@ -323,7 +321,7 @@ export default function RSVPModal({
                 <TextField
                   fullWidth
                   type="number"
-                  label={t('rsvp.field.guestCount')}
+                  label="Number of Guests"
                   value={formData.guestCount}
                   onChange={handleInputChange('guestCount')}
                   disabled={isSubmitting}
@@ -336,10 +334,10 @@ export default function RSVPModal({
                 {/* Dietary Restrictions */}
                 <TextField
                   fullWidth
-                  label={t('rsvp.field.dietary')}
+                  label="Dietary Restrictions"
                   value={formData.dietaryRestrictions}
                   onChange={handleInputChange('dietaryRestrictions')}
-                  placeholder={t('rsvp.placeholder.dietary')}
+                  placeholder="Let us know about any dietary restrictions"
                   disabled={isSubmitting}
                   InputProps={{
                     startAdornment: <Restaurant sx={{ color: 'text.secondary', mr: 1 }} />,
@@ -353,10 +351,10 @@ export default function RSVPModal({
               fullWidth
               multiline
               rows={3}
-              label={t('rsvp.field.message')}
+              label="Message"
               value={formData.message}
               onChange={handleInputChange('message')}
-              placeholder={t('rsvp.placeholder.message')}
+              placeholder="Any special requests or messages for us?"
               disabled={isSubmitting}
               InputProps={{
                 startAdornment: (
@@ -375,17 +373,17 @@ export default function RSVPModal({
           disabled={isSubmitting}
           sx={{ mr: 1 }}
         >
-          {t('common.cancel')}
+          Cancel
         </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
           weddingVariant={weddingVariant}
           loading={isSubmitting}
-          loadingText={t('rsvp.submitting')}
+          loadingText="Submitting..."
           sx={{ minWidth: 120 }}
         >
-          {t('common.submit')}
+          Submit
         </Button>
       </DialogActions>
     </Dialog>

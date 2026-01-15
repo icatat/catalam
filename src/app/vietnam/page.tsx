@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import LanguageToggle from '@/components/LanguageToggle';
 import { NavigationButton } from '@/components/NavigationButton';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
@@ -208,16 +207,15 @@ export default function VietnamWedding() {
       </Box>
 
       {/* Top-right controls */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: theme.spacing(2), 
-        right: theme.spacing(2), 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: theme.spacing(1.5), 
-        zIndex: theme.zIndex.appBar 
+      <Box sx={{
+        position: 'absolute',
+        top: theme.spacing(2),
+        right: theme.spacing(2),
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1.5),
+        zIndex: theme.zIndex.appBar
       }}>
-        <LanguageToggle size="small" />
         <NavigationButton href="/about">
           About Us
         </NavigationButton>

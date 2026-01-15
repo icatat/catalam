@@ -20,7 +20,6 @@ import {
   CardContent
 } from '@mui/material';
 import CustomButton from '@/components/Button';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 interface RSVPFormProps {
   title: string;
@@ -43,15 +42,14 @@ export default function RSVPForm({
   placeholderMessage,
   variant = 'primary'
 }: RSVPFormProps) {
-  const { t } = useLanguage();
-  
-  // Set defaults after we have access to t()
-  const finalSubmitText = submitText || t('common.submit');
+
+  // Set defaults
+  const finalSubmitText = submitText || 'Submit';
   const finalRsvpOptions = rsvpOptions || [
-    { value: 'true', label: t('rsvp.option.yes') },
-    { value: 'false', label: t('rsvp.option.no') }
+    { value: 'true', label: "Yes, I'll be there!" },
+    { value: 'false', label: "Sorry, I can't make it" }
   ];
-  const finalPlaceholderMessage = placeholderMessage || t('rsvp.placeholder.message');
+  const finalPlaceholderMessage = placeholderMessage || 'Any special requests or messages for us?';
   const theme = useTheme();
   const [formData, setFormData] = useState<RSVPFormData>({
     name: '',
@@ -121,7 +119,7 @@ export default function RSVPForm({
             <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               {/* Name Field */}
               <TextField
-                label={`${t('common.name')} *`}
+                label="Name *"
                 name="name"
                 required
                 value={formData.name}
@@ -137,7 +135,7 @@ export default function RSVPForm({
 
               {/* Email Field */}
               <TextField
-                label={`${t('rsvp.field.email')} *`}
+                label="Email *"
                 name="email"
                 type="email"
                 required
@@ -154,7 +152,7 @@ export default function RSVPForm({
 
               {/* Phone Field */}
               <TextField
-                label={t('rsvp.field.phone')}
+                label="Phone Number"
                 name="phone"
                 type="tel"
                 value={formData.phone}
@@ -171,7 +169,7 @@ export default function RSVPForm({
               {/* RSVP Field */}
               <FormControl component="fieldset" required>
                 <FormLabel component="legend" sx={{ color: theme.palette.text.primary, fontWeight: 500, mb: 2 }}>
-                  {t('rsvp.field.attending')} *
+                  Will you be attending? *
                 </FormLabel>
                 <RadioGroup
                   name="rsvp"
@@ -201,11 +199,11 @@ export default function RSVPForm({
 
               {/* Guest Count Field */}
               <FormControl fullWidth>
-                <InputLabel>{t('rsvp.field.guestCount')}</InputLabel>
+                <InputLabel>Number of Guests</InputLabel>
                 <Select
                   name="guestCount"
                   value={formData.guestCount}
-                  label={t('rsvp.field.guestCount')}
+                  label="Number of Guests"
                   onChange={handleInputChange}
                   sx={{ borderRadius: 2 }}
                 >
@@ -217,11 +215,11 @@ export default function RSVPForm({
 
               {/* Dietary Restrictions Field */}
               <TextField
-                label={t('rsvp.field.dietary')}
+                label="Dietary Restrictions"
                 name="dietaryRestrictions"
                 value={formData.dietaryRestrictions}
                 onChange={handleInputChange}
-                placeholder={t('rsvp.placeholder.dietary')}
+                placeholder="Let us know about any dietary restrictions"
                 fullWidth
                 variant="outlined"
                 sx={{
@@ -233,7 +231,7 @@ export default function RSVPForm({
 
               {/* Message Field */}
               <TextField
-                label={t('rsvp.field.message')}
+                label="Message"
                 name="message"
                 multiline
                 rows={4}

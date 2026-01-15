@@ -16,7 +16,6 @@ import {
   Fade,
 } from '@mui/material';
 import { Send, CheckCircle } from '@mui/icons-material';
-import { useLanguage } from '@/contexts/LanguageContext';
 import Button from './Button';
 import { useTheme } from '@mui/material';
 
@@ -33,7 +32,6 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -46,37 +44,37 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const subjectOptions = [
-    { key: 'contact.subject.rsvp', value: 'rsvp' },
-    { key: 'contact.subject.romania', value: 'romania' },
-    { key: 'contact.subject.vietnam', value: 'vietnam' },
-    { key: 'contact.subject.travel', value: 'travel' },
-    { key: 'contact.subject.dietary', value: 'dietary' },
-    { key: 'contact.subject.gifts', value: 'gifts' },
-    { key: 'contact.subject.general', value: 'general' },
-    { key: 'contact.subject.other', value: 'other' }
+    { label: 'RSVP Question', value: 'rsvp' },
+    { label: 'Romania Wedding', value: 'romania' },
+    { label: 'Vietnam Wedding', value: 'vietnam' },
+    { label: 'Travel & Accommodations', value: 'travel' },
+    { label: 'Dietary Restrictions', value: 'dietary' },
+    { label: 'Gifts', value: 'gifts' },
+    { label: 'General Question', value: 'general' },
+    { label: 'Other', value: 'other' }
   ];
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ContactFormData> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = t('validation.name.required');
+      newErrors.name = 'Name is required';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = t('validation.email.required');
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('validation.email.invalid');
+      newErrors.email = 'Please enter a valid email';
     }
 
     if (!formData.subject) {
-      newErrors.subject = t('validation.subject.required');
+      newErrors.subject = 'Subject is required';
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = t('validation.message.required');
+      newErrors.message = 'Message is required';
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = t('validation.message.minLength');
+      newErrors.message = 'Message must be at least 10 characters';
     }
 
     setErrors(newErrors);
@@ -135,21 +133,21 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
       <CardContent sx={{ p: 4 }}>
         <Box sx={{ mb: 3 }}>
           <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-            {t('contact.form.title')}
+            Get in Touch
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            {t('contact.description')}
+            Send us a message
           </Typography>
         </Box>
 
         <Collapse in={showSuccess}>
-          <Alert 
+          <Alert
             icon={<CheckCircle fontSize="inherit" />}
-            severity="success" 
+            severity="success"
             sx={{ mb: 3, borderRadius: 2 }}
           >
             <Typography variant="body2" sx={{ fontWeight: 500 }}>
-              {t('contact.sent.message')}
+              Thank you for your message!
             </Typography>
           </Alert>
         </Collapse>
@@ -159,7 +157,7 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
             {/* Name Field */}
             <TextField
               fullWidth
-              label={`${t('common.name')} *`}
+              label="Name *"
               value={formData.name}
               onChange={handleInputChange('name')}
               error={!!errors.name}
@@ -176,7 +174,7 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
             <TextField
               fullWidth
               type="email"
-              label={`${t('common.email')} *`}
+              label="Email *"
               value={formData.email}
               onChange={handleInputChange('email')}
               error={!!errors.email}
@@ -191,17 +189,17 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
 
             {/* Subject Field */}
             <FormControl fullWidth error={!!errors.subject}>
-              <InputLabel>{t('contact.form.subject')} *</InputLabel>
+              <InputLabel>Subject *</InputLabel>
               <Select
                 value={formData.subject}
                 onChange={handleInputChange('subject')}
-                label={`${t('contact.form.subject')} *`}
+                label="Subject *"
                 disabled={isSubmitting}
                 sx={{ borderRadius: 2 }}
               >
                 {subjectOptions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
-                    {t(option.key)}
+                    {option.label}
                   </MenuItem>
                 ))}
               </Select>
@@ -217,12 +215,12 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
               fullWidth
               multiline
               rows={6}
-              label={`${t('contact.form.message')} *`}
+              label="Message *"
               value={formData.message}
               onChange={handleInputChange('message')}
               error={!!errors.message}
               helperText={errors.message}
-              placeholder={t('contact.form.placeholder.message')}
+              placeholder="Your message here..."
               disabled={isSubmitting}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -241,7 +239,7 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
                   fullWidth
                   weddingVariant="primary"
                   loading={isSubmitting}
-                  loadingText={t('contact.form.sending')}
+                  loadingText="Sending..."
                   icon={!isSubmitting ? <Send /> : undefined}
                   sx={{
                     py: 2,
@@ -249,7 +247,7 @@ export default function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {
                     fontWeight: 600,
                   }}
                 >
-                  {t('contact.form.send')}
+                  Send Message
                 </Button>
               </Box>
             </Fade>

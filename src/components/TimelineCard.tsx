@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Box, Card, Typography, useTheme } from '@mui/material';
 import { Person } from '@mui/icons-material';
 import Image from 'next/image';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TimelineEvent {
   id: string;
@@ -26,7 +25,6 @@ interface TimelineCardProps {
 
 export default function TimelineCard({ event, side, imageError, onImageError }: TimelineCardProps) {
   const theme = useTheme();
-  const { t } = useLanguage();
 
   const generateGoogleMapsUrl = (location: string) => {
     const encodedLocation = encodeURIComponent(location);
@@ -172,7 +170,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                       borderRadius: 1
                     }}
                   >
-                    {t('timeline.tag.prefix')} {event.tag}
+                    From {event.tag}
                   </Typography>
                 </Box>
               )}
@@ -261,7 +259,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                     borderRadius: 1
                   }}
                 >
-                  {t('timeline.tag.prefix')} {event.tag}
+                  {From} {event.tag}
                 </Typography>
               </Box>
             )}

@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { Box, useTheme } from '@mui/material';
 
 interface DynamicPhotoCardProps {
@@ -24,7 +23,6 @@ export function DynamicPhotoCard({
   alt,
   className = '',
 }: DynamicPhotoCardProps) {
-  const { t } = useLanguage();
   const [dimensions, setDimensions] = useState<ImageDimensions | null>(null);
   const [imageError, setImageError] = useState(false);
 
@@ -76,7 +74,7 @@ export function DynamicPhotoCard({
               fontSize: '0.875rem',
             }}
           >
-            {t('error.image')}
+            Failed to load image
           </Box>
         )}
       </Box>

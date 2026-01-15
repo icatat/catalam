@@ -8,7 +8,6 @@ import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
 import { InviteVerification } from '@/components/InviteVerification';
 import { RSVPFormData } from '@/types/wedding';
-import { useLanguage } from '@/contexts/LanguageContext';
 import CustomButton from '@/components/Button';
 import { ScrollReveal, ScrollProgress } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
@@ -28,7 +27,6 @@ interface WeddingPageProps {
 }
 
 export default function WeddingPageLayout({ location }: WeddingPageProps) {
-  const { t } = useLanguage();
   const theme = useTheme();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
@@ -164,7 +162,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               borderBottom: `2px solid ${theme.palette.primary.main}`,
             }}
           />
-          <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>{t('wedding.verification.loading')}</Typography>
+          <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>{'Loading...'}</Typography>
         </div>
       </div>
     );
@@ -231,10 +229,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   zIndex: 2
                 }}
               >
-                {t('wedding.welcome.confirmed', { 
-                  name: guestData.full_name.split(' ')[0],
-                  location: locationName 
-                })}
+                Welcome back, {guestData.full_name.split(' ')[0]}! Your RSVP for {locationName} has been confirmed.
               </Typography>
             ) : (
               <Typography 
@@ -252,10 +247,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   zIndex: 2
                 }}
               >
-                {t('wedding.welcome.pending', { 
-                  name: guestData.full_name.split(' ')[0],
-                  location: locationName 
-                })}
+                Welcome, {guestData.full_name.split(' ')[0]}! Please RSVP for our {locationName} wedding.
               </Typography>
             )}
 
@@ -329,8 +321,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 }}
               >
                 {guestData.rsvp.includes(location) 
-                  ? t('rsvp.button.update')
-                  : t('rsvp.button.now')
+                  ? 'Update RSVP'
+                  : 'RSVP Now'
                 }
               </CustomButton>
             </Box>
@@ -340,7 +332,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
         {/* Fallback for non-verified guests */}
         {!guestData && (
           <HeroSection
-            title={t('wedding.hero.title', { location: weddingInfo.name })}
+            title={`${weddingInfo.name} Wedding`}
             date={weddingInfo.date}
             subtitle={weddingInfo.subtitle}
             location={weddingInfo.location}
@@ -358,7 +350,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 mb: 6, 
                 textAlign: 'center' 
               }}>
-                {t('wedding.location.title')}
+                {'Wedding Location'}
               </Typography>
               
               <Box sx={{ 
@@ -405,10 +397,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                       fontWeight: 600, 
                       mb: 1 
                     }}>
-                      {t('wedding.venue.title')}
+                      {'Venue'}
                     </Typography>
                     <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
-                      {t('wedding.venue.tbd')}
+                      {'Details coming soon!'}
                     </Typography>
                   </Box>
                 </Box>

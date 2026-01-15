@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, createContext, useContext, ReactNode } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Snackbar,
   Alert,
@@ -57,7 +56,6 @@ interface NotificationProviderProps {
 }
 
 export function NotificationProvider({ children }: NotificationProviderProps) {
-  const { t } = useLanguage();
   const [notification, setNotification] = useState<NotificationData | null>(null);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -70,8 +68,8 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   const showRSVPSuccess = (name: string, location: string) => {
     showNotification({
       type: 'success',
-      title: t('confirmation.title.confirmed'),
-      message: t('success.rsvp', { name, location }),
+      title: 'RSVP Confirmed!',
+      message: `Thank you, ${name}! Your RSVP for ${location} has been confirmed.`,
       duration: 6000,
     });
   };
@@ -79,8 +77,8 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   const showEmailSent = (email: string) => {
     showNotification({
       type: 'info',
-      title: t('confirmation.email.sent'),
-      message: t('success.email', { email }),
+      title: 'Email Sent!',
+      message: `Confirmation email sent to ${email}`,
       duration: 4000,
     });
   };
@@ -88,7 +86,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   const showError = (message: string) => {
     showNotification({
       type: 'error',
-      title: t('error.title'),
+      title: 'Error',
       message,
       duration: 5000,
     });

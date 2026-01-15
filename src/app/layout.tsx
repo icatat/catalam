@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Thasadith } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/contexts/LanguageContext";
 import MuiThemeProvider from "@/components/MuiThemeProvider";
 import { NotificationProvider } from "@/components/NotificationSystem";
 
@@ -31,13 +30,11 @@ export default function RootLayout({
       <body
         className={`${thasadith.variable} antialiased`}
       >
-        <LanguageProvider>
-          <MuiThemeProvider>
-            <NotificationProvider>
-              {children}
-            </NotificationProvider>
-          </MuiThemeProvider>
-        </LanguageProvider>
+        <MuiThemeProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </MuiThemeProvider>
       </body>
     </html>
   );

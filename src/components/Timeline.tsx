@@ -2,7 +2,6 @@
 
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import TimelineMonth from './TimelineMonth';
 
 interface TimelineEvent {
@@ -21,11 +20,10 @@ interface TimelineProps {
 
 export default function Timeline({ events }: TimelineProps) {
   const theme = useTheme();
-  const { t } = useLanguage();
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return t('timeline.date.unknown');
+    if (!dateString) return 'Date unknown';
     
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
