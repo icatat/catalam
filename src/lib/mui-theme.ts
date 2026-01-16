@@ -4,15 +4,15 @@ import { createTheme } from '@mui/material/styles';
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#c2e1ee', 
+      main: '#7ea7bb', 
       light: '#d6ecf4', 
       dark: '#9dc4d7', 
-      contrastText: '#2c3e50',
+      contrastText: '#1d364f',
     },
     secondary: {
       main: '#6b7280', // Gray-500 - Secondary theme color
       light: '#9ca3af', // Gray-400
-      dark: '#374151', // Gray-700
+      dark: '#2e3a48', // Gray-700
       contrastText: '#ffffff',
     },
     error: {

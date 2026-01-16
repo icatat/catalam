@@ -61,16 +61,6 @@ export default function BlogPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Box sx={{ width: 32, height: 32, mx: 'auto', mb: theme.spacing(2), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Image
-              src="/favicon.ico"
-              alt="Travel icon"
-              width={32}
-              height={32}
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </Box>
           <Typography
             variant="h1"
             component="h1"
@@ -82,17 +72,6 @@ export default function BlogPage() {
             }}
           >
             Travel Blog
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              color: theme.palette.text.secondary,
-              maxWidth: 600,
-              mx: 'auto',
-              lineHeight: 1.6
-            }}
-          >
-            Our adventures and memories from around the world
           </Typography>
         </Box>
 

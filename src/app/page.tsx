@@ -97,8 +97,8 @@ export default function Home() {
     setHasSkipped(true);
   };
 
-  const showRomaniaMap = !hasSkipped && (!guestData || guestData.location.includes(Location.ROMANIA));
-  const showVietnamMap = !hasSkipped && (!guestData || guestData.location.includes(Location.VIETNAM));
+  const showRomaniaMap = !hasSkipped && (guestData && guestData.location.includes(Location.ROMANIA));
+  const showVietnamMap = !hasSkipped && (guestData && guestData.location.includes(Location.VIETNAM));
 
   if (isVerifying) {
     return null; // or a loading spinner

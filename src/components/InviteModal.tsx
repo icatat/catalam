@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Key, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import {
   Box,
   Typography,
@@ -108,14 +108,6 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
         </IconButton>
 
         <Box sx={{ textAlign: 'center' }}>
-          <Box
-            component={motion.div}
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-            sx={{ mb: 3 }}
-          >
-            <Key style={{ width: 48, height: 48, color: theme.palette.primary.main }} />
-          </Box>
 
           <Typography variant="h4" sx={{ color: theme.palette.primary.main, fontWeight: 600, mb: 2 }}>
             Welcome to Our Wedding!
@@ -176,7 +168,7 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
                   size="large"
                   weddingVariant="primary"
                   fullWidth
-                  startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <Heart />}
+                  startIcon={loading && <CircularProgress size={20} color="inherit" /> }
                   sx={{
                     py: 1.5,
                     fontSize: '1rem',

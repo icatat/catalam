@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Box, useTheme, Container, Typography, Button } from '@mui/material';
-import { MainPageCard } from '@/components/MainPageCard';
 import Navigation from '@/components/Navigation';
 import Timeline from '@/components/Timeline';
 import TimelineUpload from '@/components/TimelineUpload';
 import { Heart, ArrowUpDown, Upload } from 'lucide-react';
-import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
 import { useInviteAccess } from '@/hooks/useInviteAccess';
@@ -121,38 +119,17 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Box sx={{ width: 32, height: 32, mx: 'auto', mb: theme.spacing(2), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Image
-              src="/favicon.ico"
-              alt="Wedding icon"
-              width={32}
-              height={32}
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </Box>
           <Typography 
             variant="h1" 
             component="h1" 
             gutterBottom 
             sx={{ 
-              color: theme.palette.primary.main, 
+              color: theme.palette.primary.dark, 
               fontWeight: 700,
               mb: 3
             }}
           >
             Our Story
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              color: theme.palette.text.secondary,
-              maxWidth: 600,
-              mx: 'auto',
-              lineHeight: 1.6
-            }}
-          >
-            A timeline of our journey together
           </Typography>
         </Box>
 
