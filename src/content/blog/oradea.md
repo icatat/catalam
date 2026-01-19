@@ -7,8 +7,8 @@ excerpt: See Oradea like a local - Cata's tips
 ---
 
 # Oradea
-
-Oradea above all is my (Cata) hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below place - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
+Hey there - Cătă here.
+Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below place - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
 
 
 I put together a map that comprises a lot of the things from below. The city is pretty walkable for the most part - so it should take you realistically about 1 - 2 days to see everything. Of course, Lam and I are fast travelers - we walk and do a lot when we travel.
@@ -158,12 +158,14 @@ You will also see crepes in the dessert options - given the option you could try
 
 For more **confectionary desserts**, try **amandina** - our decadent version of a brownie, **savarină** - a sponge cake with syrup, strawberry jam and whipping cream (somewhere between a baba au rhum and a victoria sponge cake), **doboș** (multi-layered chocolate walnut cake) - also at the crossing between Romanian and Hungarian cuisine.
 
-For snacks and desserts that you could find in a bakery, try the **prăjitură cu mere** (sheet apple cake), **prăjitură cu brânză**, **linzer cu mac** (a type of poppyseed cake), **cozonac**/**bagli** (a rolled sweet bread traditionally filled with walnut or poppyseeds), **cornulețe** (little rolled cookies filled with jam, **magiun** - *plum honey*, or walnut).
+![Romanian Pastries](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/RomanianPastry.jpeg)
+*Romanian pastries from [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6)*
 
+For snacks and desserts that you could find in a bakery, try the **prăjitură cu mere** (sheet apple cake), **prăjitură cu brânză**, **linzer cu mac** (a type of poppyseed cake), **cozonac**/**bagli** (a rolled sweet bread traditionally filled with walnut or poppyseeds), **cornulețe** (little rolled cookies filled with jam, **magiun** - *plum honey*, or walnut).
 
 ### The drinks
 
-One of our most common spirits is **pălincă** / **țuică** - most commonly made out of plums. The alcohol percentage varies between 35 - 55% usually. The best one is homemade, but you should be able to find it in most bars and restaurants. 
+One of our most common spirits is **pălincă** / **țuică** - most commonly made out of plums. The alcohol percentage varies between 35 - 55% usually. The best one is homemade, but you should be able to find it in most bars and restaurants.
 Other variations include **vișinată** ( sour cherries based spirit) or **afinată** (blue berries based spirit). These can be more seasonal and local - depending on what fruit grows in the region. They are made out of fruits fermented in ethanol.
 
 We also have our own wines and beer. For wine, look for the brands like **Recaș**, **Beciul Domnesc** or **Pelin**. Probably the most common wine type is **fetească neagră** (similar to pinoit noir).
@@ -175,19 +177,27 @@ We also have our beers, mostly larger or pilsner styles. Try **Timișoreana**, *
 If you are looking for restaurants with a traditional fair, I would suggest the following:
 
 - [Hanul cu noroc](https://maps.app.goo.gl/SHRdjsVbjpmbRZ2n9) - highly recommend for traditional food
-- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9)
+- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9) - cool beer garden with Romanian fair
 - [Hanul Pescarilor](https://maps.app.goo.gl/HpfVfXSAf3SMJBq89)- fish focused - we love our carp and trout - especially with some polenta and pickles
 - [Piata 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) (to some extend) - one location is great for me
 - [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) - great bakery for high quality(not fancy!) traditional desserts - their ingredients are suppossed to be the best.
 
 If you would like something nicer but not strictly traditional:
 
-- [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9)
-- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, mediteranea cuisine with a nice view
+- [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9) - elevated Italian
+- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, mediteranea cuisine with a nice view. Serves as a bar/lounge as well
 - [Piata 9](https://maps.app.goo.gl/5zL6gCWQPFAQZsAN8) - the Citadel location is a great brunch spot
 - [Crinul Alb](https://maps.app.goo.gl/UAPf8TThKXzRAWoj9) - Italian, if you are looking for pizza
-- [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) - also a pizza restaurant.
+- [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) - also a pizza restaurant
 - [Botanic](https://maps.app.goo.gl/LbhPg4Vx5gJnKNzi8) - modern and vegetarian friendly
+
+To drink - bars & cafes:
+
+- [Lord's](https://maps.app.goo.gl/cZYjosKnRDziiB17A) - cool bar where all young people gather to catch up, have a casual drink and smoke
+- [Moskva](https://maps.app.goo.gl/uMHCLABZCRxqfBBXA) - no frills, ruin-style bar. Please don't mind the soviet vibe. Young people and rock music lovers gather here, sometime for a casual catch-up, other times for a concert.
+- [Street Coffee Roasters](https://share.google/rnVqzH6qXVRQSNffA) - good quality coffee
+- [ReWine](https://maps.app.goo.gl/VgZVr7dUsodCegWz7) - nice, elevated wine bar
+- [Prohibition Bar](https://maps.app.goo.gl/61z59SsXtRTdbX2BA) - Elevated, Creative, Speakeasy vibe cocktails
 
 ## Getting around in the city
 
