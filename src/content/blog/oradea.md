@@ -60,9 +60,12 @@ For a more formal restaurant and wine try out <a href="https://maps.app.goo.gl/s
 
 ### Dealul Ciuperca - "Mushroom Hill"
 
-If you feel like you ate too much and need some exercise - or are just a fan of panoramic views - consider walking up the [Dealul Ciuperca](https://maps.app.goo.gl/NhawDTgDDDkxssTr6). From the top you should see a nice view of the city, so consider going for sunset.
-At the top there is also [Restaurant Ciuperca](https://maps.app.goo.gl/U9vBcFc8d7Pj2Yx3A). I cannot talk about the food quality, but **papanași** and **mititei** should be good, especially if you prioritize a view.
+![Dealul Ciuperca (Mushroom Hill) overlooking Oradea](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/Ciuperca.jpg)
+*Panoramic view of Oradea from Mushroom Hill - perfect spot for sunset photos*
 
+If you feel like you ate too much and need some exercise - or are just a fan of panoramic views - consider walking up the [Dealul Ciuperca](https://maps.app.goo.gl/NhawDTgDDDkxssTr6). From the top you should see a nice view of the city, so consider going for sunset.
+
+At the top there is also [Restaurant Ciuperca](https://maps.app.goo.gl/U9vBcFc8d7Pj2Yx3A). I cannot talk about the food quality, but **papanași** and **mititei** should be good, especially if you prioritize a view.
 
 ### Spas
 
@@ -72,9 +75,21 @@ In our area we are known for our thermal baths. If you feel like relaxing a bit 
 
 Now, I have to say that a lot of the food that I know and like is home made food that it might be hard to find in a restaurant. I will also say that we are not that purist when it comes to food, there is not a "super specific" way of making this - it's more like whatever you remember your mom taught you how to do it. Then maybe make it better and serve it in a restaurant. Nuances exist, while at times I will provide specific dishes, other times I might just provide a style.
 
+### Sarmale - "Stuffed Cabbages"
+
+Very much a staple in our cuisine, these pickled cabbage rolls filled with ground meat ( usually a combination of pork and beef) and rice and going to be present during any celebration. There is no such thing as a Christmas/Easter/New Year or even a Wedding without them. Many times, your grandma will also serve them to you without any special occasion.
+
+In some regions of the country the swap the cabbage leaves with grape vines, and in the summer you can also find them made with fresh boiled cabbage as well.
+
+Generally, you can find them in any restaurant serving Romanian food.
+
 ### Plăcintă
 
+![Placinta](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/placinta.jpeg)
+*Plăcintă - traditional stuffed pie cooked on the stovetop*
+
 This is a stuffed pie, typically filled with cheese, potatoes or pickled cabbage. Get it from anywhere that advertises "Plăcintă" (the dish) or "Plăcintărie". Different parts of the country make it in different ways. In Bihor, we are cooking it in a pan on the stovetop, with a bit of oil.
+
 For a more unique experience get the one filled with pickled cabbage. Ask for sour cream on top if you like things more saucy/creamy.
 
 ### Langos
@@ -89,7 +104,15 @@ Now - this is mostly available during celebrations/seasonal markets. There are n
 
 ### Sour Cream Soups - "Ciorbă"
 
-In Romania we love our sour cream. One of the common ways in which we are using it is in our soups. We call them "ciorbă". One of the most common ones that you should definitely try is **Ciorbă de burtă** - Tripe soup. It is made out of beef tripe and can be a bit of an acquired taste though you don't need to be particularly adventurous. While it is commonly found in traditional restaurants, we do make it at home for special occasions as well - my mom always used to make it for New Years Eve. If it does not appeal to you by any means, or you would rather just avoid beef - try its tamed cousin **ciorbă rădăuțeană** - which is the same thing but made with chicken not tripe. Other similar variations include **ciorbă de perișoare** (made with meatballs - but you would need to ask if it is pork or beef), **ciorba de pui a la grec** (Greek style chicken soup) - is it really Greek? I do not really know.
+![Ciorba de burta](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/ciorbaburta.jpg)
+*Ciorbă de burtă - traditional tripe soup with sour cream and garlic, a New Year's Eve staple*
+
+![Ciorba de Perisoare](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/ciorbaperisoare.jpeg)
+*Ciorbă de perișoare - meatball soup with vegetables, a comforting family favorite*
+
+In Romania we love our sour cream. One of the common ways in which we are using it is in our soups. We call them "ciorbă". One of the most common ones that you should definitely try is **Ciorbă de burtă** - Tripe soup. It is made out of beef tripe and can be a bit of an acquired taste though you don't need to be particularly adventurous. While it is commonly found in traditional restaurants, we do make it at home for special occasions as well - my mom always used to make it for New Years Eve.
+
+If it does not appeal to you by any means, or you would rather just avoid beef - try its tamed cousin **ciorbă rădăuțeană** - which is the same thing but made with chicken not tripe. Other similar variations include **ciorbă de perișoare** (made with meatballs - but you would need to ask if it is pork or beef), **ciorba de pui a la grec** (Greek style chicken soup) - is it really Greek? I do not really know.
 
 ### Grilled meats
 
@@ -98,14 +121,17 @@ Must try is **mititei** or **mici** - these are skinless sausages made out of a 
 
 While a lot of the traditional places in the city will serve some variations of meats - I would recommend going to [Piața 9](https://maps.app.goo.gl/3SVWnqhyMiuSBtyy6) (*not* the citadel location).
 
-
-### Stewed meats - tocanițe
+### Tocănițe - "stewed meats"
 
 We make a lot of stew-like dishes especially in home-cooking. It is common to see **chicken liver** stew, **paprikas** ( a chicken stew with paprika, hand made noodle and sour cream of course - a cross-over between Hungarian and Romanian cuisine), or any other meats. Usually we have them with a side, most commonly **polenta** or even mashed potatoes.
 
 ### Cold meats
 
+![Meat](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/meat.jpg)
+*Traditional cold meat platter - featuring slănină, brânză de burduf, and jumări served with bread, pickles and onion*
+
 Our cold meats game is a bit more brave. As an example we like to use lard as a spread on bread **pâine cu untură** often times topped with onion and salt. We don't like to waste anything from the pig - so we also make **tobă** - which is meat (mainly the face and organs, including ears) that has been pressed together and then sliced like very thick deli meat. It is commonly found as an appetizer, especially for celebrations like Christmas. We also like our collagen - so we make **piftie** which is boiled pork with seasonings and cooled down into a savory meat jello dish. It is actually pretty good and commonly served around Christmas (when your mom and grandma store it on the balcony as it is colder than the fridge *true story*).
+
 Also, forget the cheese platter and jabon. Take a piece of **slănină** (cured pig fat), some **brânză de burduf** (traditional cheese that has been stored in the stomach of a sheep), **jumări** / **jumeri**(Romanian pork rinds) and eat it with some bread, pickles and onion.
 
 > One tweak on the **slănină** - we like to melt it over fire and drip it onto bread - Cheers!
@@ -118,26 +144,50 @@ While not a spread - **Boef Salad** is also super common and loved by everyone. 
 
 ### The Desserts
 
+![Papanasi](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/Papanasi.jpg)
+*Papanași - fried cheese dumplings served with sour cream and blueberry jam, a must-try Romanian dessert*
+
 In a casual traditional restaurant, the must-get dessert is **papanași**. These are fried cheese balls, typically served with sour cream and blueberry jam (no other jam).
-We also have the boiled version, which is served with cinnamon, sugar and breadcrumbs.
-A more homey dessert is the **gomboți cu prune** (plum dumplings) - potato dumplings stuffed with plums and covered in sugar, breadcrumbs and cinnamon.
+
+We also have the boiled version, which is served with cinnamon, sugar and breadcrumbs. A more homey dessert is the **gomboți cu prune** (plum dumplings) - potato dumplings stuffed with plums and covered in sugar, breadcrumbs and cinnamon.
+
 You will also see crepes in the dessert options - given the option you could try the ones with farmer's cheese and/or jam.
+
+![Savarina](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/savarina.jpg)
+*Savarină - a light sponge cake soaked in syrup and topped with whipped cream and jam*
 
 For more **confectionary desserts**, try **amandina** - our decadent version of a brownie, **savarină** - a sponge cake with syrup, strawberry jam and whipping cream (somewhere between a baba au rhum and a victoria sponge cake), **doboș** (multi-layered chocolate walnut cake) - also at the crossing between Romanian and Hungarian cuisine.
 
 For snacks and desserts that you could find in a bakery, try the **prăjitură cu mere** (sheet apple cake), **prăjitură cu brânză**, **linzer cu mac** (a type of poppyseed cake), **cozonac**/**bagli** (a rolled sweet bread traditionally filled with walnut or poppyseeds), **cornulețe** (little rolled cookies filled with jam, **magiun** - *plum honey*, or walnut).
 
+
+### The drinks
+
+One of our most common spirits is **pălincă** / **țuică** - most commonly made out of plums. The alcohol percentage varies between 35 - 55% usually. The best one is homemade, but you should be able to find it in most bars and restaurants. 
+Other variations include **vișinată** ( sour cherries based spirit) or **afinată** (blue berries based spirit). These can be more seasonal and local - depending on what fruit grows in the region. They are made out of fruits fermented in ethanol.
+
+We also have our own wines and beer. For wine, look for the brands like **Recaș**, **Beciul Domnesc** or **Pelin**. Probably the most common wine type is **fetească neagră** (similar to pinoit noir).
+
+We also have our beers, mostly larger or pilsner styles. Try **Timișoreana**, **Ciucaș** or **Ursus**. Locally in Oradea, you can also find **Vulturar** - which is more rare but I recommend you try it.
+
 ## Restaurant Highlights
 
-If you are looking for restaurants with a traditional fair, I would suggest the following
-- Hanul cu noroc
-- Desaga
-- Hanul Pescariful ( fish focused)
-- Piata 9 ( to some extend)
+If you are looking for restaurants with a traditional fair, I would suggest the following:
 
-If you would like something nicer but not strictly traditional
-- Allegria
-- Rivo
+- [Hanul cu noroc](https://maps.app.goo.gl/SHRdjsVbjpmbRZ2n9) - highly recommend for traditional food
+- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9)
+- [Hanul Pescarilor](https://maps.app.goo.gl/HpfVfXSAf3SMJBq89)- fish focused - we love our carp and trout - especially with some polenta and pickles
+- [Piata 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) (to some extend) - one location is great for me
+- [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) - great bakery for high quality(not fancy!) traditional desserts - their ingredients are suppossed to be the best.
+
+If you would like something nicer but not strictly traditional:
+
+- [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9)
+- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, mediteranea cuisine with a nice view
+- [Piata 9](https://maps.app.goo.gl/5zL6gCWQPFAQZsAN8) - the Citadel location is a great brunch spot
+- [Crinul Alb](https://maps.app.goo.gl/UAPf8TThKXzRAWoj9) - Italian, if you are looking for pizza
+- [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) - also a pizza restaurant.
+- [Botanic](https://maps.app.goo.gl/LbhPg4Vx5gJnKNzi8) - modern and vegetarian friendly
 
 ## Getting around in the city
 
@@ -157,12 +207,22 @@ For taxi, I recommend downloading the [Bolt](https://bolt.eu/en/) app. It is sup
 
 ## Gotchas, cultural things and getting around
 
-- With foreigners, people will most likely be welcoming - but don't expect American level of excitement.
-- People smoke - a lot, but mostly outdoors.
-- Don't rely on it, but around the city there are spots of free wifi that actually kind of work.
-- Tipping is optional, but like a 5 - 10% tip is nice of you.
-- As a traveler in a new city, I am usually scared of tourist traps in restaurants (big menus, pizza and burgers alongside traditional food, cafes in the center). Here this is not the case - having an extensive menu is common, and it actually targets locals that wouldn't eat traditional food when going out. Cafes in the center - common and lovely.
-- We have bakeries everywhere - don't try too hard to look for the best one - trust your eyes more than anything.
-- Things are slow and closed on Sunday - religion is a pretty big thing.
-- We have a big mall if you need to do some shopping - [Lotus Center](https://maps.app.goo.gl/XhNKUVYdhUdshYSq7) - but I personally wouldn't go out of my way to go there unless you need something.
-- Grocery stores are everywhere. The best chains are **Profi** and **Carrefour** (there are other bigger ones but probably beyond the scope of your visit).
+- * People will be welcoming but don't expect American-level excitement
+
+- Smoking is common, mostly outdoors
+
+- Free wifi spots exist around the city but aren't always reliable
+
+- Tipping is optional, 5-10% is appreciated
+
+- Don't worry about tourist traps - extensive menus and cafes in the center are normal and locals eat there too
+
+- Bakeries are everywhere - trust your eyes rather than searching for "the best one"
+
+- Sundays are slow, many places closed (religion is important here)
+
+- [Lotus Center](https://maps.app.goo.gl/XhNKUVYdhUdshYSq7) mall exists for shopping, but not worth a special trip
+
+- Grocery stores everywhere - **Profi** and **Carrefour** are the best chains
+
+- Corn on pizza is common. In Romania is not even a pineaple-style debate - it is just accepted. So is putting ketchup on pizza. There will be no extra parmesan cheese or chilli flakes though, but you will get spicy pepper infused olice oil and oregano infused olice oil to top it off.
