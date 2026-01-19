@@ -9,12 +9,14 @@ excerpt: See Oradea like a local - Cata's tips
 # Oradea
 Hey there - Cătă here.
 
-**First of all a disclaimer. The photos on this page have been taken by me over the years. They are not social media quality, they have served a utility purposes at a time - such as sending a Snapchat back in the day, or simply casually sharing with friends.**
+**First of all a disclaimer. The photos on this page have been taken by me over the years. They are not social media quality, they have served utility purposes at a time - such as sending a Snapchat back in the day, or simply casually sharing with friends.**
 
 Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below place - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
 
 
 I put together a map that comprises a lot of the things from below. The city is pretty walkable for the most part - so it should take you realistically about 1 - 2 days to see everything. Of course, Lam and I are fast travelers - we walk and do a lot when we travel.
+
+<iframe src="https://www.google.com/maps/d/embed?mid=1-vjLIpuSTEfOruamSgsxXuucz4AHA_A&ehbc=2E312F" width="640" height="480"></iframe>
 
 ## Things to see & do
 
@@ -41,7 +43,7 @@ If you are feeling more like soup in a bread bowl, then try stopping by at [Cyra
 
 ### Piata Unirii - "Union Square"
 
-From the *Republicii Street* , by the end, you could cross the bride towards the "Union Square" of Oradea. There, you will see the [City Hall](https://maps.app.goo.gl/8MkDhi9Hn7CmxCX18) - consider climbing on top!
+From the *Republicii Street* , by the end, you could cross the bridge towards the "Union Square" of Oradea. There, you will see the [City Hall](https://maps.app.goo.gl/8MkDhi9Hn7CmxCX18) - consider climbing on top!
 
 From there, you will find yourself in a plaza. See the [Black Eagle Palace](https://maps.app.goo.gl/3xFtNnkT9v5jxrh69) and [Biserica cu Luna](https://maps.app.goo.gl/oVsQh6ZQG2X1Cs986) - *Moon Church* (this is the unofficial name given due to its top mechanism reflecting the moon phase) on the left, and [Biserica Sf Nicolae](https://maps.app.goo.gl/DLYpZm4Yj3dbZuyh9) - *Saint Nicholas Church* on the right (this is where our wedding will be!)
 
