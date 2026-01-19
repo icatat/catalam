@@ -8,6 +8,9 @@ excerpt: See Oradea like a local - Cata's tips
 
 # Oradea
 Hey there - Cătă here.
+
+**First of all a disclaimer. The photos on this page have been taken by me over the years. They are not social media quality, they have served a utility purposes at a time - such as sending a Snapchat back in the day, or simply casually sharing with friends.**
+
 Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below place - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
 
 
