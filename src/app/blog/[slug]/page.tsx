@@ -9,8 +9,12 @@ import Navigation from '@/components/Navigation';
 import { MapPin, Calendar, ArrowLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import Image from 'next/image';
 import { BlogPost } from '@/types/blog';
+import { LinkPreview } from '@/components/LinkPreview';
+import { AutoLinkPreview } from '@/components/AutoLinkPreview';
+import { useInviteAccess } from '@/hooks/useInviteAccess';
 
 export default function BlogPostPage() {
   const theme = useTheme();
@@ -19,6 +23,7 @@ export default function BlogPostPage() {
   const slug = params.slug as string;
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const { showRomania, showVietnam } = useInviteAccess();
 
   useEffect(() => {
     if (slug) {
@@ -76,7 +81,7 @@ export default function BlogPostPage() {
           position: 'relative'
         }}
       >
-        <Navigation currentPage="blog" />
+        <Navigation currentPage="blog" showRomania={showRomania} showVietnam={showVietnam} />
         <Container maxWidth="xl" sx={{ py: 10 }}>
           <Box sx={{ textAlign: 'center', py: 8 }}>
             <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 2 }}>
@@ -104,7 +109,7 @@ export default function BlogPostPage() {
       }}
     >
 
-      <Navigation currentPage="blog" />
+      <Navigation currentPage="blog" showRomania={showRomania} showVietnam={showVietnam} />
 
       <Container maxWidth="md" sx={{ py: 10 }}>
         {/* Back Button */}
@@ -234,6 +239,11 @@ export default function BlogPostPage() {
               borderRadius: 2,
               my: 2,
             },
+            '& iframe': {
+              maxWidth: '100%',
+              borderRadius: 2,
+              my: 2,
+            },
             '& h1, & h2, & h3, & h4, & h5, & h6': {
               color: theme.palette.primary.main,
               fontWeight: 600,
@@ -285,9 +295,13 @@ export default function BlogPostPage() {
             },
           }}
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+          >
             {post.content}
           </ReactMarkdown>
+          <AutoLinkPreview />
         </Box>
       </Container>
     </Box>
