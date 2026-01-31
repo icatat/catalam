@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { Location } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
@@ -12,30 +13,35 @@ export async function POST(request: Request) {
       );
     }
 
-    // Fetch guest data from Supabase
+    // Normalize the input invite_id
+    const normalizedInviteId = invite_id.trim().toUpperCase();
+
+    // Query Supabase for the guest with this invite_id
     const { data: guest, error } = await supabase
       .from('rsvp')
-      .select('invite_id, full_name, location, rsvp')
-      .eq('invite_id', invite_id)
+      .select('*')
+      .eq('invite_id', normalizedInviteId)
       .single();
 
     if (error || !guest) {
+      console.error('Error fetching guest:', error);
       return NextResponse.json(
-        { error: 'Invalid invite ID. Please check your invitation and try again.' },
+        { error: 'Invalid invite code. Please check and try again.' },
         { status: 404 }
       );
     }
 
+    // Return guest information
     return NextResponse.json({
-      invite_id: guest.invite_id,
-      full_name: guest.full_name,
-      location: guest.location,
+      invite_id: normalizedInviteId,
+      full_name: guest.full_name || '',
+      location: guest.location || [],
       rsvp: guest.rsvp || [],
     });
   } catch (error) {
-    console.error('Error fetching guest:', error);
+    console.error('Error verifying invite code:', error);
     return NextResponse.json(
-      { error: 'Failed to verify invite' },
+      { error: 'Failed to verify invite code' },
       { status: 500 }
     );
   }

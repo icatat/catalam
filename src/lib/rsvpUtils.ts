@@ -19,11 +19,6 @@ export async function handleReconfirmation({ guestData, formData, location }: RS
       location
     });
 
-    // const message = result.success 
-    //   ? MESSAGES.RECONFIRM_SUCCESS(guestData.full_name, formData.email)
-    //   : MESSAGES.RECONFIRM_SUCCESS(guestData.full_name);
-
-    // alert(message);
     return true; // Handled, exit early
   }
   return false; // Not handled, continue with normal flow
@@ -49,12 +44,13 @@ export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHan
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      invite_id: guestData.invite_id,
+      invite_id: guestData.invite_id, // Pass the access code from cookie
       name: formData.name || guestData.full_name,
       location,
       email: formData.email,
       phone: formData.phone,
       attending: formData.rsvp === 'true', // Send the actual RSVP response as boolean
+      passcode: formData.passcode, // Include user's passcode if provided
       properties: {
         dietary_restrictions: formData.dietaryRestrictions,
         guests_count: formData.guestCount,
@@ -80,7 +76,7 @@ export function createEmailPromise(data: {
 export function handleRSVPPromiseChain(
   response: Response,
   emailPromise: Promise<Response>,
-  guestData: GuestData,
+  _guestData: GuestData,
   formData: RSVPFormData
 ): void {
   response.json()

@@ -88,6 +88,12 @@ export default function VietnamWedding() {
       const rsvpResponse = await submitRSVP(options);
       const rsvpResult = await rsvpResponse.json();
 
+      if (!rsvpResponse.ok) {
+        // Handle API errors
+        alert(rsvpResult.error || 'Failed to submit RSVP');
+        return;
+      }
+
       if (rsvpResult.success) {
         const updatedGuestResponse = await fetch('/api/guest', {
           method: 'POST',

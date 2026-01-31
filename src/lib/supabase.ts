@@ -15,6 +15,7 @@ export interface Guest {
   email?: string;
   phone?: string;
   rsvp_timestamp?: string;
+  rsvp?: Location[];
 }
 
 export interface RSVPFormData {
@@ -26,7 +27,6 @@ export interface RSVPFormData {
     accommodation?: string;
     guests_count?: number;
     special_requests?: string;
-    [key: string]: unknown;
   };
 }
 

@@ -25,10 +25,9 @@ interface InviteModalProps {
     location: Location[];
     rsvp: Location[];
   }) => void;
-  onSkip: () => void;
 }
 
-export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModalProps) {
+export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
   const theme = useTheme();
   const [inviteId, setInviteId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -56,7 +55,7 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
       const data = await response.json();
 
       if (!response.ok) {
-        setError('Invalid invite code. Please check and try again, or skip to continue browsing.');
+        setError('Invalid access code. Please check and try again.');
         setLoading(false);
         return;
       }
@@ -68,15 +67,10 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
         rsvp: data.rsvp || [],
       });
     } catch (err) {
-      setError('Invalid invite code. Please check and try again, or skip to continue browsing.');
+      setError('Invalid access code. Please check and try again.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSkip = () => {
-    onSkip();
-    onClose();
   };
 
   return (
@@ -114,7 +108,7 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
           </Typography>
 
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 4 }}>
-            Please enter your invitation code to access wedding details and RSVP
+            Please enter your access code to view wedding details and RSVP
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -122,7 +116,7 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
               type="text"
               value={inviteId}
               onChange={(e) => setInviteId(e.target.value.toUpperCase())}
-              placeholder="Enter your invite code"
+              placeholder="Enter your access code"
               disabled={loading}
               variant="outlined"
               fullWidth
@@ -156,50 +150,31 @@ export function InviteModal({ isOpen, onClose, onVerified, onSkip }: InviteModal
               )}
             </AnimatePresence>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <motion.div
-                whileHover={{ scale: loading ? 1 : 1.02 }}
-                whileTap={{ scale: loading ? 1 : 0.98 }}
-              >
-                <CustomButton
-                  type="submit"
-                  disabled={loading || !inviteId.trim()}
-                  variant="contained"
-                  size="large"
-                  weddingVariant="primary"
-                  fullWidth
-                  startIcon={loading && <CircularProgress size={20} color="inherit" /> }
-                  sx={{
-                    py: 1.5,
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                  }}
-                >
-                  {loading ? 'Verifying...' : 'Continue'}
-                </CustomButton>
-              </motion.div>
-
+            <motion.div
+              whileHover={{ scale: loading ? 1 : 1.02 }}
+              whileTap={{ scale: loading ? 1 : 0.98 }}
+            >
               <CustomButton
-                onClick={handleSkip}
-                variant="text"
-                size="medium"
+                type="submit"
+                disabled={loading || !inviteId.trim()}
+                variant="contained"
+                size="large"
+                weddingVariant="primary"
                 fullWidth
+                startIcon={loading && <CircularProgress size={20} color="inherit" /> }
                 sx={{
-                  py: 1,
-                  fontSize: '0.9rem',
-                  color: theme.palette.text.secondary,
-                  '&:hover': {
-                    backgroundColor: 'rgba(0,0,0,0.04)',
-                  },
+                  py: 1.5,
+                  fontSize: '1rem',
+                  fontWeight: 600,
                 }}
               >
-                Skip for now
+                {loading ? 'Verifying...' : 'Continue'}
               </CustomButton>
-            </Box>
+            </motion.div>
           </Box>
 
           <Typography variant="caption" sx={{ color: 'text.disabled', mt: 3, display: 'block' }}>
-            Don't have an invite code? Contact us for assistance
+            Don't have an access code? Contact us for assistance
           </Typography>
         </Box>
       </Box>

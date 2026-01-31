@@ -3,51 +3,49 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
   try {
-    const { invite_id, location, email, phone, attending, properties } = await request.json();
+    const { invite_id, location, email, phone, attending, properties, name } = await request.json();
 
-    if (!invite_id || !location || attending === undefined) {
+    if (!invite_id || !location || !name || !email || !phone || attending === undefined) {
       return NextResponse.json(
-        { error: 'Invite ID, location, and attending status are required' },
+        { error: 'Invite ID, location, name, email, phone, and attending status are required.' },
         { status: 400 }
       );
     }
-    // First, verify that the guest exists and is invited to this location
+
+    const normalizedInviteId = invite_id.trim().toUpperCase();
+
+    // Fetch the guest record to verify invite_id exists and get allowed locations
     const { data: existingGuest, error: fetchError } = await supabase
       .from('rsvp')
-      .select('invite_id, location, properties, rsvp')
-      .eq('invite_id', invite_id)
+      .select('*')
+      .eq('invite_id', normalizedInviteId)
       .single();
 
     if (fetchError || !existingGuest) {
+      console.error('Error checking existing guest:', fetchError);
       return NextResponse.json(
-        { error: 'Invalid invite ID' },
+        { error: 'Invalid invite code' },
         { status: 404 }
       );
     }
 
-    if (!existingGuest.location.includes(location)) {
+    const allowedLocations = existingGuest.location || [];
+
+    // Verify the location is allowed for this invite
+    if (!allowedLocations.includes(location)) {
       return NextResponse.json(
-        { error: `We were not able to find a record for the ${location.toLowerCase()} wedding. Please contact Cata & Lam directly.` },
+        { error: `This invite code does not grant access to the ${location.toLowerCase()} wedding.` },
         { status: 403 }
       );
     }
 
-    // Calculate the updated RSVP array based on attending status
-    const currentRsvpArray = existingGuest.rsvp || [];
-    let updatedRsvpArray;
+    // Update the existing guest record with RSVP information
+    const currentRsvp = existingGuest.rsvp || [];
+    const rsvpArray = attending
+      ? [...new Set([...currentRsvp, location])] // Add location if attending (avoid duplicates)
+      : currentRsvp.filter((loc: string) => loc !== location); // Remove location if not attending
 
-    if (attending) {
-      // User is attending - add location to RSVP array if not already present
-      updatedRsvpArray = currentRsvpArray.includes(location) 
-        ? currentRsvpArray 
-        : [...currentRsvpArray, location];
-    } else {
-      // User is not attending - remove location from RSVP array
-      updatedRsvpArray = currentRsvpArray.filter((loc: string) => loc !== location);
-    }
-
-    // Merge existing properties with new ones, organizing by location
-    const updatedProperties = {
+    const propertiesObject = {
       ...existingGuest.properties,
       [location]: {
         ...existingGuest.properties?.[location],
@@ -58,30 +56,31 @@ export async function POST(request: Request) {
       }
     };
 
-    // Update the guest record
-    const { data, error } = await supabase
+    const { data: updatedData, error: updateError } = await supabase
       .from('rsvp')
       .update({
-        email,
-        phone,
-        rsvp: updatedRsvpArray,
-        properties: updatedProperties,
+        full_name: name || existingGuest.full_name,
+        email: email || existingGuest.email,
+        phone: phone || existingGuest.phone,
+        rsvp: rsvpArray,
+        properties: propertiesObject,
         rsvp_timestamp: new Date().toISOString(),
       })
-      .eq('invite_id', invite_id)
+      .eq('invite_id', normalizedInviteId)
       .select();
 
-    if (error) {
-      console.error('Supabase error:', error);
+    if (updateError) {
+      console.error('Supabase update error:', updateError);
       return NextResponse.json(
-        { error: 'Failed to submit RSVP' },
+        { error: 'Failed to update RSVP' },
         { status: 500 }
       );
     }
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       message: 'RSVP submitted successfully',
-      data: data[0]
+      data: updatedData[0]
     });
   } catch (error) {
     console.error('Error submitting RSVP:', error);

@@ -15,7 +15,6 @@ import {
   Typography,
   Box,
   IconButton,
-  Chip,
   Divider,
   Slide,
   Alert,
@@ -78,7 +77,7 @@ export default function RSVPModal({
   const weddingVariant = 'primary'; // Use unified theme
 
   // Phone prefix options based on common countries for each wedding
-  const phoneOptions = location === Location.ROMANIA ? [
+  const phoneOptions =  [
     { code: '+40', country: '🇷🇴 Romania', flag: '🇷🇴' },
     { code: '+1', country: '🇺🇸 US/Canada', flag: '🇺🇸' },
     { code: '+44', country: '🇬🇧 UK', flag: '🇬🇧' },
@@ -86,16 +85,15 @@ export default function RSVPModal({
     { code: '+33', country: '🇫🇷 France', flag: '🇫🇷' },
     { code: '+39', country: '🇮🇹 Italy', flag: '🇮🇹' },
     { code: '+34', country: '🇪🇸 Spain', flag: '🇪🇸' },
-    { code: '+31', country: '🇳🇱 Netherlands', flag: '🇳🇱' },
-  ] : [
     { code: '+84', country: '🇻🇳 Vietnam', flag: '🇻🇳' },
-    { code: '+1', country: '🇺🇸 US/Canada', flag: '🇺🇸' },
-    { code: '+44', country: '🇬🇧 UK', flag: '🇬🇧' },
     { code: '+86', country: '🇨🇳 China', flag: '🇨🇳' },
-    { code: '+82', country: '🇰🇷 South Korea', flag: '🇰🇷' },
-    { code: '+81', country: '🇯🇵 Japan', flag: '🇯🇵' },
-    { code: '+65', country: '🇸🇬 Singapore', flag: '🇸🇬' },
-    { code: '+60', country: '🇲🇾 Malaysia', flag: '🇲🇾' },
+    { code: '+61', country: '🇦🇺 Australia', flag: '🇦🇺' },
+    { code: '+30', country: '🇬🇷 Greece', flag: '🇬🇷' },
+    { code: '+359', country: '🇧🇬 Bulgaria', flag: '🇧🇬' },
+    { code: '+381', country: '🇷🇸 Serbia', flag: '🇷🇸' },
+    { code: '+977', country: '🇳🇵 Nepal', flag: '🇳🇵' },
+    { code: '+91', country: '🇮🇳 India', flag: '🇮🇳' },
+
   ];
 
   // Reset form when modal opens
@@ -200,16 +198,6 @@ export default function RSVPModal({
             <Close />
           </IconButton>
         </Box>
-        
-        <Box sx={{ mt: 2 }}>
-          <Chip 
-            icon={<Person />}
-            label={`${`Welcome, ${guestData.full_name}!`}`}
-            variant="outlined"
-            color={variant === 'primary' ? 'primary' : 'secondary'}
-            sx={{ borderRadius: 2 }}
-          />
-        </Box>
       </DialogTitle>
 
       <Divider />
@@ -217,7 +205,7 @@ export default function RSVPModal({
       <DialogContent sx={{ pt: 3 }}>
         {hasExistingRSVP && (
           <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-            You've already RSVP'd for this event
+            You&apos;ve already RSVP&apos;d for this event
           </Alert>
         )}
 
@@ -298,13 +286,13 @@ export default function RSVPModal({
                 <FormControlLabel
                   value="true"
                   control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                  label="Yes, I'll be there!"
+                  label="Yes, I&apos;ll be there!"
                   disabled={isSubmitting}
                 />
                 <FormControlLabel
                   value="false"
                   control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                  label="Sorry, I can't make it"
+                  label="Sorry, I can&apos;t make it"
                   disabled={isSubmitting}
                 />
               </RadioGroup>

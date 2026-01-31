@@ -11,7 +11,7 @@ Hey there - Cătă here.
 
 **First of all a disclaimer. The photos on this page have been taken by me over the years. They are not social media quality, they have served utility purposes at a time - such as sending a Snapchat back in the day, or simply casually sharing with friends.**
 
-Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below place - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
+Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below places - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
 
 
 I put together a map that comprises a lot of the things from below. The city is pretty walkable for the most part - so it should take you realistically about 1 - 2 days to see everything. Of course, Lam and I are fast travelers - we walk and do a lot when we travel.
@@ -30,7 +30,7 @@ From here, walk down the **Petőfi Sándor  Park** towards the City Center.
 
 If you are to pick one thing to get a feel for the city - start here. You will see many historical buildings in a combination of Baroque, Art Nouveau and Art Deco architecture - which we take a lot of pride in.
 
-Start from the big Mcdonalds (yes), walk down and see the [Moskovitz Palace](https://www.oradeaheritage.ro/the-moskovits-miksa-palace/?lang=en) (though more like a house then a Palace), end up by the [Queen Maria Theater - *Teatrul Regina Maria*](https://www.teatrulreginamaria.ro/).
+Start from the big Mcdonalds (yes), walk down and see the [Moskovitz Palace](https://www.oradeaheritage.ro/the-moskovits-miksa-palace/?lang=en) (though more like a house than a Palace), end up by the [Queen Maria Theater - *Teatrul Regina Maria*](https://www.teatrulreginamaria.ro/).
 
 Along this street you will see a lot of restaurants and bars. If you are feeling peckish and would love a snack, stop by [ La Turcu ](https://maps.app.goo.gl/qpy472RCTjxmmyKn7) for a shaorma or Doner Kebab. This is not a joke - Romanians do love their shaorma - it is the main fast food over burgers and fries.
 
@@ -38,7 +38,7 @@ If you are in a fancy Italian restaurant mood - stop at [Allegria](https://maps.
 
 Also, behind the theater, there is this hip yet no frills cafe/bar - [Moskva](https://maps.app.goo.gl/dpT8SaH9Fr4H7bko7). No frills, just the basic drinks, go for the cool space which resembles the vibe of a Budapest-style ruin bar.
 
-If you are feeling more like soup in a bread bowl, then try stopping by at [Cyrano](https://maps.app.goo.gl/sZvYQ7pX9r5CW2Uq9). then turn right and go to the [Casa Darvas - La Roche](https://www.visitoradea.com/what-to-see/darvas-la-roche-house) and visit it if you have the time.
+If you are feeling more like soup in a bread bowl, then try stopping by at [Cyrano](https://maps.app.goo.gl/sZvYQ7pX9r5CW2Uq9). Then turn right and go to the [Casa Darvas - La Roche](https://www.visitoradea.com/what-to-see/darvas-la-roche-house) and visit it if you have the time.
 
 
 ### Piata Unirii - "Union Square"
@@ -84,7 +84,7 @@ Now, I have to say that a lot of the food that I know and like is home made food
 
 Very much a staple in our cuisine, these pickled cabbage rolls filled with ground meat ( usually a combination of pork and beef) and rice and going to be present during any celebration. There is no such thing as a Christmas/Easter/New Year or even a Wedding without them. Many times, your grandma will also serve them to you without any special occasion.
 
-In some regions of the country the swap the cabbage leaves with grape vines, and in the summer you can also find them made with fresh boiled cabbage as well.
+In some regions of the country they swap the cabbage leaves with grape vines, and in the summer you can also find them made with fresh boiled cabbage as well.
 
 Generally, you can find them in any restaurant serving Romanian food.
 
@@ -128,7 +128,7 @@ While a lot of the traditional places in the city will serve some variations of 
 
 ### Tocănițe - "stewed meats"
 
-We make a lot of stew-like dishes especially in home-cooking. It is common to see **chicken liver** stew, **paprikas** ( a chicken stew with paprika, hand made noodle and sour cream of course - a cross-over between Hungarian and Romanian cuisine), or any other meats. Usually we have them with a side, most commonly **polenta** or even mashed potatoes.
+We make a lot of stew-like dishes especially in home-cooking. It is common to see **chicken liver** stew, **paprikas** ( a chicken stew with paprika, hand made noodle and sour cream of course - a cross-over between Hungarian and Romanian cuisine), or any other meats. Usually we have them with a side, most commonly **mămpligă**(polenta) or even mashed potatoes.
 
 ### Cold meats
 
@@ -173,24 +173,24 @@ For snacks and desserts that you could find in a bakery, try the **prăjitură c
 One of our most common spirits is **pălincă** / **țuică** - most commonly made out of plums. The alcohol percentage varies between 35 - 55% usually. The best one is homemade, but you should be able to find it in most bars and restaurants.
 Other variations include **vișinată** ( sour cherries based spirit) or **afinată** (blue berries based spirit). These can be more seasonal and local - depending on what fruit grows in the region. They are made out of fruits fermented in ethanol.
 
-We also have our own wines and beer. For wine, look for the brands like **Recaș**, **Beciul Domnesc** or **Pelin**. Probably the most common wine type is **fetească neagră** (similar to pinoit noir).
+We also have our own wines and beer. For wine, look for the brands like **Recaș**, **Beciul Domnesc** or **Pelin**. Probably the most common wine type is **fetească neagră** (similar to pinot noir).
 
-We also have our beers, mostly larger or pilsner styles. Try **Timișoreana**, **Ciucaș** or **Ursus**. Locally in Oradea, you can also find **Vulturar** - which is more rare but I recommend you try it.
+We also have our beers, mostly lager or pilsner styles. Try **Timișoreana**, **Ciucaș** or **Ursus**. Locally in Oradea, you can also find **Vulturar** - which is more rare but I recommend you try it.
 
 ## Restaurant Highlights
 
-If you are looking for restaurants with a traditional fair, I would suggest the following:
+If you are looking for restaurants with traditional fare, I would suggest the following:
 
 - [Hanul cu noroc](https://maps.app.goo.gl/SHRdjsVbjpmbRZ2n9) - highly recommend for traditional food
-- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9) - cool beer garden with Romanian fair
+- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9) - cool beer garden with Romanian fare
 - [Hanul Pescarilor](https://maps.app.goo.gl/HpfVfXSAf3SMJBq89)- fish focused - we love our carp and trout - especially with some polenta and pickles
-- [Piata 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) (to some extend) - one location is great for me
-- [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) - great bakery for high quality(not fancy!) traditional desserts - their ingredients are suppossed to be the best.
+- [Piata 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) (to some extent) - one location is great for me
+- [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) - great bakery for high quality(not fancy!) traditional desserts - their ingredients are supposed to be the best.
 
 If you would like something nicer but not strictly traditional:
 
 - [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9) - elevated Italian
-- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, mediteranea cuisine with a nice view. Serves as a bar/lounge as well
+- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, Mediterranean cuisine with a nice view. Serves as a bar/lounge as well
 - [Piata 9](https://maps.app.goo.gl/5zL6gCWQPFAQZsAN8) - the Citadel location is a great brunch spot
 - [Crinul Alb](https://maps.app.goo.gl/UAPf8TThKXzRAWoj9) - Italian, if you are looking for pizza
 - [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) - also a pizza restaurant
@@ -199,7 +199,7 @@ If you would like something nicer but not strictly traditional:
 To drink - bars & cafes:
 
 - [Lord's](https://maps.app.goo.gl/cZYjosKnRDziiB17A) - cool bar where all young people gather to catch up, have a casual drink and smoke
-- [Moskva](https://maps.app.goo.gl/uMHCLABZCRxqfBBXA) - no frills, ruin-style bar. Please don't mind the soviet vibe. Young people and rock music lovers gather here, sometime for a casual catch-up, other times for a concert.
+- [Moskva](https://maps.app.goo.gl/uMHCLABZCRxqfBBXA) - no frills, ruin-style bar. Please don't mind the soviet vibe. Young people and rock music lovers gather here, sometimes for a casual catch-up, other times for a concert.
 - [Street Coffee Roasters](https://share.google/rnVqzH6qXVRQSNffA) - good quality coffee
 - [ReWine](https://maps.app.goo.gl/VgZVr7dUsodCegWz7) - nice, elevated wine bar
 - [Prohibition Bar](https://maps.app.goo.gl/61z59SsXtRTdbX2BA) - Elevated, Creative, Speakeasy vibe cocktails
@@ -208,7 +208,7 @@ To drink - bars & cafes:
 
 ### By foot
 
-The city is very walklable - most if the city center can be seen on foot.
+The city is very walkable - most of the city center can be seen on foot.
 
 ### By tram/bus
 
@@ -218,11 +218,11 @@ As an experience, you could try taking the tram or bus. We rely on them all the 
 
 Taxi stations are everywhere. They are reliable - just make sure they start the meter especially since you are a foreigner. You will be surprised though how many of them actually speak English.
 
-For taxi, I recommend downloading the [Bolt](https://bolt.eu/en/) app. It is super reliable and works better then Uber in the city. Alternatively, Uber exists as well but might not be as good here.
+For taxi, I recommend downloading the [Bolt](https://bolt.eu/en/) app. It is super reliable and works better than Uber in the city. Alternatively, Uber exists as well but might not be as good here.
 
 ## Gotchas, cultural things and getting around
 
-- * People will be welcoming but don't expect American-level excitement
+- People will be welcoming but don't expect American-level excitement
 
 - Smoking is common, mostly outdoors
 
@@ -240,4 +240,4 @@ For taxi, I recommend downloading the [Bolt](https://bolt.eu/en/) app. It is sup
 
 - Grocery stores everywhere - **Profi** and **Carrefour** are the best chains
 
-- Corn on pizza is common. In Romania is not even a pineaple-style debate - it is just accepted. So is putting ketchup on pizza. There will be no extra parmesan cheese or chilli flakes though, but you will get spicy pepper infused olice oil and oregano infused olice oil to top it off.
+- Corn on pizza is common. In Romania is not even a pineapple-style debate - it is just accepted. So is putting ketchup on pizza. There will be no extra parmesan cheese or chilli flakes though, but you will get spicy pepper infused olive oil and oregano infused olive oil to top it off.

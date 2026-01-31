@@ -22,18 +22,10 @@ export default function Home() {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
-  const [hasSkipped, setHasSkipped] = useState(false);
 
   useEffect(() => {
     const checkExistingInvite = async () => {
       const savedInviteId = Cookies.get('invite_id');
-      const skippedStatus = Cookies.get('invite_skipped');
-
-      if (skippedStatus === 'true') {
-        setHasSkipped(true);
-        setIsVerifying(false);
-        return;
-      }
 
       if (savedInviteId) {
         try {
@@ -53,14 +45,10 @@ export default function Home() {
             });
           } else {
             Cookies.remove('invite_id');
-            setShowInviteModal(true);
           }
         } catch {
           Cookies.remove('invite_id');
-          setShowInviteModal(true);
         }
-      } else {
-        setShowInviteModal(true);
       }
       setIsVerifying(false);
     };
@@ -70,35 +58,27 @@ export default function Home() {
 
   const handleInviteVerified = (data: GuestData) => {
     Cookies.set('invite_id', data.invite_id, { expires: 30 });
-    Cookies.remove('invite_skipped');
     setGuestData(data);
-    setHasSkipped(false);
-    setShowInviteModal(false);
-  };
-
-  const handleSkip = () => {
-    Cookies.set('invite_skipped', 'true', { expires: 1 }); // Expires in 1 day
-    setHasSkipped(true);
     setShowInviteModal(false);
   };
 
   const handleChangeInvite = () => {
     Cookies.remove('invite_id');
-    Cookies.remove('invite_skipped');
     setGuestData(null);
-    setHasSkipped(false);
     setShowInviteModal(true);
   };
 
   const handleRemoveInvite = () => {
     Cookies.remove('invite_id');
-    Cookies.set('invite_skipped', 'true', { expires: 1 });
     setGuestData(null);
-    setHasSkipped(true);
   };
 
-  const showRomaniaMap = !hasSkipped && (guestData && guestData.location.includes(Location.ROMANIA));
-  const showVietnamMap = !hasSkipped && (guestData && guestData.location.includes(Location.VIETNAM));
+  const handleOpenModal = () => {
+    setShowInviteModal(true);
+  };
+
+  const showRomaniaMap = guestData && guestData.location.includes(Location.ROMANIA);
+  const showVietnamMap = guestData && guestData.location.includes(Location.VIETNAM);
 
   if (isVerifying) {
     return null; // or a loading spinner
@@ -194,6 +174,34 @@ export default function Home() {
                 />
               }
             />
+
+            {/* Access Code Button */}
+            {!guestData && (
+              <Box sx={{ mt: 3 }}>
+                <Button
+                  onClick={handleOpenModal}
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    backgroundColor: theme.palette.primary.main,
+                    color: 'white',
+                    px: 4,
+                    py: 1.5,
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary.dark,
+                      boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
+                    },
+                  }}
+                >
+                  Joining our wedding?
+                </Button>
+              </Box>
+            )}
           </Box>
 
           {/* Vietnam Map - Right */}
@@ -234,7 +242,7 @@ export default function Home() {
         >
           {guestData ? (
             <>
-              Logged in as {guestData.full_name} •{' '}
+              Access granted •{' '}
               <Button
                 onClick={handleChangeInvite}
                 sx={{
@@ -251,7 +259,7 @@ export default function Home() {
                   },
                 }}
               >
-                Change invite code
+                Change access code
               </Button>
               {' • '}
               <Button
@@ -273,28 +281,6 @@ export default function Home() {
                 Remove
               </Button>
             </>
-          ) : hasSkipped ? (
-            <>
-              Browsing without invite •{' '}
-              <Button
-                onClick={handleChangeInvite}
-                sx={{
-                  p: 0,
-                  minWidth: 'auto',
-                  fontSize: '0.7rem',
-                  textTransform: 'none',
-                  color: theme.palette.text.secondary,
-                  textDecoration: 'underline',
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                    textDecoration: 'underline',
-                    color: theme.palette.primary.main,
-                  },
-                }}
-              >
-                Enter invite code
-              </Button>
-            </>
           ) : null}
         </Typography>
       </Box>
@@ -304,7 +290,6 @@ export default function Home() {
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
         onVerified={handleInviteVerified}
-        onSkip={handleSkip}
       />
     </Box>
   );

@@ -3,11 +3,10 @@
 import { useState } from 'react';
 import { Location } from '@/models/RSVP';
 import CustomButton from '@/components/Button';
-import { Edit, RefreshCcw } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { Box, Card, CardContent, Typography, useTheme, Avatar } from '@mui/material';
 import { CheckCircleOutline, Cancel, EmailOutlined } from '@mui/icons-material';
 import { getUnifiedColors } from '@/lib/mui-theme';
-import Cookies from 'js-cookie';
 
 interface RSVPConfirmationProps {
   isVisible: boolean;
@@ -39,19 +38,6 @@ export default function RSVPConfirmation({
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
   if (!isVisible) return null;
-
-  const handleSubmitAnother = () => {
-    // Clear the invite_id cookie to allow fresh RSVP
-    Cookies.remove('invite_id');
-    
-    // Call the parent callback if provided
-    if (onSubmitAnother) {
-      onSubmitAnother();
-    } else {
-      // Default behavior: reload the page to start fresh
-      window.location.reload();
-    }
-  };
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
   const colors = getUnifiedColors();
@@ -201,30 +187,7 @@ export default function RSVPConfirmation({
                 {'Done'}
               </CustomButton>
             </Box>
-            
-            {/* Submit Another Answer button */}
-            <CustomButton
-              onClick={handleSubmitAnother}
-              variant="text"
-              size="small"
-              weddingVariant="primary"
-              startIcon={<RefreshCcw />}
-              sx={{
-                fontSize: '0.875rem',
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: theme.palette.action.hover
-                }
-              }}
-            >
-              {'Submit Another RSVP'}
-            </CustomButton>
           </Box>
-
-          {/* Contact info */}
-          <Typography variant="body2" sx={{ color: theme.palette.text.disabled, mt: 2 }}>
-            {'Have questions?'}
-          </Typography>
         </CardContent>
       </Card>
     </Box>
