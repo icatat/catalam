@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { Location } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
     const { invite_id } = await request.json();
-
+    console.log(invite_id)
     if (!invite_id) {
       return NextResponse.json(
         { error: 'Invite ID is required' },
@@ -15,28 +14,53 @@ export async function POST(request: Request) {
 
     // Normalize the input invite_id
     const normalizedInviteId = invite_id.trim().toUpperCase();
-
-    // Query Supabase for the guest with this invite_id
+    console.log("NOMRALIZE:", normalizedInviteId);
+    // Query Supabase guests table for the guest with this invite_id
     const { data: guest, error } = await supabase
-      .from('rsvp')
+      .from('guests')
       .select('*')
       .eq('invite_id', normalizedInviteId)
       .single();
 
-    if (error || !guest) {
-      console.error('Error fetching guest:', error);
+    console.log("GUEST DATA:", guest);
+    if (!guest) {
+      console.error('Could not find guest:', error);
       return NextResponse.json(
-        { error: 'Invalid invite code. Please check and try again.' },
+        { error: 'Invalid invite code. Please check and try again or contact Cata and Lam.' },
         { status: 404 }
       );
     }
 
-    // Return guest information
+    if (error) {
+      console.error('Error fetching guest:', error);
+      return NextResponse.json(
+        { error: 'Failed to verify invite code...that might be on us, so please contact us!' },
+        { status: 500 }
+      );
+    }
+
+    // Check RSVP status in both tables
+    const { data: romaniaRsvp } = await supabase
+      .from('rsvp_romania')
+      .select('confirmed')
+      .eq('invite_id', normalizedInviteId)
+      .single();
+
+    const { data: vietnamRsvp } = await supabase
+      .from('rsvp_vietnam')
+      .select('confirmed')
+      .eq('invite_id', normalizedInviteId)
+      .single();
+
+    // Return guest information matching GuestData interface plus RSVP status
     return NextResponse.json({
       invite_id: normalizedInviteId,
-      full_name: guest.full_name || '',
-      location: guest.location || [],
-      rsvp: guest.rsvp || [],
+      first_name: guest.first_name || '',
+      last_name: guest.last_name || '',
+      vietnam: guest.vietnam || false,
+      romania: guest.romania || false,
+      has_rsvp_romania: !!romaniaRsvp,
+      has_rsvp_vietnam: !!vietnamRsvp,
     });
   } catch (error) {
     console.error('Error verifying invite code:', error);

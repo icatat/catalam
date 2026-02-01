@@ -50,13 +50,16 @@ export default function RomaniaWedding() {
     })
       .then(response => response.json())
       .then(data => {
-        if (data.location?.includes(location)) {
+        if (data.romania) {
           setGuestData({
             invite_id: savedInviteId,
-            full_name: data.full_name,
-            location: data.location,
-            rsvp: data.rsvp || []
-          });
+            first_name: data.first_name,
+            last_name: data.last_name,
+            vietnam: data.vietnam,
+            romania: data.romania,
+            has_rsvp_romania: data.has_rsvp_romania,
+            has_rsvp_vietnam: data.has_rsvp_vietnam,
+          } as any);
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -103,14 +106,17 @@ export default function RomaniaWedding() {
         const updatedGuestData = await updatedGuestResponse.json();
         setGuestData({
           invite_id: guestData.invite_id,
-          full_name: updatedGuestData.full_name,
-          location: updatedGuestData.location,
-          rsvp: updatedGuestData.rsvp || []
-        });
+          first_name: updatedGuestData.first_name,
+          last_name: updatedGuestData.last_name,
+          vietnam: updatedGuestData.vietnam,
+          romania: updatedGuestData.romania,
+          has_rsvp_romania: updatedGuestData.has_rsvp_romania,
+          has_rsvp_vietnam: updatedGuestData.has_rsvp_vietnam,
+        } as any);
       }
 
       const emailPromise = createEmailPromise({
-        name: formData.name || guestData.full_name,
+        name: formData.name || `${guestData.first_name} ${guestData.last_name}`,
         email: formData.email,
         attending: formData.rsvp === 'true',
         location
@@ -174,7 +180,7 @@ export default function RomaniaWedding() {
       }}
     >
 
-      <Navigation currentPage="romania" showRomania={true} showVietnam={guestData?.location.includes(Location.VIETNAM) || false} />
+      <Navigation currentPage="romania" showRomania={true} showVietnam={guestData?.vietnam} />
 
       <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
         {/* Welcome Message */}
@@ -193,9 +199,9 @@ export default function RomaniaWedding() {
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
             }}
           >
-            {guestData.rsvp.includes(location)
-              ? `Welcome back, ${guestData.full_name.split(' ')[0]}! Your RSVP for Romania has been confirmed.`
-              : `Welcome, ${guestData.full_name.split(' ')[0]}! Please RSVP for our Romania wedding.`
+            {(guestData as any).has_rsvp_romania
+              ? `Welcome back, ${guestData.first_name}! Your RSVP for Romania has been confirmed.`
+              : `Welcome, ${guestData.first_name}! Please RSVP for our Romania wedding.`
             }
           </Typography>
         </Box>
@@ -247,7 +253,7 @@ export default function RomaniaWedding() {
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <CustomButton
               onClick={() => setShowRSVPModal(true)}
-              variant={guestData.rsvp.includes(location) ? "outlined" : "contained"}
+              variant={(guestData as any).has_rsvp_romania ? "outlined" : "contained"}
               size="large"
               sx={{
                 px: 6,
@@ -264,7 +270,7 @@ export default function RomaniaWedding() {
                 transition: 'all 0.3s ease'
               }}
             >
-              {guestData.rsvp.includes(location)
+              {(guestData as any).has_rsvp_romania
                 ? 'Update RSVP'
                 : 'RSVP Now'
               }
@@ -379,7 +385,7 @@ export default function RomaniaWedding() {
         <RSVPConfirmation
           isVisible={showConfirmation}
           attending={confirmationData.attending}
-          guestName={guestData.full_name}
+          guestName={`${guestData.first_name} ${guestData.last_name}`}
           email={confirmationData.email}
           location={location}
           onModify={() => {

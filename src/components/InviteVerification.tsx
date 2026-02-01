@@ -6,16 +6,14 @@ import { Heart, Key } from 'lucide-react';
 import { Box, Typography, TextField, useTheme, Alert, CircularProgress } from '@mui/material';
 import { TextCard } from '@/components/ui/photo-card';
 import Cookies from 'js-cookie';
-import { Location } from '@/models/RSVP';
+import { Location, GuestData } from '@/models/RSVP';
 import CustomButton from '@/components/Button';
 
 interface InviteVerificationProps {
   location: Location;
-  onVerified: (guestData: {
-    invite_id: string;
-    full_name: string;
-    location: Location[];
-    rsvp: Location[];
+  onVerified: (guestData: GuestData & {
+    has_rsvp_romania?: boolean;
+    has_rsvp_vietnam?: boolean;
   }) => void;
 }
 
@@ -50,8 +48,9 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
         throw new Error(data.error || 'Invalid invite code');
       }
 
-      // Check if guest is invited to this location
-      if (!data.location.includes(location)) {
+      // Check if guest is invited to this location based on boolean flags
+      const hasAccess = location === Location.ROMANIA ? data.romania : data.vietnam;
+      if (!hasAccess) {
         setError(`This invitation is not valid for the ${location.toLowerCase()} wedding`);
         return;
       }
@@ -61,9 +60,12 @@ export function InviteVerification({ location, onVerified }: InviteVerificationP
 
       onVerified({
         invite_id: inviteId.trim(),
-        full_name: data.full_name,
-        location: data.location,
-        rsvp: data.rsvp || [],
+        first_name: data.first_name,
+        last_name: data.last_name,
+        vietnam: data.vietnam,
+        romania: data.romania,
+        has_rsvp_romania: data.has_rsvp_romania,
+        has_rsvp_vietnam: data.has_rsvp_vietnam,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid invite code');

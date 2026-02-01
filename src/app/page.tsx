@@ -12,9 +12,10 @@ import { Location } from '@/models/RSVP';
 
 interface GuestData {
   invite_id: string;
-  full_name: string;
-  location: Location[];
-  rsvp: Location[];
+  first_name: string;
+  last_name: string;
+  vietnam: boolean;
+  romania: boolean;
 }
 
 export default function Home() {
@@ -39,9 +40,10 @@ export default function Home() {
             const data = await response.json();
             setGuestData({
               invite_id: savedInviteId,
-              full_name: data.full_name,
-              location: data.location,
-              rsvp: data.rsvp || [],
+              first_name: data.first_name,
+              last_name: data.last_name,
+              vietnam: data.vietnam,
+              romania: data.romania
             });
           } else {
             Cookies.remove('invite_id');
@@ -77,8 +79,10 @@ export default function Home() {
     setShowInviteModal(true);
   };
 
-  const showRomaniaMap = guestData && guestData.location.includes(Location.ROMANIA);
-  const showVietnamMap = guestData && guestData.location.includes(Location.VIETNAM);
+  console.log("GUEST DATA: ", guestData)
+
+  const showRomaniaMap = guestData != null && guestData.romania;
+  const showVietnamMap = guestData != null && guestData.vietnam;
 
   if (isVerifying) {
     return null; // or a loading spinner

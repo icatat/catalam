@@ -13,17 +13,15 @@ import {
   Dialog,
   IconButton,
 } from '@mui/material';
-import { Location } from '@/models/RSVP';
+import { Location, GuestData } from '@/models/RSVP';
 import CustomButton from '@/components/Button';
 
 interface InviteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onVerified: (guestData: {
-    invite_id: string;
-    full_name: string;
-    location: Location[];
-    rsvp: Location[];
+  onVerified: (guestData: GuestData & {
+    has_rsvp_romania?: boolean;
+    has_rsvp_vietnam?: boolean;
   }) => void;
 }
 
@@ -62,9 +60,12 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
 
       onVerified({
         invite_id: inviteId.trim(),
-        full_name: data.full_name,
-        location: data.location,
-        rsvp: data.rsvp || [],
+        first_name: data.first_name,
+        last_name: data.last_name,
+        vietnam: data.vietnam,
+        romania: data.romania,
+        has_rsvp_romania: data.has_rsvp_romania,
+        has_rsvp_vietnam: data.has_rsvp_vietnam,
       });
     } catch (err) {
       setError('Invalid access code. Please check and try again.');

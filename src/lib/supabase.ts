@@ -9,13 +9,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Database types
 export interface Guest {
   invite_id: string;
-  full_name: string;
-  location: Location[];
-  properties: Record<string, unknown>;
-  email?: string;
-  phone?: string;
-  rsvp_timestamp?: string;
-  rsvp?: Location[];
+  first_name: string;
+  last_name: string;
+  vietnam: boolean;
+  romania: boolean;
 }
 
 export interface RSVPFormData {

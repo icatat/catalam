@@ -52,9 +52,10 @@ export default function AboutPage() {
           if (data.rsvp && data.rsvp.length > 0) {
             setGuestData({
               invite_id: savedInviteId,
-              full_name: data.full_name,
-              location: data.location,
-              rsvp: data.rsvp || []
+              first_name: data.first_name,
+              last_name: data.last_name,
+              vietnam: data.vietnam,
+              romania: data.romania
             });
           }
         }
@@ -247,7 +248,7 @@ export default function AboutPage() {
           open={showUpload}
           onClose={() => setShowUpload(false)}
           onUploadSuccess={handleUploadSuccess}
-          defaultFromValue={guestData.full_name}
+          defaultFromValue={guestData.first_name + ' ' + guestData.last_name}
         />
       )}
     </Box>

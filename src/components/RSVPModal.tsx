@@ -57,8 +57,9 @@ export default function RSVPModal({
   variant = 'primary'
 }: RSVPModalProps) {
   const theme = useTheme();
+  const fullName = `${guestData.first_name} ${guestData.last_name}`;
   const [formData, setFormData] = useState<RSVPFormData>({
-    name: guestData.full_name || '',
+    name: fullName || '',
     email: '',
     phone: '',
     rsvp: '',
@@ -73,7 +74,9 @@ export default function RSVPModal({
   );
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
-  const hasExistingRSVP = guestData.rsvp.includes(location);
+  const hasExistingRSVP = location === Location.ROMANIA
+    ? (guestData as any).has_rsvp_romania
+    : (guestData as any).has_rsvp_vietnam;
   const weddingVariant = 'primary'; // Use unified theme
 
   // Phone prefix options based on common countries for each wedding
@@ -99,8 +102,9 @@ export default function RSVPModal({
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
+      const fullName = `${guestData.first_name} ${guestData.last_name}`;
       setFormData({
-        name: guestData.full_name || '',
+        name: fullName || '',
         email: '',
         phone: '',
         rsvp: '',
@@ -111,7 +115,7 @@ export default function RSVPModal({
       setPhonePrefix(location === Location.ROMANIA ? '+40' : '+84');
       setErrors({});
     }
-  }, [isOpen, guestData.full_name, location]);
+  }, [isOpen, guestData.first_name, guestData.last_name, location]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<RSVPFormData> = {};

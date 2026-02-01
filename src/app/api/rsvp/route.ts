@@ -1,27 +1,28 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { Location, RsvpData } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
-    const { invite_id, location, email, phone, attending, properties, name } = await request.json();
+    const { invite_id, location, email, phone, attending, properties, first_name, last_name } = await request.json();
 
-    if (!invite_id || !location || !name || !email || !phone || attending === undefined) {
+    if (!invite_id || !location || !first_name || !last_name || !email || !phone || attending === undefined) {
       return NextResponse.json(
-        { error: 'Invite ID, location, name, email, phone, and attending status are required.' },
+        { error: 'Invite ID, location, first name, last name, email, phone, and attending status are required.' },
         { status: 400 }
       );
     }
 
     const normalizedInviteId = invite_id.trim().toUpperCase();
 
-    // Fetch the guest record to verify invite_id exists and get allowed locations
-    const { data: existingGuest, error: fetchError } = await supabase
-      .from('rsvp')
+    // Fetch the guest record from guests table to verify invite_id exists and check allowed locations
+    const { data: guest, error: fetchError } = await supabase
+      .from('guests')
       .select('*')
       .eq('invite_id', normalizedInviteId)
       .single();
 
-    if (fetchError || !existingGuest) {
+    if (fetchError || !guest) {
       console.error('Error checking existing guest:', fetchError);
       return NextResponse.json(
         { error: 'Invalid invite code' },
@@ -29,58 +30,78 @@ export async function POST(request: Request) {
       );
     }
 
-    const allowedLocations = existingGuest.location || [];
+    // Verify the location is allowed for this invite based on boolean fields
+    const locationAllowed = location === Location.ROMANIA ? guest.romania :
+                           location === Location.VIETNAM ? guest.vietnam :
+                           false;
 
-    // Verify the location is allowed for this invite
-    if (!allowedLocations.includes(location)) {
+    if (!locationAllowed) {
       return NextResponse.json(
         { error: `This invite code does not grant access to the ${location.toLowerCase()} wedding.` },
         { status: 403 }
       );
     }
 
-    // Update the existing guest record with RSVP information
-    const currentRsvp = existingGuest.rsvp || [];
-    const rsvpArray = attending
-      ? [...new Set([...currentRsvp, location])] // Add location if attending (avoid duplicates)
-      : currentRsvp.filter((loc: string) => loc !== location); // Remove location if not attending
+    // Determine which RSVP table to update
+    const rsvpTable = location === Location.ROMANIA ? 'rsvp_romania' : 'rsvp_vietnam';
 
-    const propertiesObject = {
-      ...existingGuest.properties,
-      [location]: {
-        ...existingGuest.properties?.[location],
-        ...properties,
-        rsvp_submitted: true,
-        rsvp_timestamp: new Date().toISOString(),
-        attending: attending,
-      }
+    // Prepare RSVP data matching RsvpData interface
+    const rsvpData: Partial<RsvpData> = {
+      invite_id: normalizedInviteId,
+      first_name: first_name,
+      last_name: last_name,
+      confirmed: attending,
+      properties: properties,
+      phone: phone,
+      email: email,
+      updated_at: new Date().toISOString(),
     };
 
-    const { data: updatedData, error: updateError } = await supabase
-      .from('rsvp')
-      .update({
-        full_name: name || existingGuest.full_name,
-        email: email || existingGuest.email,
-        phone: phone || existingGuest.phone,
-        rsvp: rsvpArray,
-        properties: propertiesObject,
-        rsvp_timestamp: new Date().toISOString(),
-      })
+    // Check if RSVP already exists for this invite
+    const { data: existingRsvp } = await supabase
+      .from(rsvpTable)
+      .select('*')
       .eq('invite_id', normalizedInviteId)
-      .select();
+      .single();
 
-    if (updateError) {
-      console.error('Supabase update error:', updateError);
-      return NextResponse.json(
-        { error: 'Failed to update RSVP' },
-        { status: 500 }
-      );
+    let result;
+    if (existingRsvp) {
+      // Update existing RSVP
+      const { data: updatedData, error: updateError } = await supabase
+        .from(rsvpTable)
+        .update(rsvpData)
+        .eq('invite_id', normalizedInviteId)
+        .select();
+
+      if (updateError) {
+        console.error('Supabase update error:', updateError);
+        return NextResponse.json(
+          { error: 'Failed to update RSVP' },
+          { status: 500 }
+        );
+      }
+      result = updatedData[0];
+    } else {
+      // Insert new RSVP
+      const { data: insertedData, error: insertError } = await supabase
+        .from(rsvpTable)
+        .insert(rsvpData)
+        .select();
+
+      if (insertError) {
+        console.error('Supabase insert error:', insertError);
+        return NextResponse.json(
+          { error: 'Failed to create RSVP' },
+          { status: 500 }
+        );
+      }
+      result = insertedData[0];
     }
 
     return NextResponse.json({
       success: true,
       message: 'RSVP submitted successfully',
-      data: updatedData[0]
+      data: result
     });
   } catch (error) {
     console.error('Error submitting RSVP:', error);

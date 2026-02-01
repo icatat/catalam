@@ -11,45 +11,33 @@ export interface RSVPHandlerOptions {
 }
 
 export async function handleReconfirmation({ guestData, formData, location }: RSVPHandlerOptions): Promise<boolean> {
-  if (formData.rsvp === 'true' && guestData.rsvp.includes(location)) {
-    await sendRSVPConfirmationEmail({
-      name: formData.name || guestData.full_name,
-      email: formData.email,
-      attending: formData.rsvp === 'true',
-      location
-    });
-
-    return true; // Handled, exit early
-  }
+  // Note: RSVP status check should be done at a higher level since we no longer have rsvp array in GuestData
+  // This function is kept for future reconfirmation logic
   return false; // Not handled, continue with normal flow
 }
 
 export function updateGuestRSVPStatus({ guestData, formData, location, setGuestData }: RSVPHandlerOptions): void {
-  if (formData.rsvp === 'false' && guestData.rsvp.includes(location)) {
-    // They previously accepted and changed their mind
-    setGuestData({
-      ...guestData, 
-      rsvp: guestData.rsvp.filter(r => r !== location)
-    });
-  } else if (formData.rsvp === 'true' && !guestData.rsvp.includes(location)) {
-    setGuestData({
-      ...guestData, 
-      rsvp: [...guestData.rsvp, location]
-    });
-  }
+  // No longer tracking RSVP status in guest data - status is stored in separate rsvp tables
+  // This function is kept for backwards compatibility but does nothing
 }
 
 export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHandlerOptions, 'setGuestData'>): Promise<Response> {
+  // Split name into first and last name if provided in form, otherwise use from guestData
+  const nameParts = formData.name ? formData.name.trim().split(' ') : [];
+  const firstName = nameParts.length > 0 ? nameParts[0] : guestData.first_name;
+  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : guestData.last_name;
+
   return fetch('/api/rsvp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      invite_id: guestData.invite_id, // Pass the access code from cookie
-      name: formData.name || guestData.full_name,
+      invite_id: guestData.invite_id,
+      first_name: firstName,
+      last_name: lastName,
       location,
       email: formData.email,
       phone: formData.phone,
-      attending: formData.rsvp === 'true', // Send the actual RSVP response as boolean
+      attending: formData.rsvp === 'true',
       properties: {
         dietary_restrictions: formData.dietaryRestrictions,
         guests_count: formData.guestCount,

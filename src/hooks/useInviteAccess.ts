@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { Location } from '@/models/RSVP';
 
 interface InviteAccess {
   showRomania: boolean;
@@ -46,8 +45,8 @@ export function useInviteAccess(): InviteAccess {
 
         if (response.ok) {
           const data = await response.json();
-          setShowRomania(data.location?.includes(Location.ROMANIA) || false);
-          setShowVietnam(data.location?.includes(Location.VIETNAM) || false);
+          setShowRomania(data.romania || false);
+          setShowVietnam(data.vietnam || false);
         } else {
           setShowRomania(false);
           setShowVietnam(false);
