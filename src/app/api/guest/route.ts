@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { GroupMemberData } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
@@ -52,6 +53,45 @@ export async function POST(request: Request) {
       .eq('invite_id', normalizedInviteId)
       .single();
 
+    // Fetch group members if guest has a group
+    let groupMembers: GroupMemberData[] = [];
+    if (guest.group) {
+      const { data: groupGuests, error: groupError } = await supabase
+        .from('guests')
+        .select('*')
+        .eq('group', guest.group);
+
+      if (!groupError && groupGuests) {
+        // Fetch RSVP status for each group member
+        groupMembers = await Promise.all(
+          groupGuests.map(async (member) => {
+            const { data: memberRomaniaRsvp } = await supabase
+              .from('rsvp_romania')
+              .select('confirmed')
+              .eq('invite_id', member.invite_id)
+              .single();
+
+            const { data: memberVietnamRsvp } = await supabase
+              .from('rsvp_vietnam')
+              .select('confirmed')
+              .eq('invite_id', member.invite_id)
+              .single();
+
+            return {
+              invite_id: member.invite_id,
+              first_name: member.first_name || '',
+              last_name: member.last_name || '',
+              vietnam: member.vietnam || false,
+              romania: member.romania || false,
+              group: member.group,
+              has_rsvp_romania: !!memberRomaniaRsvp,
+              has_rsvp_vietnam: !!memberVietnamRsvp,
+            };
+          })
+        );
+      }
+    }
+
     // Return guest information matching GuestData interface plus RSVP status
     return NextResponse.json({
       invite_id: normalizedInviteId,
@@ -59,8 +99,10 @@ export async function POST(request: Request) {
       last_name: guest.last_name || '',
       vietnam: guest.vietnam || false,
       romania: guest.romania || false,
+      group: guest.group,
       has_rsvp_romania: !!romaniaRsvp,
       has_rsvp_vietnam: !!vietnamRsvp,
+      group_members: groupMembers,
     });
   } catch (error) {
     console.error('Error verifying invite code:', error);

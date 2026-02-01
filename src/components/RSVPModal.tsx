@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -21,11 +21,14 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Checkbox,
+  Paper,
+  Chip,
 } from '@mui/material';
-import { Close, Person, Email, Phone, Group, Restaurant, Message } from '@mui/icons-material';
+import { Close, Person, Email, Phone, Group, Restaurant, Message, CheckCircle, Cancel } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 import { RSVPFormData } from '@/types/wedding';
-import { Location, GuestData } from '@/models/RSVP';
+import { Location, GuestData, GroupMemberData } from '@/models/RSVP';
 import Button from './Button';
 import { forwardRef } from 'react';
 import { useTheme } from '@mui/material';
@@ -72,6 +75,7 @@ export default function RSVPModal({
   const [phonePrefix, setPhonePrefix] = useState<string>(
     location === Location.ROMANIA ? '+40' : '+84'
   );
+  const [selectedGroupMembers, setSelectedGroupMembers] = useState<Record<string, boolean>>({});
 
   const locationName = location === Location.ROMANIA ? 'Romania' : 'Vietnam';
   const hasExistingRSVP = location === Location.ROMANIA
@@ -99,6 +103,14 @@ export default function RSVPModal({
 
   ];
 
+  // Get group members eligible for this location (excluding current user)
+  const eligibleGroupMembers = useMemo(() => {
+    return (guestData.group_members || []).filter(
+      (member) => member.invite_id !== guestData.invite_id &&
+      (location === Location.ROMANIA ? member.romania : member.vietnam)
+    );
+  }, [guestData.group_members, guestData.invite_id, location]);
+
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -114,6 +126,13 @@ export default function RSVPModal({
       });
       setPhonePrefix(location === Location.ROMANIA ? '+40' : '+84');
       setErrors({});
+
+      // Initialize group member selections
+      const initialSelections: Record<string, boolean> = {};
+      eligibleGroupMembers.forEach(member => {
+        initialSelections[member.invite_id] = false;
+      });
+      setSelectedGroupMembers(initialSelections);
     }
   }, [isOpen, guestData.first_name, guestData.last_name, location]);
 
@@ -152,7 +171,7 @@ export default function RSVPModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -160,10 +179,21 @@ export default function RSVPModal({
     setIsSubmitting(true);
 
     try {
+      // Build group member RSVPs array
+      const groupMemberRSVPs = eligibleGroupMembers
+        .filter(member => selectedGroupMembers[member.invite_id])
+        .map(member => ({
+          invite_id: member.invite_id,
+          first_name: member.first_name,
+          last_name: member.last_name,
+          attending: true, // They're only included if attending
+        }));
+
       // Combine phone prefix with phone number for submission
       const formDataWithFullPhone = {
         ...formData,
-        phone: formData.phone ? `${phonePrefix} ${formData.phone}` : ''
+        phone: formData.phone ? `${phonePrefix} ${formData.phone}` : '',
+        groupMemberRSVPs: groupMemberRSVPs.length > 0 ? groupMemberRSVPs : undefined,
       };
       await onSubmit(formDataWithFullPhone);
       onClose();
@@ -306,6 +336,82 @@ export default function RSVPModal({
                 </Typography>
               )}
             </FormControl>
+
+            {/* Group Members Section */}
+            {eligibleGroupMembers.length > 0 && (
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 2.5,
+                  backgroundColor: 'action.hover',
+                  borderRadius: 2,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Group color="primary" />
+                  Your Group Members
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  RSVP on behalf of other members in your group
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {eligibleGroupMembers.map((member) => {
+                    const hasRSVP = location === Location.ROMANIA
+                      ? member.has_rsvp_romania
+                      : member.has_rsvp_vietnam;
+
+                    return (
+                      <Box
+                        key={member.invite_id}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          p: 1.5,
+                          backgroundColor: 'background.paper',
+                          borderRadius: 1,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1 }}>
+                          <Checkbox
+                            checked={selectedGroupMembers[member.invite_id] || false}
+                            onChange={(e) => {
+                              setSelectedGroupMembers(prev => ({
+                                ...prev,
+                                [member.invite_id]: e.target.checked
+                              }));
+                            }}
+                            disabled={isSubmitting || formData.rsvp !== 'true'}
+                            color="primary"
+                          />
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {member.first_name} {member.last_name}
+                          </Typography>
+                        </Box>
+                        {hasRSVP && (
+                          <Chip
+                            size="small"
+                            icon={<CheckCircle />}
+                            label="RSVP'd"
+                            color="success"
+                            variant="outlined"
+                          />
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+                {formData.rsvp !== 'true' && (
+                  <Alert severity="info" sx={{ mt: 2 }}>
+                    Select &quot;Yes, I&apos;ll be there!&quot; above to RSVP for group members
+                  </Alert>
+                )}
+              </Paper>
+            )}
 
             {formData.rsvp === 'true' && (
               <>

@@ -4,7 +4,7 @@ import { Location, RsvpData } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
-    const { invite_id, location, email, phone, attending, properties, first_name, last_name } = await request.json();
+    const { invite_id, location, email, phone, attending, properties, first_name, last_name, group_member_rsvps } = await request.json();
 
     if (!invite_id || !location || !first_name || !last_name || !email || !phone || attending === undefined) {
       return NextResponse.json(
@@ -98,10 +98,123 @@ export async function POST(request: Request) {
       result = insertedData[0];
     }
 
+    // Process group member RSVPs if provided
+    const groupResults = [];
+    if (group_member_rsvps && Array.isArray(group_member_rsvps) && group_member_rsvps.length > 0) {
+      for (const member of group_member_rsvps) {
+        try {
+          // Verify the group member's invite_id exists and is allowed for this location
+          const normalizedMemberInviteId = member.invite_id.trim().toUpperCase();
+
+          const { data: memberGuest, error: memberFetchError } = await supabase
+            .from('guests')
+            .select('*')
+            .eq('invite_id', normalizedMemberInviteId)
+            .single();
+
+          if (memberFetchError || !memberGuest) {
+            console.error(`Error fetching group member ${member.invite_id}:`, memberFetchError);
+            groupResults.push({
+              invite_id: member.invite_id,
+              success: false,
+              error: 'Invalid invite code'
+            });
+            continue;
+          }
+
+          // Verify the location is allowed for this member
+          const memberLocationAllowed = location === Location.ROMANIA ? memberGuest.romania :
+                                       location === Location.VIETNAM ? memberGuest.vietnam :
+                                       false;
+
+          if (!memberLocationAllowed) {
+            groupResults.push({
+              invite_id: member.invite_id,
+              success: false,
+              error: 'Location not allowed for this invite'
+            });
+            continue;
+          }
+
+          // Prepare RSVP data for group member
+          const memberRsvpData: Partial<RsvpData> = {
+            invite_id: normalizedMemberInviteId,
+            first_name: member.first_name,
+            last_name: member.last_name,
+            confirmed: member.attending,
+            properties: {
+              rsvp_on_behalf: `${first_name} ${last_name}`, // Track who made the RSVP
+            },
+            phone: phone, // Use the same contact info as the person making the RSVP
+            email: email,
+            updated_at: new Date().toISOString(),
+          };
+
+          // Check if RSVP already exists for this member
+          const { data: existingMemberRsvp } = await supabase
+            .from(rsvpTable)
+            .select('*')
+            .eq('invite_id', normalizedMemberInviteId)
+            .single();
+
+          if (existingMemberRsvp) {
+            // Update existing RSVP
+            const { error: memberUpdateError } = await supabase
+              .from(rsvpTable)
+              .update(memberRsvpData)
+              .eq('invite_id', normalizedMemberInviteId);
+
+            if (memberUpdateError) {
+              console.error(`Error updating group member ${member.invite_id} RSVP:`, memberUpdateError);
+              groupResults.push({
+                invite_id: member.invite_id,
+                success: false,
+                error: 'Failed to update RSVP'
+              });
+            } else {
+              groupResults.push({
+                invite_id: member.invite_id,
+                success: true,
+                message: 'RSVP updated'
+              });
+            }
+          } else {
+            // Insert new RSVP
+            const { error: memberInsertError } = await supabase
+              .from(rsvpTable)
+              .insert(memberRsvpData);
+
+            if (memberInsertError) {
+              console.error(`Error inserting group member ${member.invite_id} RSVP:`, memberInsertError);
+              groupResults.push({
+                invite_id: member.invite_id,
+                success: false,
+                error: 'Failed to create RSVP'
+              });
+            } else {
+              groupResults.push({
+                invite_id: member.invite_id,
+                success: true,
+                message: 'RSVP created'
+              });
+            }
+          }
+        } catch (memberError) {
+          console.error(`Error processing group member ${member.invite_id}:`, memberError);
+          groupResults.push({
+            invite_id: member.invite_id,
+            success: false,
+            error: 'Processing error'
+          });
+        }
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: 'RSVP submitted successfully',
-      data: result
+      data: result,
+      group_results: groupResults.length > 0 ? groupResults : undefined
     });
   } catch (error) {
     console.error('Error submitting RSVP:', error);

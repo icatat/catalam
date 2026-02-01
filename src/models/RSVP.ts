@@ -11,6 +11,20 @@ export interface GuestData {
   group?: string;
   vietnam: boolean;
   romania: boolean;
+  has_rsvp_romania?: boolean;
+  has_rsvp_vietnam?: boolean;
+  group_members?: GroupMemberData[];
+}
+
+export interface GroupMemberData {
+  invite_id: string;
+  first_name: string;
+  last_name: string;
+  vietnam: boolean;
+  romania: boolean;
+  group: string | null;
+  has_rsvp_romania: boolean;
+  has_rsvp_vietnam: boolean;
 }
 
 export interface RsvpData {
@@ -30,5 +44,6 @@ export interface RSVPProperties {
   accommodation?: string;
   guests_count?: number;
   special_requests?: string;
+  rsvp_on_behalf?: string;
 }
 

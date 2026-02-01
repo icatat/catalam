@@ -43,6 +43,7 @@ export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHan
         guests_count: formData.guestCount,
         special_message: formData.message,
       },
+      group_member_rsvps: formData.groupMemberRSVPs,
     }),
   });
 }

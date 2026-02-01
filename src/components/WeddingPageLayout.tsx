@@ -61,8 +61,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               last_name: data.last_name,
               vietnam: data.vietnam,
               romania: data.romania,
+              group: data.group,
               has_rsvp_romania: data.has_rsvp_romania,
               has_rsvp_vietnam: data.has_rsvp_vietnam,
+              group_members: data.group_members || [],
             } as any);
           }
           setIsVerifying(false);
@@ -116,8 +118,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
           last_name: updatedGuestData.last_name,
           vietnam: updatedGuestData.vietnam,
           romania: updatedGuestData.romania,
+          group: updatedGuestData.group,
           has_rsvp_romania: updatedGuestData.has_rsvp_romania,
           has_rsvp_vietnam: updatedGuestData.has_rsvp_vietnam,
+          group_members: updatedGuestData.group_members || [],
         } as any);
       }
 

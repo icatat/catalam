@@ -23,6 +23,12 @@ export interface RSVPFormData {
   guestCount: string;
   dietaryRestrictions: string;
   message: string;
+  groupMemberRSVPs?: Array<{
+    invite_id: string;
+    first_name: string;
+    last_name: string;
+    attending: boolean;
+  }>;
 }
 
 // RSVP option structure

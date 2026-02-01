@@ -64,8 +64,10 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
         last_name: data.last_name,
         vietnam: data.vietnam,
         romania: data.romania,
+        group: data.group,
         has_rsvp_romania: data.has_rsvp_romania,
         has_rsvp_vietnam: data.has_rsvp_vietnam,
+        group_members: data.group_members || [],
       });
     } catch (err) {
       setError('Invalid access code. Please check and try again.');

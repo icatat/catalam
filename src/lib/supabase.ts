@@ -13,6 +13,12 @@ export interface Guest {
   last_name: string;
   vietnam: boolean;
   romania: boolean;
+  group: string | null;
+}
+
+export interface GuestWithRSVP extends Guest {
+  has_rsvp_romania: boolean;
+  has_rsvp_vietnam: boolean;
 }
 
 export interface RSVPFormData {
