@@ -4,6 +4,7 @@ export interface ItineraryEvent {
   title: string;
   subtitle?: string;
   location: string;
+  locationUrl?: string;
   description?: string;
 }
 

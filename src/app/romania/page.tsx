@@ -19,6 +19,8 @@ import {
 } from '@/lib/rsvpUtils';
 import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
 import CustomButton from '@/components/Button';
+import WeddingTimeline from '@/components/WeddingTimeline';
+import { ItineraryEvent } from '@/types/wedding';
 
 export default function RomaniaWedding() {
   const theme = useTheme();
@@ -32,9 +34,25 @@ export default function RomaniaWedding() {
     email: string;
     emailSent: boolean;
   }>({ attending: false, email: '', emailSent: false });
+  const [weddingEvents, setWeddingEvents] = useState<ItineraryEvent[]>([]);
+  const [timelineDate, setTimelineDate] = useState<string>('September 11th, 2026');
 
   const location = Location.ROMANIA;
   const weddingInfo = WEDDING_INFO[location];
+
+  // Load timeline data
+  useEffect(() => {
+    fetch('/api/romania-timeline')
+      .then(response => response.json())
+      .then(data => {
+        setWeddingEvents(data.events || []);
+        setTimelineDate(data.date || 'September 11th, 2026');
+      })
+      .catch(error => {
+        console.error('Error loading timeline:', error);
+        // Keep default empty array on error
+      });
+  }, []);
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -282,91 +300,27 @@ export default function RomaniaWedding() {
           </Box>
         </Box>
 
-        {/* Location/Venue Section */}
-        <ScrollReveal direction="up" delay={0.1}>
+        {/* Wedding Timeline Section */}
+        <ScrollReveal direction="up" delay={0.2}>
           <section style={{ padding: theme.spacing(8, 0) }}>
             <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
-              <Typography variant="h2" component="h2" sx={{ 
-                color: theme.palette.primary.main, 
-                fontWeight: 700, 
-                mb: 6, 
-                textAlign: 'center' 
+              <Typography variant="h2" component="h2" sx={{
+                color: theme.palette.primary.main,
+                fontWeight: 700,
+                mb: 2,
+                textAlign: 'center'
               }}>
-                Wedding Location
+                Itinerary
               </Typography>
-              
-              <Box sx={{ 
-                display: 'grid', 
-                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
-                gap: 4, 
-                alignItems: 'center' 
+              <Typography variant="h6" component="p" sx={{
+                color: theme.palette.text.secondary,
+                mb: 6,
+                textAlign: 'center'
               }}>
-                {/* Location Details */}
-                <Box sx={{ 
-                  p: 4, 
-                  bgcolor: 'background.paper', 
-                  borderRadius: 3, 
-                  boxShadow: theme.shadows[4] 
-                }}>
-                  <Typography variant="h4" component="h3" sx={{ 
-                    color: theme.palette.text.primary, 
-                    fontWeight: 600, 
-                    mb: 3 
-                  }}>
-                    Oradea, Romania
-                  </Typography>
-                  
-                  <Typography variant="body1" sx={{ 
-                    color: theme.palette.text.secondary, 
-                    mb: 3, 
-                    lineHeight: 1.7 
-                  }}>
-                    Join us in the beautiful city of Oradea for our Romanian wedding celebration. Known for its stunning architecture and rich cultural heritage, Oradea provides the perfect backdrop for our special day.
-                  </Typography>
-                  
-                  {/* Venue Address */}
-                  <Box sx={{ 
-                    p: 3, 
-                    bgcolor: theme.palette.grey[50], 
-                    borderRadius: 2, 
-                    border: `1px solid ${theme.palette.grey[200]}` 
-                  }}>
-                    <Typography variant="h6" sx={{
-                      color: theme.palette.primary.main,
-                      fontWeight: 600,
-                      mb: 1
-                    }}>
-                      Venue
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
-                      Details coming soon!
-                    </Typography>
-                  </Box>
-                </Box>
+                {timelineDate}
+              </Typography>
 
-                {/* Google Maps Embed */}
-                <Box sx={{ 
-                  borderRadius: 3, 
-                  overflow: 'hidden', 
-                  boxShadow: theme.shadows[8],
-                  '& iframe': {
-                    width: '100%',
-                    height: { xs: '300px', md: '450px' },
-                    border: 0
-                  }
-                }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <iframe 
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2716.889008262144!2d22.072338490107096!3d47.0816401496941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474637651b7f20c1%3A0x9e1984228909fcf2!2sCamelot%20Resort!5e0!3m2!1sen!2sus!4v1756786599009!5m2!1sen!2sus"
-                      allowFullScreen
-                      loading="lazy" 
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Camelot Resort - Oradea, Romania"
-                      style={{ width: '100%', height: '300px', border: 0, borderRadius: '12px' }}
-                    />
-                  </Box>
-                </Box>
-              </Box>
+              {weddingEvents.length > 0 && <WeddingTimeline events={weddingEvents} />}
             </Box>
           </section>
         </ScrollReveal>

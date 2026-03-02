@@ -1,5 +1,5 @@
 import { ItineraryEvent } from '@/types/wedding';
-import { Card, CardContent, Typography, Box, Avatar, useTheme } from '@mui/material';
+import { Card, CardContent, Typography, Box, Avatar, useTheme, Link } from '@mui/material';
 import { getUnifiedColors } from '@/lib/mui-theme';
 
 interface ItineraryDayProps {
@@ -66,17 +66,37 @@ export default function ItineraryDay({
                   {event.title}
                 </Typography>
                 {event.subtitle && (
-                  <Typography 
-                    variant="body2" 
-                    component="h5" 
+                  <Typography
+                    variant="body2"
+                    component="h5"
                     sx={{ color: theme.palette.text.secondary, fontWeight: 500, mb: 0.5 }}
                   >
                     {event.subtitle}
                   </Typography>
                 )}
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 0.5 }}>
-                  {event.location}
-                </Typography>
+                {event.locationUrl ? (
+                  <Link
+                    href={event.locationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      color: theme.palette.primary.main,
+                      textDecoration: 'none',
+                      display: 'inline-block',
+                      mb: 0.5,
+                      fontSize: '0.875rem',
+                      '&:hover': {
+                        textDecoration: 'underline'
+                      }
+                    }}
+                  >
+                    {event.location}
+                  </Link>
+                ) : (
+                  <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 0.5 }}>
+                    {event.location}
+                  </Typography>
+                )}
                 {event.description && (
                   <Typography variant="caption" sx={{ color: theme.palette.text.disabled }}>
                     {event.description}

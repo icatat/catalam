@@ -9,235 +9,190 @@ excerpt: See Oradea like a local - Cata's tips
 # Oradea
 Hey there - Cătă here.
 
-**First of all a disclaimer. The photos on this page have been taken by me over the years. They are not social media quality, they have served utility purposes at a time - such as sending a Snapchat back in the day, or simply casually sharing with friends.**
+**Quick disclaimer: the photos on this page are candid snapshots — not Instagram posts. Taken over the years for Snapchat, WhatsApp, or just because. That's the vibe.**
 
-Oradea above all is my hometown. What I present here is through my lens with an emphasis on things that I would like to show you. I have not tried all the below places - but everything below is a combination of things that I know and I like, things that people told me - and things where I am like "damn, this was not here, it could be cool to see". I am trying to provide you with both traditional as well as modern things.
+Oradea is a mid-sized city in northwestern Romania, best known for its Art Nouveau architecture, thermal baths, and — if you ask me — seriously underrated food culture. Most people can cover the highlights in 1–2 days, though there's enough to reward a slower pace if you have it.
 
+It's also my hometown. Everything here is through my lens — a mix of places I love, things people have recommended to me, and spots I noticed recently and thought were worth including. I've tried to balance the traditional with the more modern.
 
-I put together a map that comprises a lot of the things from below. The city is pretty walkable for the most part - so it should take you realistically about 1 - 2 days to see everything. Of course, Lam and I are fast travelers - we walk and do a lot when we travel.
+I put together a map with most of the places below.
 
 <iframe src="https://www.google.com/maps/d/embed?mid=1-vjLIpuSTEfOruamSgsxXuucz4AHA_A&ehbc=2E312F" width="640" height="480"></iframe>
 
-## Things to see & do
+---
+
+## Getting Around
+
+**On foot** — the city center is very walkable and that's the easiest way to see it.
+
+**Tram/bus** — reliable and worth trying as an experience. See the [official website](https://www.otlra.ro/index.php/en/tickets-and-season-tickets) for tickets and routes.
+
+**Taxi** — plentiful and reliable. Make sure they start the meter if you're a foreigner. You'll be surprised how many drivers speak English. Download [Bolt](https://bolt.eu/en/) — it works better than Uber here. Uber exists but isn't as strong.
+
+---
+
+## Good to Know
+
+Before you dive in — a few things that'll save you some confusion:
+
+- People are welcoming, but don't expect American-level enthusiasm — that's just the culture
+- Smoking is common outdoors
+- Tipping is optional; 5–10% is appreciated
+- No real tourist trap concern — locals eat at the same places in the center
+- Bakeries are everywhere; trust your eyes over "best of" lists
+- Sundays are slow; many places are closed (religion matters here)
+- [Lotus Center](https://maps.app.goo.gl/XhNKUVYdhUdshYSq7) mall exists if you need it, but not worth a special trip
+- **Profi** and **Carrefour** are the best grocery chains
+- Corn on pizza is normal here. Not even debated — just accepted. Ketchup on pizza also happens. You won't get parmesan or chilli flakes, but you'll get spicy and oregano olive oil to top things off.
+
+---
+
+## Things to See & Do
 
 ### Palatul Episcopiei Romano Catolice
+*~30 min including a walk through the park*
 
-While not a must, this is a pretty good starting point that could take you through the rest of the city.
-This used to be a Museum, then the Catholic Church claimed it back. This complex also has the [Roman Catholic Cathedral](https://maps.app.goo.gl/Xjz1KRD4YJUo68Uq9) - which is the largest Baroque church in Romania, and **Sirul Canonicilor** - a long corridor of Baroque style arches.
-From here, walk down the **Petőfi Sándor  Park** towards the City Center.
+A good starting point that naturally leads you toward the rest of the city. The complex includes the [Roman Catholic Cathedral](https://maps.app.goo.gl/Xjz1KRD4YJUo68Uq9) — the largest Baroque church in Romania — and **Șirul Canonicilor**, a long corridor of Baroque arches. From here, walk through **Petőfi Sándor Park** down toward the city center.
 
-### City Center - "Calea Republicii" (Republicii Walking Street)
+### City Center — Calea Republicii
+*~1–2 hrs depending on stops*
 
-If you are to pick one thing to get a feel for the city - start here. You will see many historical buildings in a combination of Baroque, Art Nouveau and Art Deco architecture - which we take a lot of pride in.
+If you only do one thing, start here. Republicii is the main walking street and gives you the best feel for the city — a mix of Baroque, Art Nouveau and Art Deco architecture that we're genuinely proud of.
 
-Start from the big Mcdonalds (yes), walk down and see the [Moskovitz Palace](https://www.oradeaheritage.ro/the-moskovits-miksa-palace/?lang=en) (though more like a house than a Palace), end up by the [Queen Maria Theater - *Teatrul Regina Maria*](https://www.teatrulreginamaria.ro/).
+Start from the big McDonald's (yes, really), walk down past the [Moskovitz Palace](https://www.oradeaheritage.ro/the-moskovits-miksa-palace/?lang=en), and end up at the [Queen Maria Theater](https://www.teatrulreginamaria.ro/).
 
-Along this street you will see a lot of restaurants and bars. If you are feeling peckish and would love a snack, stop by [ La Turcu ](https://maps.app.goo.gl/qpy472RCTjxmmyKn7) for a shaorma or Doner Kebab. This is not a joke - Romanians do love their shaorma - it is the main fast food over burgers and fries.
+Along the way:
+- Grab a shaorma or doner at [La Turcu](https://maps.app.goo.gl/qpy472RCTjxmmyKn7) — Romanians genuinely love their shaorma, it's the real fast food here
+- For Italian and wine, try [Allegria](https://maps.app.goo.gl/SeL8ubTqFhoh3rfh9) or [ReWine](https://maps.app.goo.gl/tVe3E6N5T4Gxc7yj7)
+- Behind the theater, [Moskva](https://maps.app.goo.gl/dpT8SaH9Fr4H7bko7) is a no-frills bar with a great Budapest ruin-bar vibe
+- For soup in a bread bowl, try [Cyrano](https://maps.app.goo.gl/sZvYQ7pX9r5CW2Uq9), then pop into the [Casa Darvas - La Roche](https://www.visitoradea.com/what-to-see/darvas-la-roche-house) nearby if you have time
 
-If you are in a fancy Italian restaurant mood - stop at [Allegria](https://maps.app.goo.gl/SeL8ubTqFhoh3rfh9) or [ReWine](https://maps.app.goo.gl/tVe3E6N5T4Gxc7yj7) for some wine.
+### Piața Unirii — Union Square
+*~30–45 min*
 
-Also, behind the theater, there is this hip yet no frills cafe/bar - [Moskva](https://maps.app.goo.gl/dpT8SaH9Fr4H7bko7). No frills, just the basic drinks, go for the cool space which resembles the vibe of a Budapest-style ruin bar.
+Cross the bridge from Republicii and you'll hit the main square. Things to see here:
 
-If you are feeling more like soup in a bread bowl, then try stopping by at [Cyrano](https://maps.app.goo.gl/sZvYQ7pX9r5CW2Uq9). Then turn right and go to the [Casa Darvas - La Roche](https://www.visitoradea.com/what-to-see/darvas-la-roche-house) and visit it if you have the time.
+- [City Hall](https://maps.app.goo.gl/8MkDhi9Hn7CmxCX18) — worth climbing to the top
+- [Black Eagle Palace](https://maps.app.goo.gl/3xFtNnkT9v5jxrh69) on your left
+- [Biserica cu Luna](https://maps.app.goo.gl/oVsQh6ZQG2X1Cs986) (*Moon Church*) — named for the mechanism at the top that tracks the moon phase
+- [Biserica Sf. Nicolae](https://maps.app.goo.gl/DLYpZm4Yj3dbZuyh9) (*Saint Nicholas Church*) on your right — this is where our wedding will be!
 
+### "Pasajul" and Alecsandri Street
+*~1 hr+, more if you stop for drinks*
 
-### Piata Unirii - "Union Square"
+Off the square, a passage cuts through the Black Eagle Palace ("Pasajul") and connects to Alecsandri Street. For people who grew up here — especially younger generations — this is the Oradea equivalent of the East Village or Shoreditch. I don't want to over-hype it, but that's genuinely how it felt.
 
-From the *Republicii Street* , by the end, you could cross the bridge towards the "Union Square" of Oradea. There, you will see the [City Hall](https://maps.app.goo.gl/8MkDhi9Hn7CmxCX18) - consider climbing on top!
-
-From there, you will find yourself in a plaza. See the [Black Eagle Palace](https://maps.app.goo.gl/3xFtNnkT9v5jxrh69) and [Biserica cu Luna](https://maps.app.goo.gl/oVsQh6ZQG2X1Cs986) - *Moon Church* (this is the unofficial name given due to its top mechanism reflecting the moon phase) on the left, and [Biserica Sf Nicolae](https://maps.app.goo.gl/DLYpZm4Yj3dbZuyh9) - *Saint Nicholas Church* on the right (this is where our wedding will be!)
-
-### "Pasajul" and "Alecsandri"
-
-While in "Union Square" - you will see a passage through the [Black Eagle Palace](https://maps.app.goo.gl/3xFtNnkT9v5jxrh69) ("Pasajul") and another street "Alecsandri". For people in Oradea, especially young people - this area is the Oradea equivalent of the NY East Village or London "Shoredich". Not to over-hype it - but to get how a high school/college student perceived this area.
-
-To get an idea of what I considered "cool" as a teen and where I would still catch up with people, check out [Lord's Pub](https://maps.app.goo.gl/daq3sKs6LkATQFTC8) (especially if you are a Rock music listener), [Green Pub](https://maps.app.goo.gl/Bo1VMXDAU5F7Tr44A) or [Columbus Cafe](https://maps.app.goo.gl/fXGWBvYwP9VSDabC6). However, if you feel like teleporting to a New York-style speakeasy bar with award winning cocktails - check out [Prohibition Bar](https://maps.app.goo.gl/K5F6u8YdT4LoZohM6).
+Places I'd still go back to: [Lord's Pub](https://maps.app.goo.gl/daq3sKs6LkATQFTC8) (especially for rock music), [Green Pub](https://maps.app.goo.gl/Bo1VMXDAU5F7Tr44A), and [Columbus Cafe](https://maps.app.goo.gl/fXGWBvYwP9VSDabC6). If you want something more elevated, [Prohibition Bar](https://maps.app.goo.gl/K5F6u8YdT4LoZohM6) does award-winning cocktails in a proper New York-style speakeasy setting.
 
 ### Medieval Citadel
+*~15 min to 1.5 hrs depending how much you explore*
 
-One of the more unique things about the city is the Citadel.
-As good for a walk in the park as well as getting in a bit of culture and history or the experience of dining in a medieval building. You can visit it as quickly as 15 minutes, or take your time to enjoy the outdoors, some of the museums and art galleries inside. The Citadel is hosting the Museum of the City of Oradea, as well as a micro-museum dedicated to bread making! (literally takes 5 minutes to see).
+One of the more unique things about the city. You can do a quick pass in 15 minutes or take your time with the outdoor space, museums, and art galleries inside. There's the Museum of the City of Oradea and a micro-museum dedicated to bread-making (genuinely takes 5 minutes, but charming).
 
-Check out <a href="https://maps.app.goo.gl/VdAaGoebsGJJph1W8"> Piata 9
-</a> for a great (non-traditional) brunch - their bread is great!
+- [Piața 9](https://maps.app.goo.gl/VdAaGoebsGJJph1W8) at the Citadel — great brunch, excellent bread
+- [Meridian 0](https://maps.app.goo.gl/svGbBHBKpW4WMqvJ7) — more formal, good for a sit-down meal with wine
 
-For a more formal restaurant and wine try out <a href="https://maps.app.goo.gl/svGbBHBKpW4WMqvJ7">Meridian 0 </a>
-
-### Dealul Ciuperca - "Mushroom Hill"
+### Dealul Ciuperca — Mushroom Hill
+*~45 min walk up and back; longer if you stay for dinner*
 
 ![Dealul Ciuperca (Mushroom Hill) overlooking Oradea](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/Ciuperca.jpg)
-*Panoramic view of Oradea from Mushroom Hill - perfect spot for sunset photos*
+*Panoramic view of Oradea from Mushroom Hill — perfect for sunset*
 
-If you feel like you ate too much and need some exercise - or are just a fan of panoramic views - consider walking up the [Dealul Ciuperca](https://maps.app.goo.gl/NhawDTgDDDkxssTr6). From the top you should see a nice view of the city, so consider going for sunset.
+If you've eaten too much (likely) or just want a panoramic view, walk up [Dealul Ciuperca](https://maps.app.goo.gl/NhawDTgDDDkxssTr6) at sunset. At the top, [Restaurant Ciuperca](https://maps.app.goo.gl/U9vBcFc8d7Pj2Yx3A) is there — I can't speak to the food quality, but **papanași** and **mititei** with a view is a solid combination.
 
-At the top there is also [Restaurant Ciuperca](https://maps.app.goo.gl/U9vBcFc8d7Pj2Yx3A). I cannot talk about the food quality, but **papanași** and **mititei** should be good, especially if you prioritize a view.
+### Spas & Thermal Baths
 
-### Spas
+We're known for thermal baths in this region. [Nymphea Spa](https://maps.app.goo.gl/CcspYeGjWeGoNg6N9) is the most convenient option in the city. If you're up for a short trip out, head to [Băile Felix](https://maps.app.goo.gl/4aHH7f8jUJPQVD2Z8) and check out [Apollo](https://maps.app.goo.gl/ki7MAUrQaBYJpxwt9) or [Aquapark President](https://maps.app.goo.gl/gNwPyw1mqbGwGE5R6).
 
-In our area we are known for our thermal baths. If you feel like relaxing a bit - try [Nymphea Spa](https://maps.app.goo.gl/CcspYeGjWeGoNg6N9). If you don't mind going a bit out of your way, take a quick trip to [Baile Felix](https://maps.app.goo.gl/4aHH7f8jUJPQVD2Z8) and check out [Apollo](https://maps.app.goo.gl/ki7MAUrQaBYJpxwt9) or [Aquapark President](https://maps.app.goo.gl/gNwPyw1mqbGwGE5R6)
+---
 
-## Things to eat and where to eat them
+## Food & Drink
 
-Now, I have to say that a lot of the food that I know and like is home made food that it might be hard to find in a restaurant. I will also say that we are not that purist when it comes to food, there is not a "super specific" way of making this - it's more like whatever you remember your mom taught you how to do it. Then maybe make it better and serve it in a restaurant. Nuances exist, while at times I will provide specific dishes, other times I might just provide a style.
+A lot of what I grew up eating is home cooking that's hard to find on a menu. No single "correct" version of most dishes — it's whatever your mom taught you, maybe done a bit better in a restaurant. For where to actually eat, jump to [Restaurant Highlights](#restaurant-highlights) below.
 
-### Sarmale - "Stuffed Cabbages"
+### Sarmale — Stuffed Cabbage Rolls
 
-Very much a staple in our cuisine, these pickled cabbage rolls filled with ground meat ( usually a combination of pork and beef) and rice and going to be present during any celebration. There is no such thing as a Christmas/Easter/New Year or even a Wedding without them. Many times, your grandma will also serve them to you without any special occasion.
-
-In some regions of the country they swap the cabbage leaves with grape vines, and in the summer you can also find them made with fresh boiled cabbage as well.
-
-Generally, you can find them in any restaurant serving Romanian food.
+The cornerstone of Romanian cuisine. Pickled cabbage leaves filled with ground pork and beef, plus rice. No Christmas, Easter, New Year's, or wedding happens without them. Found in any restaurant serving Romanian food.
 
 ### Plăcintă
 
 ![Placinta](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/placinta.jpeg)
-*Plăcintă - traditional stuffed pie cooked on the stovetop*
+*Plăcintă — traditional stuffed pie cooked on the stovetop*
 
-This is a stuffed pie, typically filled with cheese, potatoes or pickled cabbage. Get it from anywhere that advertises "Plăcintă" (the dish) or "Plăcintărie". Different parts of the country make it in different ways. In Bihor, we are cooking it in a pan on the stovetop, with a bit of oil.
+A stuffed pie filled with cheese, potato, or pickled cabbage, cooked in a pan on the stovetop. Look for anywhere advertising "Plăcintă" or "Plăcintărie." Get the pickled cabbage version and ask for sour cream on top.
 
-For a more unique experience get the one filled with pickled cabbage. Ask for sour cream on top if you like things more saucy/creamy.
+### Lángos
 
-### Langos
+Fried dough topped with sour cream and cheese — common here because of Oradea's large Hungarian population. Add garlic mujdei if you're feeling adventurous. Found at the same spots that sell plăcintă.
 
-Oradea has a big Hungarian population which makes Langos a very common snack or quick meal. You will find it at the same spots that sell Plăcintă as it is its rebel cousin. By that I mean this is a piece of fried plain dough, usually covered with sour cream and cheese - add some garlic mujdei (garlic pressed with salt, mixed with sour cream) if you are feeling adventurous.
+### Kürtőskalács — Chimney Cake
 
-### **Kürtőskalács** (Chimney cake)
+The controversial one — Transylvanian in origin, claimed by both Romanians and Hungarians, I'm not going there. Mostly available at seasonal markets, so if you spot it, get it. The classic is walnut and sugar. Skip the cream-filled versions you find in the Americas — not the real thing.
 
-This is the controversial one. This dish is Transylvanian which makes both Romanians and Hungarians entitled to claim. The name is Hungarian though, from a geographic perspective it originates on our territory. We are not going over the history of Transylvania here...
-
-Now - this is mostly available during celebrations/seasonal markets. There are not really places that are dedicated to making it. If you stumble upon it - you need to get the large one covered with walnut and sugar - that is the most standard one. If walnut is an issue - try cinnamon. Everything else is not "the real deal" (yes, forget the handheld decadent ones filled with whipping cream and chocolate that you find in the Americas - not a thing).
-
-### Sour Cream Soups - "Ciorbă"
+### Ciorbă — Sour Cream Soups
 
 ![Ciorba de burta](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/ciorbaburta.jpg)
-*Ciorbă de burtă - traditional tripe soup with sour cream and garlic, a New Year's Eve staple*
+*Ciorbă de burtă — tripe soup with sour cream and garlic*
 
 ![Ciorba de Perisoare](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/ciorbaperisoare.jpeg)
-*Ciorbă de perișoare - meatball soup with vegetables, a comforting family favorite*
+*Ciorbă de perișoare — meatball soup with vegetables*
 
-In Romania we love our sour cream. One of the common ways in which we are using it is in our soups. We call them "ciorbă". One of the most common ones that you should definitely try is **Ciorbă de burtă** - Tripe soup. It is made out of beef tripe and can be a bit of an acquired taste though you don't need to be particularly adventurous. While it is commonly found in traditional restaurants, we do make it at home for special occasions as well - my mom always used to make it for New Years Eve.
+We love sour cream, and nowhere more than in our soups. **Ciorbă de burtă** (tripe soup) is the one to try — my mom always made it for New Year's Eve, and it's less challenging than it sounds. If tripe isn't your thing, **ciorbă rădăuțeană** is the same but with chicken, and **ciorbă de perișoare** (meatball soup) is the most crowd-pleasing version.
 
-If it does not appeal to you by any means, or you would rather just avoid beef - try its tamed cousin **ciorbă rădăuțeană** - which is the same thing but made with chicken not tripe. Other similar variations include **ciorbă de perișoare** (made with meatballs - but you would need to ask if it is pork or beef), **ciorba de pui a la grec** (Greek style chicken soup) - is it really Greek? I do not really know.
+### Mains — Grilled & Stewed
 
-### Grilled meats
+We take pork seriously. The centerpiece of any summer grill is **mititei** (or **mici**) — skinless sausages of beef, pork, and lamb, eaten with mustard and bread. For sit-down meals, expect a lot of stew-style dishes: **paprikaș** (chicken with paprika, handmade noodles, and sour cream — a Romanian-Hungarian crossover) and **chicken liver** stew are the most common, usually served with **mămăligă** (polenta). For grilled meats specifically, [Piața 9](https://maps.app.goo.gl/3SVWnqhyMiuSBtyy6) — the non-citadel location — is my pick.
 
-I have to say we are pretty big and proud of our meats - especially pork. One of the main activities in the summer is to go out for a grill - where the staple is just meat.
-Must try is **mititei** or **mici** - these are skinless sausages made out of a combination of beef, pork and lamb. Most commonly eaten with mustard and bread. Some people eat them with fries as well. Any other side is not very common. Other common meats include **pork sausages**, especially **caltaboș**. In my family, we have this one particularly around Christmas time.
-
-While a lot of the traditional places in the city will serve some variations of meats - I would recommend going to [Piața 9](https://maps.app.goo.gl/3SVWnqhyMiuSBtyy6) (*not* the citadel location).
-
-### Tocănițe - "stewed meats"
-
-We make a lot of stew-like dishes especially in home-cooking. It is common to see **chicken liver** stew, **paprikas** ( a chicken stew with paprika, hand made noodle and sour cream of course - a cross-over between Hungarian and Romanian cuisine), or any other meats. Usually we have them with a side, most commonly **mămpligă**(polenta) or even mashed potatoes.
-
-### Cold meats
+### Starters, Cold Plates & Spreads
 
 ![Meat](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/meat.jpg)
-*Traditional cold meat platter - featuring slănină, brânză de burduf, and jumări served with bread, pickles and onion*
+*Traditional cold meat platter — slănină, brânză de burduf, and jumări with bread, pickles, and onion*
 
-Our cold meats game is a bit more brave. As an example we like to use lard as a spread on bread **pâine cu untură** often times topped with onion and salt. We don't like to waste anything from the pig - so we also make **tobă** - which is meat (mainly the face and organs, including ears) that has been pressed together and then sliced like very thick deli meat. It is commonly found as an appetizer, especially for celebrations like Christmas. We also like our collagen - so we make **piftie** which is boiled pork with seasonings and cooled down into a savory meat jello dish. It is actually pretty good and commonly served around Christmas (when your mom and grandma store it on the balcony as it is colder than the fridge *true story*).
+This is where things get adventurous. Forget the cheese board — go for **slănină** (cured pig fat), **brânză de burduf** (cheese aged in a sheep's stomach), and **jumări** (pork rinds) with bread, pickles, and onion. **Piftie** is a savory meat jello you'll encounter at celebrations — better than it sounds. For spreads, try **zacuscă** (roasted pepper and eggplant, similar to Ajvar) or **eggplant salad** (like baba ganoush but with mayo). **Boeuf Salad** — boiled vegetables, chicken, pickles, and mayo — is at every Romanian gathering without exception.
 
-Also, forget the cheese platter and jabon. Take a piece of **slănină** (cured pig fat), some **brânză de burduf** (traditional cheese that has been stored in the stomach of a sheep), **jumări** / **jumeri**(Romanian pork rinds) and eat it with some bread, pickles and onion.
+> Bonus move: melt slănină over a flame and drip it onto bread. You're welcome.
 
-> One tweak on the **slănină** - we like to melt it over fire and drip it onto bread - Cheers!
-
-### Other appetizers and salads
-
-While we take a lot of pride in our pork dishes, we also need to watch our cholesterol at times. As an appetizer we sometimes have **zacuscă**. My favorite one is the fire roasted eggplant one, but we have mushroom and bean variations as well. This is a roasted pepper based spread on bread. It is similar to Ajvar. We also love our **Eggplant** salad - which is similar to Baba Ganoush but uses mayo instead of tahini.
-We also love fish eggs! So we like to eat fish egg salad on bread as a spread. This is not the fancy caviar - it is most likely made from carp or trout and it is very similar to the Greek Taramasalata.
-While not a spread - **Boef Salad** is also super common and loved by everyone. The catch? I never had it with beef, only with chicken. It is a combination of boiled vegetables, meat, pickled cucumbers and mayo. Variations include peas (as my mom does it) or egg (more Russian style).
-
-### The Desserts
+### Desserts & Drinks
 
 ![Papanasi](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/Papanasi.jpg)
-*Papanași - fried cheese dumplings served with sour cream and blueberry jam, a must-try Romanian dessert*
+*Papanași — fried cheese dumplings with sour cream and blueberry jam*
 
-In a casual traditional restaurant, the must-get dessert is **papanași**. These are fried cheese balls, typically served with sour cream and blueberry jam (no other jam).
-
-We also have the boiled version, which is served with cinnamon, sugar and breadcrumbs. A more homey dessert is the **gomboți cu prune** (plum dumplings) - potato dumplings stuffed with plums and covered in sugar, breadcrumbs and cinnamon.
-
-You will also see crepes in the dessert options - given the option you could try the ones with farmer's cheese and/or jam.
+**Papanași** are the must-order at any traditional restaurant — fried cheese balls with sour cream and blueberry jam (specifically blueberry). At a pastry shop, look for **amandina** (a decadent chocolate layered cake), **savarină** (sponge soaked in syrup with cream and jam — somewhere between a baba au rhum and a Victoria sponge), or **doboș** (walnut chocolate layer cake). From a bakery, you can't go wrong with apple cake, cheese pastry, poppyseed anything, or **cozonac** — a sweet rolled bread with walnut or poppyseed filling.
 
 ![Savarina](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/savarina.jpg)
-*Savarină - a light sponge cake soaked in syrup and topped with whipped cream and jam*
-
-For more **confectionary desserts**, try **amandina** - our decadent version of a brownie, **savarină** - a sponge cake with syrup, strawberry jam and whipping cream (somewhere between a baba au rhum and a victoria sponge cake), **doboș** (multi-layered chocolate walnut cake) - also at the crossing between Romanian and Hungarian cuisine.
+*Savarină — sponge cake soaked in syrup, topped with whipped cream and jam*
 
 ![Romanian Pastries](https://6khz2sa0mggxbsdm.public.blob.vercel-storage.com/travel/RomanianPastry.jpeg)
 *Romanian pastries from [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6)*
 
-For snacks and desserts that you could find in a bakery, try the **prăjitură cu mere** (sheet apple cake), **prăjitură cu brânză**, **linzer cu mac** (a type of poppyseed cake), **cozonac**/**bagli** (a rolled sweet bread traditionally filled with walnut or poppyseeds), **cornulețe** (little rolled cookies filled with jam, **magiun** - *plum honey*, or walnut).
+### Drinks
 
-### The drinks
+**Pălincă** / **țuică** is our signature spirit — plum-based, 35–55% ABV, best homemade. Variations include **vișinată** (sour cherry) and **afinată** (blueberry), which are more seasonal. For wine, look for **Recaș** or **Beciul Domnesc** — **fetească neagră** is the varietal to go for, similar to a Pinot Noir. For beer: **Timișoreana**, **Ciucaș**, or **Ursus**, and locally **Vulturar** if you can find it.
 
-One of our most common spirits is **pălincă** / **țuică** - most commonly made out of plums. The alcohol percentage varies between 35 - 55% usually. The best one is homemade, but you should be able to find it in most bars and restaurants.
-Other variations include **vișinată** ( sour cherries based spirit) or **afinată** (blue berries based spirit). These can be more seasonal and local - depending on what fruit grows in the region. They are made out of fruits fermented in ethanol.
-
-We also have our own wines and beer. For wine, look for the brands like **Recaș**, **Beciul Domnesc** or **Pelin**. Probably the most common wine type is **fetească neagră** (similar to pinot noir).
-
-We also have our beers, mostly lager or pilsner styles. Try **Timișoreana**, **Ciucaș** or **Ursus**. Locally in Oradea, you can also find **Vulturar** - which is more rare but I recommend you try it.
+---
 
 ## Restaurant Highlights
 
-If you are looking for restaurants with traditional fare, I would suggest the following:
+**Traditional Romanian food:**
+- [Hanul cu Noroc](https://maps.app.goo.gl/SHRdjsVbjpmbRZ2n9) — my top recommendation for traditional food
+- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9) — cool beer garden with Romanian fare
+- [Hanul Pescarilor](https://maps.app.goo.gl/HpfVfXSAf3SMJBq89) — fish-focused; carp and trout with polenta and pickles
+- [Piața 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) — one location specifically is great
+- [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) — the best bakery for traditional desserts; not fancy, just excellent ingredients
 
-- [Hanul cu noroc](https://maps.app.goo.gl/SHRdjsVbjpmbRZ2n9) - highly recommend for traditional food
-- [Desaga](https://maps.app.goo.gl/wYZQ9B87J8Lrw9Jj9) - cool beer garden with Romanian fare
-- [Hanul Pescarilor](https://maps.app.goo.gl/HpfVfXSAf3SMJBq89)- fish focused - we love our carp and trout - especially with some polenta and pickles
-- [Piata 9](https://maps.app.goo.gl/Az9WLxa7CvDW1SSX6) (to some extent) - one location is great for me
-- [Elidor](https://maps.app.goo.gl/k7Rbz9GSNp26jJqk6) - great bakery for high quality(not fancy!) traditional desserts - their ingredients are supposed to be the best.
+**Nicer, not strictly traditional:**
+- [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9) — elevated Italian
+- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) — modern Mediterranean with a great view; also works as a bar
+- [Piața 9 (Citadel)](https://maps.app.goo.gl/5zL6gCWQPFAQZsAN8) — best brunch spot in the city
+- [Crinul Alb](https://maps.app.goo.gl/UAPf8TThKXzRAWoj9) — pizza
+- [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) — also pizza
+- [Botanic](https://maps.app.goo.gl/LbhPg4Vx5gJnKNzi8) — modern, vegetarian-friendly
 
-If you would like something nicer but not strictly traditional:
+**Bars & cafes:**
+- [Lord's](https://maps.app.goo.gl/cZYjosKnRDziiB17A) — casual, unpretentious, everyone ends up here
+- [Moskva](https://maps.app.goo.gl/uMHCLABZCRxqfBBXA) — ruin-bar vibe, rock music, occasional concerts
+- [Street Coffee Roasters](https://share.google/rnVqzH6qXVRQSNffA) — good quality coffee
+- [ReWine](https://maps.app.goo.gl/VgZVr7dUsodCegWz7) — elevated wine bar
+- [Prohibition Bar](https://maps.app.goo.gl/61z59SsXtRTdbX2BA) — speakeasy cocktails, genuinely award-winning
 
-- [Allegria](https://maps.app.goo.gl/QhuUPfQH5U6BzHTr9) - elevated Italian
-- [Rivo](https://maps.app.goo.gl/PsBSMwZgdsLKYCek6) - modern, elevated, Mediterranean cuisine with a nice view. Serves as a bar/lounge as well
-- [Piata 9](https://maps.app.goo.gl/5zL6gCWQPFAQZsAN8) - the Citadel location is a great brunch spot
-- [Crinul Alb](https://maps.app.goo.gl/UAPf8TThKXzRAWoj9) - Italian, if you are looking for pizza
-- [Due Fratelli](https://maps.app.goo.gl/kwGLLUaTrwfKYQkV6) - also a pizza restaurant
-- [Botanic](https://maps.app.goo.gl/LbhPg4Vx5gJnKNzi8) - modern and vegetarian friendly
 
-To drink - bars & cafes:
-
-- [Lord's](https://maps.app.goo.gl/cZYjosKnRDziiB17A) - cool bar where all young people gather to catch up, have a casual drink and smoke
-- [Moskva](https://maps.app.goo.gl/uMHCLABZCRxqfBBXA) - no frills, ruin-style bar. Please don't mind the soviet vibe. Young people and rock music lovers gather here, sometimes for a casual catch-up, other times for a concert.
-- [Street Coffee Roasters](https://share.google/rnVqzH6qXVRQSNffA) - good quality coffee
-- [ReWine](https://maps.app.goo.gl/VgZVr7dUsodCegWz7) - nice, elevated wine bar
-- [Prohibition Bar](https://maps.app.goo.gl/61z59SsXtRTdbX2BA) - Elevated, Creative, Speakeasy vibe cocktails
-
-## Getting around in the city
-
-### By foot
-
-The city is very walkable - most of the city center can be seen on foot.
-
-### By tram/bus
-
-As an experience, you could try taking the tram or bus. We rely on them all the time, equally much. See the [official website](https://www.otlra.ro/index.php/en/tickets-and-season-tickets) for more details.
-
-### By taxi
-
-Taxi stations are everywhere. They are reliable - just make sure they start the meter especially since you are a foreigner. You will be surprised though how many of them actually speak English.
-
-For taxi, I recommend downloading the [Bolt](https://bolt.eu/en/) app. It is super reliable and works better than Uber in the city. Alternatively, Uber exists as well but might not be as good here.
-
-## Gotchas, cultural things and getting around
-
-- People will be welcoming but don't expect American-level excitement
-
-- Smoking is common, mostly outdoors
-
-- Free wifi spots exist around the city but aren't always reliable
-
-- Tipping is optional, 5-10% is appreciated
-
-- Don't worry about tourist traps - extensive menus and cafes in the center are normal and locals eat there too
-
-- Bakeries are everywhere - trust your eyes rather than searching for "the best one"
-
-- Sundays are slow, many places closed (religion is important here)
-
-- [Lotus Center](https://maps.app.goo.gl/XhNKUVYdhUdshYSq7) mall exists for shopping, but not worth a special trip
-
-- Grocery stores everywhere - **Profi** and **Carrefour** are the best chains
-
-- Corn on pizza is common. In Romania is not even a pineapple-style debate - it is just accepted. So is putting ketchup on pizza. There will be no extra parmesan cheese or chilli flakes though, but you will get spicy pepper infused olive oil and oregano infused olive oil to top it off.

@@ -1,0 +1,63 @@
+date: 'September 11th, 2026'
+title: 'Itinerary'
+subtitle: 'Romania Wedding Day'
+
+events:
+  - time: '09:30 - 12:00'
+    title: '👰 Bride Getting Ready'
+    subtitle: 'Hair & makeup, preparations with family'
+    location: "📍 Cătă's home"
+    locationUrl: 'https://maps.app.goo.gl/xEgKkuybLgu5mF7s9'
+    description: 'Photos with family and friends'
+
+  - time: '11:00'
+    title: '🤵 Groom Getting Ready'
+    subtitle: 'Relaxed preparation with groomsmen'
+    location: '📍 Hotel (TBD)'
+    description: 'Photos and celebratory toast'
+
+  - time: '12:45'
+    title: '🚪 Bride Pickup Ceremony'
+    subtitle: 'Luarea Miresei - Traditional proposal ceremony'
+    location: "📍 Cătă's home"
+    locationUrl: 'https://maps.app.goo.gl/xEgKkuybLgu5mF7s9'
+    description: 'Groom arrives with procession, traditional bread ritual'
+
+  - time: '13:45'
+    title: '📸 Photo Session'
+    subtitle: 'Couple, friends & family photos'
+    location: '📍 TBD'
+
+  - time: '15:00'
+    title: '⛪ Religious Ceremony'
+    subtitle: 'Greek Catholic Cathedral'
+    location: '📍 Saint Nicholas Cathedral'
+    locationUrl: 'https://maps.app.goo.gl/PPzuFJcAspypUd5r5'
+    description: 'Congratulations & group photos until ~16:45'
+
+  - time: '17:30'
+    title: 'Welcoming Reception'
+    subtitle: 'Arrival at venue'
+    location: '📍 Camelot Resort'
+    locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
+    description: 'Welcome drinks (Prosecco/pălincă) & assigned seating'
+
+  - time: '18:30'
+    title: 'Grand entrance & first dance'
+    subtitle: 'Cata and Lam enter together with the godparents, bridesmades, groomsmen. They perform the first dance.'
+    location: '📍 Camelot Resort'
+    locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
+    description: '3-course meal, open bar, candy bar, appetizers'
+
+  - time: '00:00'
+    title: 'Cake cutting at 00:00'
+    location: '📍 Camelot Resort'
+    locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
+    description: ''
+
+  - time: '-:-'
+    title: 'Party & Celebration'
+    subtitle: 'Dancing, socializing, some games and fun'
+    location: '📍 Camelot Resort'
+    locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
+    description: '3-course meal, open bar, candy bar, appetizers.Dance until midnight - Cake cutting at 00:00'
