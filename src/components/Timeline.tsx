@@ -92,21 +92,23 @@ export default function Timeline({ events }: TimelineProps) {
   const styles = {
     container: {
       position: 'relative',
-      maxWidth: 900,
-      mx: 'auto'
+      maxWidth: { xs: '100%', sm: 600, md: 900 },
+      mx: 'auto',
+      px: { xs: 2, sm: 3, md: 0 }
     },
     timelineLine: {
       position: 'absolute',
-      left: { xs: '20px', md: '50%' },
+      left: '50%',
       top: 0,
       bottom: 0,
       width: '2px',
       background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-      transform: { xs: 'none', md: 'translateX(-1px)' },
-      zIndex: 1
+      transform: 'translateX(-1px)',
+      zIndex: 0
     },
     eventsContainer: {
-      pl: { xs: 12, md: 0 }
+      pt: 2,
+      pb: 2
     }
   };
 

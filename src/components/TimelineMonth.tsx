@@ -41,17 +41,19 @@ export default function TimelineMonth({
       mb: 4,
       display: 'flex',
       alignItems: 'center',
-      flexDirection: { xs: 'row', md: side === 'left' ? 'row-reverse' : 'row' }
+      justifyContent: 'center',
+      flexDirection: { xs: 'column', md: side === 'left' ? 'row-reverse' : 'row' }
     }),
     timelineDot: {
-      position: 'absolute',
-      left: { xs: '-80px', md: '50%' },
-      transform: { xs: 'none', md: 'translateX(-50%)' },
+      position: { xs: 'relative', md: 'absolute' },
+      left: { md: '50%' },
+      transform: { md: 'translateX(-50%)' },
       zIndex: 2,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: 1
+      gap: 1,
+      mb: { xs: 2, md: 0 }
     },
     dateDisplay: {
       backgroundColor: theme.palette.primary.main,
@@ -62,15 +64,15 @@ export default function TimelineMonth({
       fontSize: '0.8rem',
       fontWeight: 600,
       textAlign: 'center',
-      minWidth: '80px',
-      boxShadow: theme.shadows[4]
+      minWidth: '80px'
     },
     avatar: {
       width: 16,
       height: 16,
       bgcolor: theme.palette.primary.main,
       border: `4px solid ${theme.palette.background.paper}`,
-      boxShadow: theme.shadows[4]
+      position: 'relative',
+      zIndex: 1
     }
   };
 

@@ -33,7 +33,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
 
   const styles = {
     contentCard: {
-      width: { xs: '100%', md: '45%' },
+      width: { xs: '100%', sm: '90%', md: '45%' },
       ml: { xs: 0, md: side === 'left' ? 4 : 0 },
       mr: { xs: 0, md: side === 'left' ? 0 : 4 }
     },
@@ -41,7 +41,9 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
       border: `1px solid ${theme.palette.grey[300]}`,
       borderRadius: 3,
       overflow: 'hidden',
-      position: 'relative'
+      position: 'relative',
+      zIndex: 1,
+      backgroundColor: 'background.paper'
     },
     descriptionOverlay: {
       position: 'absolute',
