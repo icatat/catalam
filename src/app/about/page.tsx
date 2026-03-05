@@ -97,17 +97,27 @@ export default function AboutPage() {
     : timelineEvents;
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         minHeight: '100vh',
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'contain',
-        backgroundAttachment: 'fixed',
         p: { xs: theme.spacing(2), md: theme.spacing(3) },
         position: 'relative'
       }}
     >
+      {/* Fixed Background Layer */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          zIndex: -1
+        }}
+      />
 
       <Navigation currentPage="about" showRomania={showRomania} showVietnam={showVietnam} />
       

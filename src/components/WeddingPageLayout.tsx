@@ -183,12 +183,25 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   // Invite verification
   if (!guestData) {
     return (
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/background-main.png)`, backgroundRepeat: 'repeat', backgroundSize: 'contain', backgroundAttachment: 'fixed' }}>
-        <InviteVerification 
+      <Box sx={{ minHeight: '100vh', position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/background-main.png)`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'contain',
+            zIndex: -1
+          }}
+        />
+        <InviteVerification
           location={location}
           onVerified={handleInviteVerified}
         />
-      </div>
+      </Box>
     );
   }
 

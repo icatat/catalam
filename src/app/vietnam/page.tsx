@@ -175,14 +175,24 @@ export default function VietnamWedding() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.png)`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'contain',
-        backgroundAttachment: 'fixed',
         overflow: 'hidden',
         position: 'relative'
       }}
     >
+      {/* Fixed Background Layer */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.png)`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          zIndex: -1
+        }}
+      />
       <Navigation currentPage="vietnam" showRomania={guestData?.romania} showVietnam={true} />
       <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
         {/* Welcome Message */}

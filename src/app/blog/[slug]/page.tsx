@@ -55,12 +55,22 @@ export default function BlogPostPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: 'contain',
-          backgroundAttachment: 'fixed',
+          position: 'relative'
         }}
       >
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'contain',
+            zIndex: -1
+          }}
+        />
         <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
           Loading...
         </Typography>
@@ -73,14 +83,23 @@ export default function BlogPostPage() {
       <Box
         sx={{
           minHeight: '100vh',
-          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: 'contain',
-          backgroundAttachment: 'fixed',
           p: { xs: theme.spacing(2), md: theme.spacing(3) },
           position: 'relative'
         }}
       >
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'contain',
+            zIndex: -1
+          }}
+        />
         <Navigation currentPage="blog" showRomania={showRomania} showVietnam={showVietnam} />
         <Container maxWidth="xl" sx={{ py: 10 }}>
           <Box sx={{ textAlign: 'center', py: 8 }}>
@@ -100,14 +119,23 @@ export default function BlogPostPage() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'contain',
-        backgroundAttachment: 'fixed',
         p: { xs: theme.spacing(2), md: theme.spacing(3) },
         position: 'relative'
       }}
     >
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          zIndex: -1
+        }}
+      />
 
       <Navigation currentPage="blog" showRomania={showRomania} showVietnam={showVietnam} />
 
