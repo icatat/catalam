@@ -31,11 +31,15 @@ export function MainPageCard({
         transition={{ delay: animationDelay, duration: 0.6 }}
         sx={{
           position: 'relative',
+          maxWidth: { xs: '280px', sm: '350px', md: '400px' },
+          width: '100%',
           '& > img:first-of-type': {
             border: '20px solid #ffffff',
             borderBottomWidth: '120px',
             objectFit: 'cover',
             objectPosition: 'center',
+            width: '100% !important',
+            height: 'auto !important',
           },
           ...sx,
         }}
@@ -55,7 +59,8 @@ export function MainPageCard({
               left: '50%',
               transform: 'translateX(-50%)',
               height: 'auto',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              maxWidth: '90%'
             }}
           >
             {bottomContent}

@@ -15,22 +15,22 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
   const styles = {
     container: {
       position: 'relative',
-      maxWidth: 1000,
-      mx: 'auto'
+      maxWidth: { xs: '100%', sm: 600, md: 1000 },
+      mx: 'auto',
+      px: { xs: 2, sm: 3, md: 0 }
     },
     timelineLine: {
       position: 'absolute',
-      left: { xs: '32px', md: '50%' },
+      left: '50%',
       top: 0,
       bottom: 0,
       width: '2px',
       background: theme.palette.primary.main,
-      transform: { xs: 'none', md: 'translateX(-1px)' },
-      zIndex: 1,
+      transform: 'translateX(-1px)',
+      zIndex: 0,
       opacity: 0.3
     },
     eventsContainer: {
-      pl: { xs: 10, md: 0 },
       pt: 2,
       pb: 2
     }
@@ -72,18 +72,20 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                   display: 'flex',
                   mb: 6,
                   position: 'relative',
-                  flexDirection: { xs: 'row', md: side === 'left' ? 'row' : 'row-reverse' },
-                  justifyContent: { xs: 'flex-start', md: 'center' }
+                  flexDirection: { xs: 'column', md: side === 'left' ? 'row' : 'row-reverse' },
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }}
               >
                 {/* Time Badge */}
                 <Box
                   sx={{
-                    position: 'absolute',
-                    left: { xs: '-2px', md: '50%' },
-                    top: 0,
-                    transform: { xs: 'none', md: 'translateX(-50%)' },
-                    zIndex: 2
+                    position: { xs: 'relative', md: 'absolute' },
+                    left: { md: '50%' },
+                    top: { md: 0 },
+                    transform: { md: 'translateX(-50%)' },
+                    zIndex: 2,
+                    mb: { xs: 2, md: 0 }
                   }}
                 >
                   <Chip
@@ -103,8 +105,8 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                 {/* Content Card */}
                 <Box
                   sx={{
-                    width: { xs: '100%', md: '45%' },
-                    mt: 6,
+                    width: { xs: '100%', sm: '90%', md: '45%' },
+                    mt: { xs: 0, md: 6 },
                     ml: { xs: 0, md: side === 'left' ? 0 : 'auto' },
                     mr: { xs: 0, md: side === 'left' ? 'auto' : 0 }
                   }}
@@ -115,7 +117,10 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                       border: `1px solid ${theme.palette.primary.main}`,
                       borderRadius: 2,
                       boxShadow: 'none',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      position: 'relative',
+                      zIndex: 1,
+                      backgroundColor: 'background.paper'
                     }}
                   >
                     <Box sx={{ p: 3 }}>

@@ -1,6 +1,8 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { Box, useTheme, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NavigationButton } from './NavigationButton';
@@ -17,6 +19,15 @@ export default function Navigation({
   showVietnam = false
 }: NavigationProps) {
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const allNavItems = [
     { key: 'home', label: 'Home', href: '/', alwaysShow: true },
@@ -67,16 +78,59 @@ export default function Navigation({
         position: 'fixed',
         top: 20,
         right: 20,
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1.5),
         zIndex: theme.zIndex.appBar
       }}>
-        {navItems.map((item) => (
-          <NavigationButton key={item.key} href={item.href}>
-            {item.label}
-          </NavigationButton>
-        ))}
+        {/* Desktop Navigation */}
+        <Box sx={{
+          display: { xs: 'none', md: 'flex' },
+          alignItems: 'center',
+          gap: theme.spacing(1.5)
+        }}>
+          {navItems.map((item) => (
+            <NavigationButton key={item.key} href={item.href}>
+              {item.label}
+            </NavigationButton>
+          ))}
+        </Box>
+
+        {/* Mobile Burger Menu */}
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+          <IconButton
+            onClick={handleMenuOpen}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 1)'
+              }
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+          >
+            {navItems.map((item) => (
+              <MenuItem
+                key={item.key}
+                onClick={handleMenuClose}
+                component="a"
+                href={item.href}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
       </Box>
     </>
   );

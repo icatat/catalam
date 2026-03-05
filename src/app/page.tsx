@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { NavigationButton } from '@/components/NavigationButton';
 import { ClickableMap } from '@/components/ClickableMap';
-import { Box, useTheme, Container, Typography, Button } from '@mui/material';
+import { Box, useTheme, Container, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { MainPageCard } from '@/components/MainPageCard';
 import { InviteModal } from '@/components/InviteModal';
 import Image from 'next/image';
@@ -23,6 +24,15 @@ export default function Home() {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     const checkExistingInvite = async () => {
@@ -105,25 +115,65 @@ export default function Home() {
         position: 'absolute',
         top: theme.spacing(2),
         right: theme.spacing(2),
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1.5),
         zIndex: theme.zIndex.appBar
       }}>
-        <NavigationButton href="/about">
-          About Us
-        </NavigationButton>
+        {/* Desktop Navigation */}
+        <Box sx={{
+          display: { xs: 'none', md: 'flex' },
+          alignItems: 'center',
+          gap: theme.spacing(1.5)
+        }}>
+          <NavigationButton href="/about">
+            About Us
+          </NavigationButton>
+          <NavigationButton href="/blog">
+            Travel Blog
+          </NavigationButton>
+          <NavigationButton href="/contact">
+            Contact
+          </NavigationButton>
+        </Box>
 
-        <NavigationButton href="/blog">
-          Travel Blog
-        </NavigationButton>
-
-        <NavigationButton href="/contact">
-          Contact
-        </NavigationButton>
+        {/* Mobile Burger Menu */}
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+          <IconButton
+            onClick={handleMenuOpen}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 1)'
+              }
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+          >
+            <MenuItem onClick={handleMenuClose} component="a" href="/about">
+              About Us
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} component="a" href="/blog">
+              Travel Blog
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} component="a" href="/contact">
+              Contact
+            </MenuItem>
+          </Menu>
+        </Box>
       </Box>
 
-      <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
+      <Container maxWidth="xl" sx={{ height: '100%', display: 'flex', alignItems: 'center', py: { xs: 2, md: 0 } }}>
         {/* Centered Polaroid Container with Maps */}
         <Box
           sx={{
@@ -131,10 +181,10 @@ export default function Home() {
             flexDirection: { xs: 'column', md: 'row' },
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100%',
+            width: '100%',
             position: 'relative',
-            overflow: 'hidden',
-            gap: { xs: 4, md: 8 }
+            gap: { xs: 3, sm: 4, md: 8 },
+            py: { xs: 8, md: 0 }
           }}
         >
           {/* Romania Map - Left (Desktop only) */}
@@ -184,7 +234,7 @@ export default function Home() {
 
             {/* Access Code Button */}
             {!guestData && (
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: { xs: 2, md: 3 } }}>
                 <Button
                   onClick={handleOpenModal}
                   variant="contained"
@@ -192,9 +242,9 @@ export default function Home() {
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1rem',
+                    px: { xs: 3, sm: 4 },
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
                     fontWeight: 600,
                     borderRadius: 2,
                     textTransform: 'none',
@@ -213,9 +263,10 @@ export default function Home() {
               <Box
                 sx={{
                   display: { xs: 'flex', md: 'none' },
-                  gap: 4,
-                  mt: 4,
-                  justifyContent: 'center'
+                  gap: { xs: 3, sm: 4 },
+                  mt: { xs: 3, sm: 4 },
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
                 }}
               >
                 {showRomaniaMap && (
@@ -224,8 +275,8 @@ export default function Home() {
                     alt="Romania Map"
                     href="/romania"
                     animationDelay={0.3}
-                    width={100}
-                    height={100}
+                    width={90}
+                    height={90}
                   />
                 )}
                 {showVietnamMap && (
@@ -234,8 +285,8 @@ export default function Home() {
                     alt="Vietnam Map"
                     href="/vietnam"
                     animationDelay={0.4}
-                    width={100}
-                    height={100}
+                    width={90}
+                    height={90}
                   />
                 )}
               </Box>
@@ -264,11 +315,13 @@ export default function Home() {
       <Box
         sx={{
           position: 'absolute',
-          bottom: theme.spacing(2),
+          bottom: { xs: theme.spacing(1), md: theme.spacing(2) },
           left: '50%',
           transform: 'translateX(-50%)',
           textAlign: 'center',
           zIndex: theme.zIndex.appBar,
+          width: '100%',
+          px: 2
         }}
       >
         <Typography
