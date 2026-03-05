@@ -128,24 +128,27 @@ export default function Home() {
         <Box
           sx={{
             display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
             alignItems: 'center',
             justifyContent: 'center',
             height: '100%',
             position: 'relative',
             overflow: 'hidden',
-            gap: 8
+            gap: { xs: 4, md: 8 }
           }}
         >
-          {/* Romania Map - Left */}
+          {/* Romania Map - Left (Desktop only) */}
           {showRomaniaMap && (
-            <ClickableMap
-              imageSrc="/Romania_Map.png"
-              alt="Romania Map"
-              href="/romania"
-              animationDelay={0.3}
-              width={120}
-              height={120}
-            />
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <ClickableMap
+                imageSrc="/Romania_Map.png"
+                alt="Romania Map"
+                href="/romania"
+                animationDelay={0.3}
+                width={120}
+                height={120}
+              />
+            </Box>
           )}
 
           {/* Center Column with Polaroid and Header */}
@@ -195,29 +198,62 @@ export default function Home() {
                     fontWeight: 600,
                     borderRadius: 2,
                     textTransform: 'none',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                     '&:hover': {
-                      backgroundColor: theme.palette.primary.dark,
-                      boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-                    },
+                      backgroundColor: theme.palette.primary.dark
+                    }
                   }}
                 >
                   Joining our wedding?
                 </Button>
               </Box>
             )}
+
+            {/* Maps Row - Mobile only */}
+            {(showRomaniaMap || showVietnamMap) && (
+              <Box
+                sx={{
+                  display: { xs: 'flex', md: 'none' },
+                  gap: 4,
+                  mt: 4,
+                  justifyContent: 'center'
+                }}
+              >
+                {showRomaniaMap && (
+                  <ClickableMap
+                    imageSrc="/Romania_Map.png"
+                    alt="Romania Map"
+                    href="/romania"
+                    animationDelay={0.3}
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {showVietnamMap && (
+                  <ClickableMap
+                    imageSrc="/Vietnam_Map.png"
+                    alt="Vietnam Map"
+                    href="/vietnam"
+                    animationDelay={0.4}
+                    width={100}
+                    height={100}
+                  />
+                )}
+              </Box>
+            )}
           </Box>
 
-          {/* Vietnam Map - Right */}
+          {/* Vietnam Map - Right (Desktop only) */}
           {showVietnamMap && (
-            <ClickableMap
-              imageSrc="/Vietnam_Map.png"
-              alt="Vietnam Map"
-              href="/vietnam"
-              animationDelay={0.4}
-              width={120}
-              height={120}
-            />
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <ClickableMap
+                imageSrc="/Vietnam_Map.png"
+                alt="Vietnam Map"
+                href="/vietnam"
+                animationDelay={0.4}
+                width={120}
+                height={120}
+              />
+            </Box>
           )}
 
         </Box>

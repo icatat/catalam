@@ -211,14 +211,15 @@ export default function RomaniaWedding() {
           pb: 4, 
           textAlign: 'center'
         }}>
-          <Typography 
-            variant="h3" 
-            component="h1" 
-            sx={{ 
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{
+              fontFamily: '"Arizonia", cursive',
               color: theme.palette.primary.dark,
-              fontWeight: 700,
+              fontWeight: 400,
               mb: 2,
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              fontSize: { xs: '2.5rem', md: '3.5rem' }
             }}
           >
             {(guestData as any).has_rsvp_romania
@@ -283,13 +284,7 @@ export default function RomaniaWedding() {
                 fontSize: '1.1rem',
                 fontWeight: 600,
                 borderRadius: 3,
-                textTransform: 'none',
-                boxShadow: theme.shadows[4],
-                '&:hover': {
-                  boxShadow: theme.shadows[8],
-                  transform: 'translateY(-2px)'
-                },
-                transition: 'all 0.3s ease'
+                textTransform: 'none'
               }}
             >
               {(guestData as any).has_rsvp_romania
@@ -305,10 +300,12 @@ export default function RomaniaWedding() {
           <section style={{ padding: theme.spacing(8, 0) }}>
             <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
               <Typography variant="h2" component="h2" sx={{
-                color: theme.palette.primary.main,
-                fontWeight: 700,
+                fontFamily: '"Arizonia", cursive',
+                color: theme.palette.primary.dark,
+                fontWeight: 400,
                 mb: 2,
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: { xs: '3rem', md: '4rem' }
               }}>
                 Itinerary
               </Typography>

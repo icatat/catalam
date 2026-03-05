@@ -67,10 +67,11 @@ export default function HeroSection({
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           sx={{
-            fontWeight: 700,
+            fontFamily: '"Arizonia", cursive',
+            fontWeight: 400,
             mb: 4,
-            color: backgroundImage ? 'white' : theme.palette.text.primary,
-            textShadow: backgroundImage ? '0 4px 8px rgba(0,0,0,0.5)' : 'none'
+            color: backgroundImage ? 'white' : theme.palette.primary.dark,
+            fontSize: { xs: '3rem', md: '4rem' }
           }}
         >
           {title}
@@ -86,7 +87,6 @@ export default function HeroSection({
             sx={{
               mb: 8,
               color: backgroundImage ? 'white' : theme.palette.text.secondary,
-              textShadow: backgroundImage ? '0 2px 4px rgba(0,0,0,0.5)' : 'none',
               maxWidth: 600,
               mx: 'auto'
             }}
@@ -106,7 +106,7 @@ export default function HeroSection({
             p: 3,
             backgroundColor: backgroundImage ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
             borderRadius: 3,
-            boxShadow: theme.shadows[8]
+            border: `1px solid ${theme.palette.grey[300]}`
           }}
         >
           <Typography

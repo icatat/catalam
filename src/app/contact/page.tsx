@@ -109,11 +109,16 @@ export default function ContactPage() {
         <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
           {/* Header */}
           <Box sx={{ textAlign: 'center', mb: 6 }}>
-            <Typography 
-              variant="h2" 
-              component="h1" 
-              gutterBottom 
-              sx={{ color: theme.palette.primary.main, fontWeight: 700 }}
+            <Typography
+              variant="h2"
+              component="h1"
+              gutterBottom
+              sx={{
+                fontFamily: '"Arizonia", cursive',
+                color: theme.palette.primary.dark,
+                fontWeight: 400,
+                fontSize: { xs: '3rem', md: '4rem' }
+              }}
             >
               Get in Touch
             </Typography>

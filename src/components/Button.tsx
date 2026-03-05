@@ -31,9 +31,7 @@ export default function CustomButton({
       backgroundColor: colors.primary.main,
       color: theme.palette.common.white,
       '&:hover': {
-        backgroundColor: colors.primary.dark,
-        transform: 'translateY(-2px)',
-        boxShadow: `0 8px 25px ${colors.primary.main}40`, // 40 = 25% opacity in hex
+        backgroundColor: colors.primary.dark
       },
       '&:disabled': {
         backgroundColor: colors.primary.light,
@@ -50,12 +48,8 @@ export default function CustomButton({
         fontWeight: 600,
         borderRadius: '12px',
         textTransform: 'none',
-        transition: 'all 0.2s ease-in-out',
         '&:hover': {
           ...getUnifiedStyles()['&:hover'],
-        },
-        '&:active': {
-          transform: 'translateY(0)',
         },
         ...sx,
       }}

@@ -120,14 +120,16 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Typography 
-            variant="h1" 
-            component="h1" 
-            gutterBottom 
-            sx={{ 
-              color: theme.palette.primary.dark, 
-              fontWeight: 700,
-              mb: 3
+          <Typography
+            variant="h1"
+            component="h1"
+            gutterBottom
+            sx={{
+              fontFamily: '"Arizonia", cursive',
+              color: theme.palette.primary.dark,
+              fontWeight: 400,
+              mb: 3,
+              fontSize: { xs: '3rem', md: '4rem' }
             }}
           >
             Our Story
@@ -157,11 +159,8 @@ export default function AboutPage() {
               backgroundColor: 'rgba(255, 255, 255, 0.9)',
               '&:hover': {
                 backgroundColor: theme.palette.primary.main,
-                color: 'white',
-                transform: 'translateY(-2px)',
-                boxShadow: theme.shadows[6]
-              },
-              transition: 'all 0.3s ease'
+                color: 'white'
+              }
             }}
           >
             {reverseOrder ? 'Newest' : 'Oldest'} First
@@ -180,11 +179,8 @@ export default function AboutPage() {
                 fontWeight: 500,
                 backgroundColor: theme.palette.primary.main,
                 '&:hover': {
-                  backgroundColor: theme.palette.primary.dark,
-                  transform: 'translateY(-2px)',
-                  boxShadow: theme.shadows[8]
-                },
-                transition: 'all 0.3s ease'
+                  backgroundColor: theme.palette.primary.dark
+                }
               }}
               title="Have a memory together? Please share it on our timeline!"
             >

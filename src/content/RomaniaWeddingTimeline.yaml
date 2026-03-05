@@ -33,7 +33,7 @@ events:
     subtitle: 'Greek Catholic Cathedral'
     location: '📍 Saint Nicholas Cathedral'
     locationUrl: 'https://maps.app.goo.gl/PPzuFJcAspypUd5r5'
-    description: 'Congratulations & group photos until ~16:45'
+    description: 'Congratulations & group photos'
 
   - time: '17:30'
     title: 'Welcoming Reception'
@@ -44,13 +44,13 @@ events:
 
   - time: '18:30'
     title: 'Grand entrance & first dance'
-    subtitle: 'Cata and Lam enter together with the godparents, bridesmades, groomsmen. They perform the first dance.'
+    subtitle: 'Cata and Lam enter together with the godparents, bridesmaids, groomsmen. They perform the first dance.'
     location: '📍 Camelot Resort'
     locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
     description: '3-course meal, open bar, candy bar, appetizers'
 
   - time: '00:00'
-    title: 'Cake cutting at 00:00'
+    title: 'Cake'
     location: '📍 Camelot Resort'
     locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
     description: ''
@@ -60,4 +60,4 @@ events:
     subtitle: 'Dancing, socializing, some games and fun'
     location: '📍 Camelot Resort'
     locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
-    description: '3-course meal, open bar, candy bar, appetizers.Dance until midnight - Cake cutting at 00:00'
+    description: '3-course meal, open bar, candy bar, appetizers.'

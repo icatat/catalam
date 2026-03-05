@@ -34,7 +34,6 @@ export function MainPageCard({
           '& > img:first-of-type': {
             border: '20px solid #ffffff',
             borderBottomWidth: '120px',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
             objectFit: 'cover',
             objectPosition: 'center',
           },

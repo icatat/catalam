@@ -235,15 +235,16 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 variant="h3"
                 component="h1"
                 sx={{
+                  fontFamily: '"Arizonia", cursive',
                   color: theme.palette.primary.dark,
-                  fontWeight: 700,
+                  fontWeight: 400,
                   mb: 3,
                   maxWidth: '900px',
                   mx: 'auto',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                   lineHeight: 1.2,
                   position: 'relative',
-                  zIndex: 2
+                  zIndex: 2,
+                  fontSize: { xs: '2.5rem', md: '3.5rem' }
                 }}
               >
                 Welcome back, {guestData.first_name}! Your RSVP for {locationName} has been confirmed.
@@ -253,30 +254,30 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 variant="h3"
                 component="h1"
                 sx={{
+                  fontFamily: '"Arizonia", cursive',
                   color: theme.palette.primary.dark,
-                  fontWeight: 700,
+                  fontWeight: 400,
                   mb: 3,
                   maxWidth: '900px',
                   mx: 'auto',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                   lineHeight: 1.2,
                   position: 'relative',
-                  zIndex: 2
+                  zIndex: 2,
+                  fontSize: { xs: '2.5rem', md: '3.5rem' }
                 }}
               >
                 Welcome, {guestData.first_name}! Please RSVP for our {locationName} wedding.
               </Typography>
             )}
 
-            <Typography 
-              variant="h5" 
-              sx={{ 
+            <Typography
+              variant="h5"
+              sx={{
                 color: theme.palette.text.secondary,
                 mb: 5,
                 fontWeight: 500,
                 maxWidth: '700px',
                 mx: 'auto',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                 opacity: 0.9,
                 position: 'relative',
                 zIndex: 2
@@ -332,13 +333,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   fontSize: '1.1rem',
                   fontWeight: 600,
                   borderRadius: 3,
-                  textTransform: 'none',
-                  boxShadow: theme.shadows[4],
-                  '&:hover': {
-                    boxShadow: theme.shadows[8],
-                    transform: 'translateY(-2px)'
-                  },
-                  transition: 'all 0.3s ease'
+                  textTransform: 'none'
                 }}
               >
                 {((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
@@ -382,11 +377,11 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 alignItems: 'center' 
               }}>
                 {/* Location Details */}
-                <Box sx={{ 
-                  p: 4, 
-                  bgcolor: 'background.paper', 
-                  borderRadius: 3, 
-                  boxShadow: theme.shadows[4] 
+                <Box sx={{
+                  p: 4,
+                  bgcolor: 'background.paper',
+                  borderRadius: 3,
+                  border: `1px solid ${theme.palette.grey[200]}`
                 }}>
                   <Typography variant="h4" component="h3" sx={{ 
                     color: theme.palette.text.primary, 
@@ -428,10 +423,10 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                 </Box>
 
                 {/* Google Maps Embed */}
-                <Box sx={{ 
-                  borderRadius: 3, 
-                  overflow: 'hidden', 
-                  boxShadow: theme.shadows[8],
+                <Box sx={{
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  border: `1px solid ${theme.palette.grey[300]}`,
                   '& iframe': {
                     width: '100%',
                     height: { xs: '300px', md: '450px' },

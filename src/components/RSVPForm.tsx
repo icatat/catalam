@@ -90,7 +90,7 @@ export default function RSVPForm({
   return (
     <Box component="section" sx={{ py: 8 }}>
       <Container maxWidth="md">
-        <Card sx={{ borderRadius: 3, boxShadow: theme.shadows[8] }}>
+        <Card sx={{ borderRadius: 3, border: `1px solid ${theme.palette.grey[300]}` }}>
           <CardContent sx={{ p: 4 }}>
             <Typography 
               variant="h3" 

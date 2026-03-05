@@ -38,13 +38,10 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
       mr: { xs: 0, md: side === 'left' ? 0 : 4 }
     },
     card: {
-      boxShadow: theme.shadows[6],
+      border: `1px solid ${theme.palette.grey[300]}`,
       borderRadius: 3,
       overflow: 'hidden',
-      position: 'relative',
-      '&:hover': {
-        boxShadow: theme.shadows[12]
-      }
+      position: 'relative'
     },
     descriptionOverlay: {
       position: 'absolute',
@@ -110,7 +107,6 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                     color: 'white',
                     textAlign: 'center',
                     fontWeight: 500,
-                    textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                     lineHeight: 1.4
                   }}
                 >
@@ -127,8 +123,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                   color: 'white',
                   fontWeight: 600,
                   textAlign: 'center',
-                  mb: 0.5,
-                  textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+                  mb: 0.5
                 }}
               >
                 {event.title}
@@ -185,8 +180,7 @@ export default function TimelineCard({ event, side, imageError, onImageError }: 
                     textAlign: 'center',
                     mt: 1,
                     fontStyle: 'italic',
-                    opacity: 0.9,
-                    textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                    opacity: 0.9
                   }}
                 >
                   Shared by {event.from}

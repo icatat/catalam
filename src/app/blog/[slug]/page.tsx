@@ -144,7 +144,7 @@ export default function BlogPostPage() {
               mb: 4,
               borderRadius: 3,
               overflow: 'hidden',
-              boxShadow: theme.shadows[8],
+              border: `1px solid ${theme.palette.grey[300]}`,
               position: 'relative',
               height: { xs: 300, sm: 400, md: 500 },
             }}

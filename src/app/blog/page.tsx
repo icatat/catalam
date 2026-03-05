@@ -66,9 +66,11 @@ export default function BlogPage() {
             component="h1"
             gutterBottom
             sx={{
-              color: theme.palette.primary.main,
-              fontWeight: 700,
-              mb: 3
+              fontFamily: '"Arizonia", cursive',
+              color: theme.palette.primary.dark,
+              fontWeight: 400,
+              mb: 3,
+              fontSize: { xs: '3rem', md: '4rem' }
             }}
           >
             Travel Blog
@@ -118,10 +120,9 @@ export default function BlogPage() {
                         flexDirection: 'column',
                         borderRadius: 3,
                         overflow: 'hidden',
-                        transition: 'all 0.3s ease',
+                        border: `1px solid ${theme.palette.grey[300]}`,
                         '&:hover': {
-                          transform: 'translateY(-8px)',
-                          boxShadow: theme.shadows[12],
+                          borderColor: theme.palette.primary.main
                         },
                       }}
                     >

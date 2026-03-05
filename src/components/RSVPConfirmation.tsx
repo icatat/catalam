@@ -60,7 +60,7 @@ export default function RSVPConfirmation({
         p: 2 
       }}
     >
-      <Card sx={{ width: '100%', maxWidth: 400, borderRadius: 3, boxShadow: theme.shadows[8] }}>
+      <Card sx={{ width: '100%', maxWidth: 400, borderRadius: 3, border: `1px solid ${theme.palette.grey[300]}` }}>
         <CardContent sx={{ p: 4, textAlign: 'center' }}>
           {/* Header with status icon */}
           <Avatar 

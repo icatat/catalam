@@ -23,10 +23,11 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
       left: { xs: '32px', md: '50%' },
       top: 0,
       bottom: 0,
-      width: '3px',
-      background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-      transform: { xs: 'none', md: 'translateX(-1.5px)' },
-      zIndex: 1
+      width: '2px',
+      background: theme.palette.primary.main,
+      transform: { xs: 'none', md: 'translateX(-1px)' },
+      zIndex: 1,
+      opacity: 0.3
     },
     eventsContainer: {
       pl: { xs: 10, md: 0 },
@@ -90,12 +91,11 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                     sx={{
                       bgcolor: theme.palette.primary.main,
                       color: 'white',
-                      fontWeight: 700,
-                      fontSize: '0.875rem',
-                      height: 36,
-                      minWidth: 68,
-                      boxShadow: theme.shadows[4],
-                      border: `3px solid ${theme.palette.background.default}`
+                      fontWeight: 600,
+                      fontSize: '0.8rem',
+                      height: 32,
+                      minWidth: 65,
+                      border: 'none'
                     }}
                   />
                 </Box>
@@ -111,25 +111,23 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                 >
                   <Card
                     component={motion.div}
-                    whileHover={{ scale: 1.02, y: -4 }}
                     sx={{
-                      boxShadow: theme.shadows[6],
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        boxShadow: theme.shadows[12]
-                      }
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      borderRadius: 2,
+                      boxShadow: 'none',
+                      overflow: 'hidden'
                     }}
                   >
                     <Box sx={{ p: 3 }}>
                       <Typography
-                        variant="h6"
+                        variant="h5"
                         sx={{
-                          color: theme.palette.primary.main,
-                          fontWeight: 700,
+                          fontFamily: '"Arizonia", cursive',
+                          color: theme.palette.primary.dark,
+                          fontWeight: 400,
                           mb: 1,
-                          fontSize: '1.25rem'
+                          fontSize: '2rem',
+                          lineHeight: 1.2
                         }}
                       >
                         {event.title}
@@ -139,10 +137,10 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                         <Typography
                           variant="body1"
                           sx={{
-                            color: theme.palette.text.secondary,
+                            color: theme.palette.text.primary,
                             fontWeight: 500,
                             mb: 1.5,
-                            fontStyle: 'italic'
+                            fontSize: '1.125rem'
                           }}
                         >
                           {event.subtitle}
@@ -156,13 +154,12 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                           rel="noopener noreferrer"
                           sx={{
                             color: theme.palette.primary.main,
-                            textDecoration: 'none',
+                            textDecoration: 'underline',
                             display: 'block',
                             mb: 1,
-                            fontSize: '0.95rem',
-                            fontWeight: 500,
+                            fontSize: '1.05rem',
+                            fontWeight: 600,
                             '&:hover': {
-                              textDecoration: 'underline',
                               color: theme.palette.primary.dark
                             }
                           }}
@@ -175,7 +172,8 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                           sx={{
                             color: theme.palette.text.secondary,
                             mb: 1,
-                            fontSize: '0.95rem'
+                            fontSize: '1.05rem',
+                            fontWeight: 500
                           }}
                         >
                           {event.location}
@@ -186,8 +184,8 @@ export default function WeddingTimeline({ events, sectionTitle }: WeddingTimelin
                         <Typography
                           variant="body2"
                           sx={{
-                            color: theme.palette.text.disabled,
-                            fontSize: '0.875rem',
+                            color: theme.palette.text.secondary,
+                            fontSize: '1.05rem',
                             lineHeight: 1.6,
                             mt: 1.5,
                             pt: 1.5,

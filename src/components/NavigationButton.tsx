@@ -40,8 +40,7 @@ export function NavigationButton({
           py: { xs: 0.5, sm: 0.75 },
           minWidth: 'auto',
           '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 1)',
-            boxShadow: theme.shadows[4],
+            backgroundColor: 'rgba(255, 255, 255, 1)'
           }
         }}
       >
