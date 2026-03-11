@@ -1,8 +1,9 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { Box, Card, Chip, Typography, Link, useTheme } from '@mui/material';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
-import TimelineMonth from './TimelineMonth';
+import Image from 'next/image';
 
 interface TimelineEvent {
   id: string;
@@ -12,6 +13,7 @@ interface TimelineEvent {
   image?: string;
   location?: string | null;
   tag?: string | null;
+  from?: string | null;
 }
 
 interface TimelineProps {
@@ -24,7 +26,7 @@ export default function Timeline({ events }: TimelineProps) {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Date unknown';
-    
+
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -36,58 +38,10 @@ export default function Timeline({ events }: TimelineProps) {
     setImageErrors(prev => new Set([...prev, eventId]));
   };
 
-  // Group events by month/year and organize for left/right placement
-  const organizeEventsByMonth = (events: TimelineEvent[]) => {
-    const grouped: Record<string, TimelineEvent[]> = {};
-    events.forEach(event => {
-      const monthKey = formatDate(event.date);
-      if (!grouped[monthKey]) {
-        grouped[monthKey] = [];
-      }
-      grouped[monthKey].push(event);
-    });
-    return grouped;
+  const generateGoogleMapsUrl = (location: string) => {
+    const encodedLocation = encodeURIComponent(location);
+    return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
   };
-
-  const eventsByMonth = organizeEventsByMonth(events);
-  
-  // Create timeline items with left/right placement for same month events
-  const createTimelineItems = () => {
-    const timelineItems: Array<{
-      monthKey: string;
-      events: Array<{ event: TimelineEvent; side: 'left' | 'right' }>;
-    }> = [];
-
-    let monthIndex = 0;
-    Object.entries(eventsByMonth).forEach(([monthKey, monthEvents]) => {
-      let eventsWithSides;
-      
-      if (monthEvents.length === 1) {
-        // Single event per month: alternate based on month index
-        eventsWithSides = [{
-          event: monthEvents[0],
-          side: (monthIndex % 2 === 0 ? 'left' : 'right') as 'left' | 'right'
-        }];
-      } else {
-        // Multiple events per month: fill both sides alternating within the month
-        eventsWithSides = monthEvents.map((event, index) => ({
-          event,
-          side: (index % 2 === 0 ? 'left' : 'right') as 'left' | 'right'
-        }));
-      }
-      
-      timelineItems.push({
-        monthKey,
-        events: eventsWithSides
-      });
-      
-      monthIndex++;
-    });
-
-    return timelineItems;
-  };
-
-  const timelineItems = createTimelineItems();
 
   const styles = {
     container: {
@@ -119,17 +73,164 @@ export default function Timeline({ events }: TimelineProps) {
 
       {/* Timeline Events */}
       <Box sx={styles.eventsContainer}>
-        {timelineItems.map((monthItem, monthIndex) => (
-          <TimelineMonth
-            key={monthItem.monthKey}
-            monthKey={monthItem.monthKey}
-            events={monthItem.events}
-            monthIndex={monthIndex}
-            imageErrors={imageErrors}
-            onImageError={handleImageError}
-          />
+        {events.map((event, index) => {
+          const side = index % 2 === 0 ? 'left' : 'right';
+          const hasImage = event.image && !imageErrors.has(event.id);
 
-))}
+          return (
+            <Box
+              key={event.id}
+              sx={{
+                display: 'flex',
+                mb: 6,
+                position: 'relative',
+                flexDirection: { xs: 'column', md: side === 'left' ? 'row' : 'row-reverse' },
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              {/* Date Badge */}
+              <Box
+                sx={{
+                  position: { xs: 'relative', md: 'absolute' },
+                  left: { md: '50%' },
+                  top: { md: 0 },
+                  transform: { md: 'translateX(-50%)' },
+                  zIndex: 2,
+                  mb: { xs: 2, md: 0 }
+                }}
+              >
+                <Chip
+                  label={formatDate(event.date)}
+                  sx={{
+                    bgcolor: theme.palette.primary.main,
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    height: 32,
+                    px: 2,
+                    border: 'none'
+                  }}
+                />
+              </Box>
+
+              {/* Content Card */}
+              <Box
+                sx={{
+                  width: { xs: '100%', sm: '90%', md: '45%' },
+                  mt: { xs: 0, md: 6 },
+                  ml: { xs: 0, md: side === 'left' ? 0 : 'auto' },
+                  mr: { xs: 0, md: side === 'left' ? 'auto' : 0 }
+                }}
+              >
+                <Card
+                  component={motion.div}
+                  whileHover={{ y: -2 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.grey[300]}`,
+                    borderRadius: 2,
+                    boxShadow: 'none',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    zIndex: 1,
+                    backgroundColor: 'background.paper'
+                  }}
+                >
+                  {hasImage ? (
+                    <>
+                      <Box sx={{ position: 'relative', width: '100%', height: 250 }}>
+                        <Image
+                          src={event.image!}
+                          alt={event.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          onError={() => handleImageError(event.id)}
+                        />
+                      </Box>
+                    </>
+                  ) : null}
+
+                  <Box sx={{ p: 3 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.palette.primary.dark,
+                        fontWeight: 600,
+                        mb: 1
+                      }}
+                    >
+                      {event.title}
+                    </Typography>
+
+                    {event.location && (
+                      <Link
+                        href={generateGoogleMapsUrl(event.location)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          color: theme.palette.primary.main,
+                          textDecoration: 'underline',
+                          display: 'block',
+                          mb: 1,
+                          fontSize: '0.9rem',
+                          fontWeight: 500,
+                          '&:hover': {
+                            color: theme.palette.primary.dark
+                          }
+                        }}
+                      >
+                        📍 {event.location}
+                      </Link>
+                    )}
+
+                    {event.description && (
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: theme.palette.text.secondary,
+                          fontSize: '0.95rem',
+                          lineHeight: 1.6,
+                          mt: 1.5
+                        }}
+                      >
+                        {event.description}
+                      </Typography>
+                    )}
+
+                    {event.tag && (
+                      <Chip
+                        label={event.tag}
+                        size="small"
+                        sx={{
+                          mt: 2,
+                          bgcolor: theme.palette.primary.light + '30',
+                          color: theme.palette.primary.main,
+                          fontWeight: 500
+                        }}
+                      />
+                    )}
+
+                    {event.from && (
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          display: 'block',
+                          mt: 1.5,
+                          pt: 1.5,
+                          borderTop: `1px solid ${theme.palette.divider}`,
+                          color: theme.palette.text.secondary,
+                          fontStyle: 'italic'
+                        }}
+                      >
+                        Shared by {event.from}
+                      </Typography>
+                    )}
+                  </Box>
+                </Card>
+              </Box>
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );

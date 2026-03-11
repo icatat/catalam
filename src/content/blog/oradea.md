@@ -20,6 +20,31 @@ I put together a map with most of the places below.
 <iframe src="https://www.google.com/maps/d/embed?mid=1-vjLIpuSTEfOruamSgsxXuucz4AHA_A&ehbc=2E312F" width="640" height="480"></iframe>
 
 ---
+## ✈️ Getting to Oradea
+
+### Best Arrival Airports
+
+**Oradea Airport (OMR)** — smaller, but very convenient if it works out. 
+
+- New York: [LOT](https://www.lot.com/us/en/book/availability/departure) and [Lufthansa]() fly there.
+- London: [Wizzair]() and [Ryanair]
+
+**Budapest (BUD)** — best for intercontinental guests, ~3-4 hrs by car, bus or train. 
+
+Excellent global connections and a stunning city to spend a night in before or after. If this is your option, I would recommend a city break there!
+[Flixbus](https://shop.flixbus.com/search?departureCity=40de6527-8646-11e6-9066-549f350fcb0c&arrivalCity=90805912-40f3-4c45-b288-15146d54689d&route=Budapest-Oradea&rideDate=10.09.2026&adult=1&_locale=en_US&departureCountryCode=HU&arrivalCountryCode=RO&features%5Bfeature.enable_distribusion%5D=1&features%5Bfeature.train_cities_only%5D=0&features%5Bfeature.station_search%5D=0&features%5Bfeature.station_search_recommendation%5D=0&features%5Bfeature.darken_page%5D=1) is available as a great affordable way to transition. [International Trains](https://bileteinternationale.cfrcalatori.ro/en/booking/select/outward) are also available.
+
+
+**Cluj-Napoca (CLJ)** — the closest option, ~3 - 4 hrs by car. Good connections via Wizz Air, Lufthansa and others. A great choice for European guests.
+
+**Debrecen** - a small airport in Hungary, 1 hr drive from Oradea - very convenient if you fly from London. You might need to arrange a ride share or a shuttle.
+
+**Bucharest** - a stretch only if you would like to see the city, then take a TAROM flight to Oradea on a different day.
+
+**Timisoara** - Similar to Club but less popular - worth checking it out!
+
+**Belgrade** - If you don't mind an 8 hour drive  or checking out another country - this is also an option that avoids you having to transfer.
+
 
 ## Getting Around
 
@@ -35,16 +60,25 @@ I put together a map with most of the places below.
 
 Before you dive in — a few things that'll save you some confusion:
 
-- People are welcoming, but don't expect American-level enthusiasm — that's just the culture
+- Romanians are genuinely warm and hospitable. Expect to be well looked after everywhere you go. The culture of generosity can feel overwhelming to those not used to it — just say yes to everything and enjoy it., but don't expect American-level enthusiasm — that's just the culture
+- You will be offered more food than you can possibly eat. **Accepting — even just a little — is a sign of respect.** Refusing can feel like a slight, even if unintentional.
 - Smoking is common outdoors
 - Tipping is optional; 5–10% is appreciated
 - No real tourist trap concern — locals eat at the same places in the center
 - Bakeries are everywhere; trust your eyes over "best of" lists
 - Sundays are slow; many places are closed (religion matters here)
+- English is widely spoken by younger people, especially in the city centre. You'll have no trouble getting around.
 - [Lotus Center](https://maps.app.goo.gl/XhNKUVYdhUdshYSq7) mall exists if you need it, but not worth a special trip
 - **Profi** and **Carrefour** are the best grocery chains
 - Corn on pizza is normal here. Not even debated — just accepted. Ketchup on pizza also happens. You won't get parmesan or chilli flakes, but you'll get spicy and oregano olive oil to top things off.
 
+### Currency
+
+Romania uses the **Romanian Leu (RON)** — not the Euro, despite being an EU member. This catches a lot of people off guard, so worth sorting before or on arrival.
+- Cards are widely accepted in the city centre — restaurants, hotels, and most shops are fine
+- Carry some cash for markets, smaller cafés, salons, and taxis
+- **Best approach:** withdraw RON from a local ATM on arrival — good rates, widely available
+- Avoid currency exchange booths at airports — the rates are poor
 ---
 
 ## Things to See & Do

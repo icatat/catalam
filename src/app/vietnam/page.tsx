@@ -6,7 +6,7 @@ import Navigation from '@/components/Navigation';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
-import { Box, useTheme, Container, Typography } from '@mui/material';
+import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent } from '@mui/material';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
@@ -285,87 +285,76 @@ export default function VietnamWedding() {
           </Box>
         </Box>
 
-        {/* Location/Venue Section */}
+        {/* Navigation Cards */}
         <ScrollReveal direction="up" delay={0.1}>
-          <section style={{ padding: theme.spacing(8, 0) }}>
-            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
-              <Typography variant="h2" component="h2" sx={{
-                fontFamily: '"Arizonia", cursive',
-                color: theme.palette.primary.dark,
-                fontWeight: 400,
-                mb: 6,
-                textAlign: 'center',
-                fontSize: { xs: '3rem', md: '4rem' }
+          <section style={{ padding: theme.spacing(4, 0, 8, 0) }}>
+            <Box sx={{ maxWidth: '900px', mx: 'auto', px: 2 }}>
+              <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                gap: 3
               }}>
-                Wedding Location
-              </Typography>
-              
-              <Box sx={{ 
-                display: 'grid', 
-                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
-                gap: 4, 
-                alignItems: 'center' 
-              }}>
-                {/* Location Details */}
-                <Box sx={{
-                  p: 4,
-                  bgcolor: 'background.paper',
-                  borderRadius: 3,
-                  border: `1px solid ${theme.palette.grey[200]}`
-                }}>
-                  <Typography variant="h4" component="h3" sx={{ 
-                    color: theme.palette.text.primary, 
-                    fontWeight: 600, 
-                    mb: 3 
-                  }}>
-                    Cam Ranh, Vietnam
-                  </Typography>
-                  
-                  <Typography variant="body1" sx={{ 
-                    color: theme.palette.text.secondary, 
-                    mb: 3, 
-                    lineHeight: 1.7 
-                  }}>
-                    Celebrate with us in vibrant Cam Ranh for our Vietnamese wedding ceremony. This bustling metropolis, rich in history and tradition, will host our joyous celebration.
-                  </Typography>
-                  
-                  {/* Venue Address */}
-                  <Box sx={{
-                    p: 3,
-                    bgcolor: theme.palette.grey[50],
-                    borderRadius: 2
-                  }}>
-                    <Typography variant="h6" sx={{
-                      color: theme.palette.primary.main,
-                      fontWeight: 600,
-                      mb: 1
-                    }}>
-                      Venue
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
-                      Details coming soon!
-                    </Typography>
-                  </Box>
-                </Box>
+                {/* Itinerary Card */}
+                <Card
+                  sx={{
+                    border: `2px solid ${theme.palette.primary.main}`,
+                    borderRadius: 3,
+                    boxShadow: theme.shadows[2],
+                    transition: 'box-shadow 0.2s, transform 0.2s',
+                    '&:hover': {
+                      boxShadow: theme.shadows[8],
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <CardActionArea onClick={() => router.push('/vietnam/itinerary')}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Typography sx={{
+                        fontFamily: '"Arizonia", cursive',
+                        color: theme.palette.primary.dark,
+                        fontSize: '2rem',
+                        fontWeight: 400,
+                        mb: 1
+                      }}>
+                        Itinerary
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                        Coming soon
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
 
-                {/* Google Maps Embed */}
-                <Box sx={{
-                  borderRadius: 3,
-                  overflow: 'hidden',
-                  border: `1px solid ${theme.palette.grey[300]}`,
-                  '& iframe': {
-                    width: '100%',
-                    height: { xs: '300px', md: '450px' },
-                    border: 0
-                  }
-                }}>
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.5942044923677!2d109.19268197506148!3d12.071417288167309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31708bff67aac6b7%3A0xd15bf6357e2930a3!2sAlma%20Resort%20Cam%20Ranh!5e0!3m2!1sen!2sus!4v1756786279316!5m2!1sen!2sus"
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Alma Resort - Cam Ranh, Vietnam"
-                  />
-                </Box>
+                {/* Details & FAQ Card */}
+                <Card
+                  sx={{
+                    border: `2px solid ${theme.palette.primary.main}`,
+                    borderRadius: 3,
+                    boxShadow: theme.shadows[2],
+                    transition: 'box-shadow 0.2s, transform 0.2s',
+                    '&:hover': {
+                      boxShadow: theme.shadows[8],
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <CardActionArea onClick={() => router.push('/vietnam/details')}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Typography sx={{
+                        fontFamily: '"Arizonia", cursive',
+                        color: theme.palette.primary.dark,
+                        fontSize: '2rem',
+                        fontWeight: 400,
+                        mb: 1
+                      }}>
+                        Details & FAQ
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                        Venue & Guest Guide
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
               </Box>
             </Box>
           </section>

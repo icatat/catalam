@@ -6,7 +6,7 @@ import Navigation from '@/components/Navigation';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
-import { Box, useTheme, Container, Typography } from '@mui/material';
+import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent } from '@mui/material';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
@@ -19,8 +19,6 @@ import {
 } from '@/lib/rsvpUtils';
 import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
 import CustomButton from '@/components/Button';
-import WeddingTimeline from '@/components/WeddingTimeline';
-import { ItineraryEvent } from '@/types/wedding';
 
 export default function RomaniaWedding() {
   const theme = useTheme();
@@ -34,25 +32,9 @@ export default function RomaniaWedding() {
     email: string;
     emailSent: boolean;
   }>({ attending: false, email: '', emailSent: false });
-  const [weddingEvents, setWeddingEvents] = useState<ItineraryEvent[]>([]);
-  const [timelineDate, setTimelineDate] = useState<string>('September 11th, 2026');
 
   const location = Location.ROMANIA;
   const weddingInfo = WEDDING_INFO[location];
-
-  // Load timeline data
-  useEffect(() => {
-    fetch('/api/romania-timeline')
-      .then(response => response.json())
-      .then(data => {
-        setWeddingEvents(data.events || []);
-        setTimelineDate(data.date || 'September 11th, 2026');
-      })
-      .catch(error => {
-        console.error('Error loading timeline:', error);
-        // Keep default empty array on error
-      });
-  }, []);
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -305,29 +287,77 @@ export default function RomaniaWedding() {
           </Box>
         </Box>
 
-        {/* Wedding Timeline Section */}
+        {/* Navigation Cards */}
         <ScrollReveal direction="up" delay={0.2}>
-          <section style={{ padding: theme.spacing(8, 0) }}>
-            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
-              <Typography variant="h2" component="h2" sx={{
-                fontFamily: '"Arizonia", cursive',
-                color: theme.palette.primary.dark,
-                fontWeight: 400,
-                mb: 2,
-                textAlign: 'center',
-                fontSize: { xs: '3rem', md: '4rem' }
+          <section style={{ padding: theme.spacing(4, 0, 8, 0) }}>
+            <Box sx={{ maxWidth: '900px', mx: 'auto', px: 2 }}>
+              <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                gap: 3
               }}>
-                Itinerary
-              </Typography>
-              <Typography variant="h6" component="p" sx={{
-                color: theme.palette.text.secondary,
-                mb: 6,
-                textAlign: 'center'
-              }}>
-                {timelineDate}
-              </Typography>
+                {/* Itinerary Card */}
+                <Card
+                  sx={{
+                    border: `2px solid ${theme.palette.primary.main}`,
+                    borderRadius: 3,
+                    boxShadow: theme.shadows[2],
+                    transition: 'box-shadow 0.2s, transform 0.2s',
+                    '&:hover': {
+                      boxShadow: theme.shadows[8],
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <CardActionArea onClick={() => router.push('/romania/itinerary')}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Typography sx={{
+                        fontFamily: '"Arizonia", cursive',
+                        color: theme.palette.primary.dark,
+                        fontSize: '2rem',
+                        fontWeight: 400,
+                        mb: 1
+                      }}>
+                        Itinerary
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                        September 11, 2026
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
 
-              {weddingEvents.length > 0 && <WeddingTimeline events={weddingEvents} />}
+                {/* Details & FAQ Card */}
+                <Card
+                  sx={{
+                    border: `2px solid ${theme.palette.primary.main}`,
+                    borderRadius: 3,
+                    boxShadow: theme.shadows[2],
+                    transition: 'box-shadow 0.2s, transform 0.2s',
+                    '&:hover': {
+                      boxShadow: theme.shadows[8],
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <CardActionArea onClick={() => router.push('/romania/details')}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Typography sx={{
+                        fontFamily: '"Arizonia", cursive',
+                        color: theme.palette.primary.dark,
+                        fontSize: '2rem',
+                        fontWeight: 400,
+                        mb: 1
+                      }}>
+                        Details & FAQ
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                        Guest Guide
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Box>
             </Box>
           </section>
         </ScrollReveal>
