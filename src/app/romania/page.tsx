@@ -10,14 +10,9 @@ import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
-import { RSVPFormData } from '@/types/wedding';
-import {
-  handleReconfirmation,
-  submitRSVP,
-  createEmailPromise,
-  RSVPHandlerOptions
-} from '@/lib/rsvpUtils';
-import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
+import { RSVPFormData, NewGuestCreated, ItineraryEvent } from '@/types/wedding';
+import { useRSVPHandler } from '@/lib/useRSVPHandler';
+import { WEDDING_INFO } from '@/lib/constants';
 import CustomButton from '@/components/Button';
 
 export default function RomaniaWedding() {
@@ -25,16 +20,16 @@ export default function RomaniaWedding() {
   const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
+  const [rsvpableEvents, setRsvpableEvents] = useState<ItineraryEvent[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationData, setConfirmationData] = useState<{
-    attending: boolean;
-    email: string;
-    emailSent: boolean;
-  }>({ attending: false, email: '', emailSent: false });
 
   const location = Location.ROMANIA;
   const weddingInfo = WEDDING_INFO[location];
+  const { handleRSVP, confirmationData, showConfirmation, setShowConfirmation } = useRSVPHandler(
+    guestData,
+    location,
+    (data) => setGuestData(data)
+  );
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -42,6 +37,16 @@ export default function RomaniaWedding() {
       router.push('/');
       return;
     }
+
+    fetch('/api/romania-timeline')
+      .then(r => r.json())
+      .then(data => {
+        const allEvents = (data.days || []).flatMap((d: { date?: string; events?: ItineraryEvent[] }) =>
+          (d.events || []).map((e: ItineraryEvent) => ({ ...e, date: d.date }))
+        );
+        setRsvpableEvents(allEvents.filter((e: ItineraryEvent) => e.type === 'Event'));
+      })
+      .catch(() => {});
 
     fetch('/api/guest', {
       method: 'POST',
@@ -61,7 +66,7 @@ export default function RomaniaWedding() {
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
             group_members: data.group_members || [],
-          } as any);
+          });
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -72,87 +77,6 @@ export default function RomaniaWedding() {
         router.push('/');
       });
   }, [location, router]);
-
-  const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
-    if (!guestData) return;
-
-    try {
-      const options: RSVPHandlerOptions = { guestData, formData, location, setGuestData };
-      
-      const isReconfirmation = await handleReconfirmation(options);
-      if (isReconfirmation) {
-        setConfirmationData({
-          attending: formData.rsvp === 'true',
-          email: formData.email,
-          emailSent: true
-        });
-        setShowConfirmation(true);
-        return;
-      }
-
-      const rsvpResponse = await submitRSVP(options);
-      const rsvpResult = await rsvpResponse.json();
-
-      if (!rsvpResponse.ok) {
-        // Handle API errors
-        alert(rsvpResult.error || 'Failed to submit RSVP');
-        return;
-      }
-
-      if (rsvpResult.success) {
-        const updatedGuestResponse = await fetch('/api/guest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ invite_id: guestData.invite_id }),
-        });
-        const updatedGuestData = await updatedGuestResponse.json();
-        setGuestData({
-          invite_id: guestData.invite_id,
-          first_name: updatedGuestData.first_name,
-          last_name: updatedGuestData.last_name,
-          vietnam: updatedGuestData.vietnam,
-          romania: updatedGuestData.romania,
-          group: updatedGuestData.group,
-          has_rsvp_romania: updatedGuestData.has_rsvp_romania,
-          has_rsvp_vietnam: updatedGuestData.has_rsvp_vietnam,
-          group_members: updatedGuestData.group_members || [],
-        } as any);
-      }
-
-      const emailPromise = createEmailPromise({
-        name: formData.name || `${guestData.first_name} ${guestData.last_name}`,
-        email: formData.email,
-        attending: formData.rsvp === 'true',
-        location
-      });
-
-      setConfirmationData({
-        attending: formData.rsvp === 'true',
-        email: formData.email,
-        emailSent: false
-      });
-      setShowConfirmation(true);
-
-      try {
-        const emailResult = await emailPromise;
-        const emailData = await emailResult.json();
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: emailData.success
-        }));
-      } catch (emailError) {
-        console.error('Email error:', emailError);
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: false
-        }));
-      }
-      
-    } catch (error) {
-      console.error('Error submitting RSVP:', error);
-      alert(MESSAGES.RSVP_ERROR(location));
-    }
-  };
 
   // Loading state
   if (isVerifying || !guestData) {
@@ -187,7 +111,7 @@ export default function RomaniaWedding() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1
@@ -214,7 +138,7 @@ export default function RomaniaWedding() {
               fontSize: { xs: '2.5rem', md: '3.5rem' }
             }}
           >
-            {(guestData as any).has_rsvp_romania
+            {guestData.has_rsvp_romania
               ? `Welcome back, ${guestData.first_name}! Your RSVP for Romania has been confirmed.`
               : `Welcome, ${guestData.first_name}! Please RSVP for our Romania wedding.`
             }
@@ -236,7 +160,7 @@ export default function RomaniaWedding() {
           {/* Romania Polaroid with location/date */}
           <MainPageCard
             polaroid={true}
-            imageSrc="/photo_3.png"
+            imageSrc="/photo_3.webp"
             alt="Romania Wedding Photo"
             animationDelay={0.1}
             bottomContent={
@@ -268,7 +192,7 @@ export default function RomaniaWedding() {
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <CustomButton
               onClick={() => setShowRSVPModal(true)}
-              variant={(guestData as any).has_rsvp_romania ? "outlined" : "contained"}
+              variant={guestData.has_rsvp_romania ? "outlined" : "contained"}
               size="large"
               sx={{
                 px: 6,
@@ -279,7 +203,7 @@ export default function RomaniaWedding() {
                 textTransform: 'none'
               }}
             >
-              {(guestData as any).has_rsvp_romania
+              {guestData.has_rsvp_romania
                 ? 'Update RSVP'
                 : 'RSVP Now'
               }
@@ -319,9 +243,6 @@ export default function RomaniaWedding() {
                         mb: 1
                       }}>
                         Itinerary
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        September 11, 2026
                       </Typography>
                     </CardContent>
                   </CardActionArea>
@@ -372,6 +293,7 @@ export default function RomaniaWedding() {
           guestData={guestData}
           location={location}
           variant="primary"
+          rsvpableEvents={rsvpableEvents}
         />
       )}
 

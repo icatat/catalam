@@ -7,20 +7,15 @@ import HeroSection from '@/components/HeroSection';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
 import { InviteVerification } from '@/components/InviteVerification';
-import { RSVPFormData } from '@/types/wedding';
+import { RSVPFormData, NewGuestCreated } from '@/types/wedding';
 import CustomButton from '@/components/Button';
 import { ScrollReveal, ScrollProgress } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { useTheme, Box, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { Location, GuestData } from '@/models/RSVP';
-import { 
-  handleReconfirmation, 
-  submitRSVP, 
-  createEmailPromise,
-  RSVPHandlerOptions 
-} from '@/lib/rsvpUtils';
-import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
+import { useRSVPHandler } from '@/lib/useRSVPHandler';
+import { WEDDING_INFO } from '@/lib/constants';
 
 interface WeddingPageProps {
   location: Location;
@@ -31,15 +26,14 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationData, setConfirmationData] = useState<{
-    attending: boolean;
-    email: string;
-    emailSent: boolean;
-  }>({ attending: false, email: '', emailSent: false });
 
   const weddingInfo = WEDDING_INFO[location];
   const isRomania = location === Location.ROMANIA;
+  const { handleRSVP, confirmationData, showConfirmation, setShowConfirmation } = useRSVPHandler(
+    guestData,
+    location,
+    (data) => setGuestData(data)
+  );
   const locationName = isRomania ? 'Romania' : 'Vietnam';
 
   useEffect(() => {
@@ -65,7 +59,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               has_rsvp_romania: data.has_rsvp_romania,
               has_rsvp_vietnam: data.has_rsvp_vietnam,
               group_members: data.group_members || [],
-            } as any);
+            });
           }
           setIsVerifying(false);
         })
@@ -80,87 +74,6 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
 
   const handleInviteVerified = (data: GuestData) => {
     setGuestData(data);
-  };
-
-  const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
-    if (!guestData) return;
-
-    try {
-      const options: RSVPHandlerOptions = { guestData, formData, location, setGuestData };
-      
-      // Check if this is a re-confirmation
-      const isReconfirmation = await handleReconfirmation(options);
-      if (isReconfirmation) {
-        setConfirmationData({
-          attending: formData.rsvp === 'true',
-          email: formData.email,
-          emailSent: true
-        });
-        setShowConfirmation(true);
-        return;
-      }
-
-      // Submit RSVP
-      const rsvpResponse = await submitRSVP(options);
-      const rsvpResult = await rsvpResponse.json();
-
-      if (rsvpResult.success) {
-        // Refetch guest data from database to get updated RSVP status
-        const updatedGuestResponse = await fetch('/api/guest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ invite_id: guestData.invite_id }),
-        });
-        const updatedGuestData = await updatedGuestResponse.json();
-        setGuestData({
-          invite_id: guestData.invite_id,
-          first_name: updatedGuestData.first_name,
-          last_name: updatedGuestData.last_name,
-          vietnam: updatedGuestData.vietnam,
-          romania: updatedGuestData.romania,
-          group: updatedGuestData.group,
-          has_rsvp_romania: updatedGuestData.has_rsvp_romania,
-          has_rsvp_vietnam: updatedGuestData.has_rsvp_vietnam,
-          group_members: updatedGuestData.group_members || [],
-        } as any);
-      }
-
-      // Create email promise
-      const emailPromise = createEmailPromise({
-        name: formData.name || `${guestData.first_name} ${guestData.last_name}`,
-        email: formData.email,
-        attending: formData.rsvp === 'true',
-        location
-      });
-
-      // Show confirmation immediately
-      setConfirmationData({
-        attending: formData.rsvp === 'true',
-        email: formData.email,
-        emailSent: false
-      });
-      setShowConfirmation(true);
-
-      // Handle email in background
-      try {
-        const emailResult = await emailPromise;
-        const emailData = await emailResult.json();
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: emailData.success
-        }));
-      } catch (emailError) {
-        console.error('Email error:', emailError);
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: false
-        }));
-      }
-      
-    } catch (error) {
-      console.error('Error submitting RSVP:', error);
-      alert(MESSAGES.RSVP_ERROR(location));
-    }
   };
 
   // Loading state
@@ -191,7 +104,7 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             left: 0,
             right: 0,
             bottom: 0,
-            background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/background-main.png)`,
+            background: `linear-gradient(135deg, ${theme.palette.primary.light}45 0%, ${theme.palette.primary.light}40 25%, ${theme.palette.primary.light}50 50%, ${theme.palette.primary.main}20 75%, ${theme.palette.primary.light}30 100%), url(/background-main.webp)`,
             backgroundRepeat: 'repeat',
             backgroundSize: 'contain',
             zIndex: -1
@@ -210,8 +123,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
       <ScrollProgress color={isRomania ? '#efd9df' : '#c2e1ee'} />
       <div className="min-h-screen" style={{ 
         background: isRomania 
-          ? `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-pink.png)` 
-          : `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-blue.png)`,
+          ? `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-pink.webp)` 
+          : `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-blue.webp)`,
         backgroundRepeat: 'repeat', 
         backgroundSize: 'contain', 
         backgroundAttachment: 'fixed' 
@@ -242,8 +155,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
             alignItems: 'center'
           }}>
             {/* Personalized Message */}
-            {((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-              (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam)) ? (
+            {((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+              (location === Location.VIETNAM && guestData.has_rsvp_vietnam)) ? (
               <Typography
                 variant="h3"
                 component="h1"
@@ -308,8 +221,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               position: 'relative',
               zIndex: 2
             }}>
-              {((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-                (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam)) && (
+              {((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+                (location === Location.VIETNAM && guestData.has_rsvp_vietnam)) && (
                 <CheckCircle
                   sx={{
                     color: theme.palette.success.main,
@@ -319,12 +232,12 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
               )}
               <CustomButton
                 onClick={() => setShowRSVPModal(true)}
-                variant={((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-                  (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam)) ? "text" : "contained"}
-                size={((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-                  (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam)) ? "medium" : "large"}
-                sx={((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-                  (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam)) ? {
+                variant={((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+                  (location === Location.VIETNAM && guestData.has_rsvp_vietnam)) ? "text" : "contained"}
+                size={((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+                  (location === Location.VIETNAM && guestData.has_rsvp_vietnam)) ? "medium" : "large"}
+                sx={((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+                  (location === Location.VIETNAM && guestData.has_rsvp_vietnam)) ? {
                   // Subtle styling for confirmed users
                   px: 3,
                   py: 1.5,
@@ -349,8 +262,8 @@ export default function WeddingPageLayout({ location }: WeddingPageProps) {
                   textTransform: 'none'
                 }}
               >
-                {((location === Location.ROMANIA && (guestData as any).has_rsvp_romania) ||
-                  (location === Location.VIETNAM && (guestData as any).has_rsvp_vietnam))
+                {((location === Location.ROMANIA && guestData.has_rsvp_romania) ||
+                  (location === Location.VIETNAM && guestData.has_rsvp_vietnam))
                   ? 'Update RSVP'
                   : 'RSVP Now'
                 }

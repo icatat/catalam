@@ -73,7 +73,7 @@ export default function VietnamDetails() {
         sx={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1

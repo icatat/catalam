@@ -89,8 +89,6 @@ export default function Home() {
     setShowInviteModal(true);
   };
 
-  console.log("GUEST DATA: ", guestData)
-
   const showRomaniaMap = guestData != null && guestData.romania;
   const showVietnamMap = guestData != null && guestData.vietnam;
 
@@ -114,7 +112,7 @@ export default function Home() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1
@@ -223,7 +221,7 @@ export default function Home() {
             {/* Centered bigger polaroid with NameHeader */}
             <MainPageCard
               polaroid={true}
-              imageSrc="/photo_4.png"
+              imageSrc="/photo_4.webp"
               alt="Wedding Photo"
               animationDelay={0.1}
               bottomContent={

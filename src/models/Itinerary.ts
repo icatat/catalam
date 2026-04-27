@@ -79,6 +79,7 @@ export class Itinerary {
   // Get all days in component format
   getDaysForComponent(): ItineraryDayData[] {
     return this.days.map(day => ({
+      date: day.title,
       title: day.title,
       subtitle: day.subtitle,
       events: day.getEventsForComponent(),

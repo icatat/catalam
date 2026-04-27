@@ -47,8 +47,10 @@ export function MainPageCard({
         <Image
           src={imageSrc}
           alt={alt}
-          width={400}
-          height={400}
+          width={0}
+          height={0}
+          sizes="(max-width: 600px) 280px, (max-width: 900px) 350px, 400px"
+          priority
         />
         {bottomContent && (
           <Box

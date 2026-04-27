@@ -224,6 +224,7 @@ export default function TimelineUpload({ open, onClose, onUploadSuccess, default
                     src={previewUrl}
                     alt="Preview"
                     fill
+                    sizes="300px"
                     style={{
                       objectFit: 'cover'
                     }}

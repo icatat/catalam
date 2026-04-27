@@ -10,14 +10,9 @@ import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
-import { RSVPFormData } from '@/types/wedding';
-import {
-  handleReconfirmation,
-  submitRSVP,
-  createEmailPromise,
-  RSVPHandlerOptions
-} from '@/lib/rsvpUtils';
-import { WEDDING_INFO, MESSAGES } from '@/lib/constants';
+import { RSVPFormData, NewGuestCreated } from '@/types/wedding';
+import { useRSVPHandler } from '@/lib/useRSVPHandler';
+import { WEDDING_INFO } from '@/lib/constants';
 import CustomButton from '@/components/Button';
 
 export default function VietnamWedding() {
@@ -26,15 +21,14 @@ export default function VietnamWedding() {
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationData, setConfirmationData] = useState<{
-    attending: boolean;
-    email: string;
-    emailSent: boolean;
-  }>({ attending: false, email: '', emailSent: false });
 
   const location = Location.VIETNAM;
   const weddingInfo = WEDDING_INFO[location];
+  const { handleRSVP, confirmationData, showConfirmation, setShowConfirmation } = useRSVPHandler(
+    guestData,
+    location,
+    (data) => setGuestData(data)
+  );
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -61,7 +55,7 @@ export default function VietnamWedding() {
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
             group_members: data.group_members || [],
-          } as any);
+          });
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -72,87 +66,6 @@ export default function VietnamWedding() {
         router.push('/');
       });
   }, [location, router]);
-
-  const handleRSVP = async (formData: RSVPFormData): Promise<void> => {
-    if (!guestData) return;
-
-    try {
-      const options: RSVPHandlerOptions = { guestData, formData, location, setGuestData };
-      
-      const isReconfirmation = await handleReconfirmation(options);
-      if (isReconfirmation) {
-        setConfirmationData({
-          attending: formData.rsvp === 'true',
-          email: formData.email,
-          emailSent: true
-        });
-        setShowConfirmation(true);
-        return;
-      }
-
-      const rsvpResponse = await submitRSVP(options);
-      const rsvpResult = await rsvpResponse.json();
-
-      if (!rsvpResponse.ok) {
-        // Handle API errors
-        alert(rsvpResult.error || 'Failed to submit RSVP');
-        return;
-      }
-
-      if (rsvpResult.success) {
-        const updatedGuestResponse = await fetch('/api/guest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ invite_id: guestData.invite_id }),
-        });
-        const updatedGuestData = await updatedGuestResponse.json();
-        setGuestData({
-          invite_id: guestData.invite_id,
-          first_name: updatedGuestData.first_name,
-          last_name: updatedGuestData.last_name,
-          vietnam: updatedGuestData.vietnam,
-          romania: updatedGuestData.romania,
-          group: updatedGuestData.group,
-          has_rsvp_romania: updatedGuestData.has_rsvp_romania,
-          has_rsvp_vietnam: updatedGuestData.has_rsvp_vietnam,
-          group_members: updatedGuestData.group_members || [],
-        } as any);
-      }
-
-      const emailPromise = createEmailPromise({
-        name: formData.name || `${guestData.first_name} ${guestData.last_name}`,
-        email: formData.email,
-        attending: formData.rsvp === 'true',
-        location
-      });
-
-      setConfirmationData({
-        attending: formData.rsvp === 'true',
-        email: formData.email,
-        emailSent: false
-      });
-      setShowConfirmation(true);
-
-      try {
-        const emailResult = await emailPromise;
-        const emailData = await emailResult.json();
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: emailData.success
-        }));
-      } catch (emailError) {
-        console.error('Email error:', emailError);
-        setConfirmationData(prev => ({
-          ...prev,
-          emailSent: false
-        }));
-      }
-      
-    } catch (error) {
-      console.error('Error submitting RSVP:', error);
-      alert(MESSAGES.RSVP_ERROR(location));
-    }
-  };
 
   // Loading state
   if (isVerifying || !guestData) {
@@ -187,7 +100,7 @@ export default function VietnamWedding() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1
@@ -212,7 +125,7 @@ export default function VietnamWedding() {
               fontSize: { xs: '2.5rem', md: '3.5rem' }
             }}
           >
-            {(guestData as any).has_rsvp_vietnam
+            {guestData.has_rsvp_vietnam
               ? `Welcome back, ${guestData.first_name}! Your RSVP for Vietnam has been confirmed.`
               : `Welcome, ${guestData.first_name}! Please RSVP for our Vietnam wedding.`
             }
@@ -234,7 +147,7 @@ export default function VietnamWedding() {
           {/* Vietnam Polaroid with location/date */}
           <MainPageCard
             polaroid={true}
-            imageSrc="/photo_0.png"
+            imageSrc="/photo_0.webp"
             alt="Vietnam Wedding Photo"
             animationDelay={0.1}
             bottomContent={
@@ -266,7 +179,7 @@ export default function VietnamWedding() {
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <CustomButton
               onClick={() => setShowRSVPModal(true)}
-              variant={(guestData as any).has_rsvp_vietnam ? "outlined" : "contained"}
+              variant={guestData.has_rsvp_vietnam ? "outlined" : "contained"}
               size="large"
               sx={{
                 px: 6,
@@ -277,7 +190,7 @@ export default function VietnamWedding() {
                 textTransform: 'none'
               }}
             >
-              {(guestData as any).has_rsvp_vietnam
+              {guestData.has_rsvp_vietnam
                 ? 'Update RSVP'
                 : 'RSVP Now'
               }

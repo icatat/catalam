@@ -53,7 +53,7 @@ export default function BlogPage() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1

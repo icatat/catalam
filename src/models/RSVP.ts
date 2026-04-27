@@ -45,5 +45,7 @@ export interface RSVPProperties {
   guests_count?: number;
   special_requests?: string;
   rsvp_on_behalf?: string;
+  tentative_arrival_date?: string;
+  event_attendance?: Record<string, boolean>;
 }
 

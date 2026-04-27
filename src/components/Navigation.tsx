@@ -66,6 +66,7 @@ export default function Navigation({
               src="/NameHeader.png"
               alt="Catalina & Lam"
               fill
+              sizes="120px"
               style={{ objectFit: 'contain' }}
               priority
             />

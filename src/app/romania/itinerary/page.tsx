@@ -7,7 +7,7 @@ import { Box, useTheme, Container, Typography, IconButton } from '@mui/material'
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
-import { ItineraryEvent } from '@/types/wedding';
+import { ItineraryDayData } from '@/types/wedding';
 import WeddingTimeline from '@/components/WeddingTimeline';
 import { ArrowLeft } from 'lucide-react';
 
@@ -16,8 +16,7 @@ export default function RomaniaItinerary() {
   const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
-  const [weddingEvents, setWeddingEvents] = useState<ItineraryEvent[]>([]);
-  const [timelineDate, setTimelineDate] = useState<string>('September 11th, 2026');
+  const [days, setDays] = useState<ItineraryDayData[]>([]);
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -44,7 +43,7 @@ export default function RomaniaItinerary() {
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
             group_members: data.group_members || [],
-          } as any);
+          });
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -60,8 +59,7 @@ export default function RomaniaItinerary() {
     fetch('/api/romania-timeline')
       .then(response => response.json())
       .then(data => {
-        setWeddingEvents(data.events || []);
-        setTimelineDate(data.date || 'September 11th, 2026');
+        setDays(data.days || []);
       })
       .catch(error => {
         console.error('Error loading timeline:', error);
@@ -89,14 +87,14 @@ export default function RomaniaItinerary() {
         sx={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.png)`,
+          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           zIndex: -1
         }}
       />
 
-      <Navigation currentPage="romania" showRomania={true} showVietnam={(guestData as any)?.vietnam} />
+      <Navigation currentPage="romania" showRomania={true} showVietnam={guestData?.vietnam} />
 
       <Container maxWidth="xl">
         <Box sx={{ pt: { xs: 8, md: 10 }, pb: 2 }}>
@@ -115,21 +113,41 @@ export default function RomaniaItinerary() {
                 fontFamily: '"Arizonia", cursive',
                 color: theme.palette.primary.dark,
                 fontWeight: 400,
-                mb: 2,
+                mb: 8,
                 textAlign: 'center',
                 fontSize: { xs: '3rem', md: '4rem' }
               }}>
                 Itinerary
               </Typography>
-              <Typography variant="h6" component="p" sx={{
-                color: theme.palette.text.secondary,
-                mb: 6,
-                textAlign: 'center'
-              }}>
-                {timelineDate}
-              </Typography>
 
-              {weddingEvents.length > 0 && <WeddingTimeline events={weddingEvents} />}
+              {days.map((day, index) => (
+                <Box key={index} sx={{ mb: 10 }}>
+                  {/* Day header */}
+                  <Box sx={{ textAlign: 'center', mb: 5 }}>
+                    <Typography variant="h4" sx={{
+                      fontFamily: '"Arizonia", cursive',
+                      color: theme.palette.primary.dark,
+                      fontWeight: 400,
+                      fontSize: { xs: '2rem', md: '2.8rem' },
+                      mb: 0.5,
+                    }}>
+                      {day.date}
+                    </Typography>
+                    {day.subtitle && (
+                      <Typography variant="h6" sx={{
+                        color: theme.palette.text.secondary,
+                        fontWeight: 400,
+                      }}>
+                        {day.subtitle}
+                      </Typography>
+                    )}
+                  </Box>
+
+                  {day.events && day.events.length > 0 && (
+                    <WeddingTimeline events={day.events} />
+                  )}
+                </Box>
+              ))}
             </Box>
           </section>
         </ScrollReveal>

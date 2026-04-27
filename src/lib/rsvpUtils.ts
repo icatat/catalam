@@ -1,6 +1,5 @@
 import { Location, GuestData } from '@/models/RSVP';
-import { RSVPFormData } from '@/types/wedding';
-import { sendRSVPConfirmationEmail } from './emailUtils';
+import { RSVPFormData, NewGuestCreated } from '@/types/wedding';
 import { MESSAGES } from './constants';
 
 export interface RSVPHandlerOptions {
@@ -11,23 +10,19 @@ export interface RSVPHandlerOptions {
 }
 
 export async function handleReconfirmation({ guestData, formData, location }: RSVPHandlerOptions): Promise<boolean> {
-  // Note: RSVP status check should be done at a higher level since we no longer have rsvp array in GuestData
-  // This function is kept for future reconfirmation logic
-  return false; // Not handled, continue with normal flow
+  return false;
 }
 
-export function updateGuestRSVPStatus({ guestData, formData, location, setGuestData }: RSVPHandlerOptions): void {
-  // No longer tracking RSVP status in guest data - status is stored in separate rsvp tables
-  // This function is kept for backwards compatibility but does nothing
+export function updateGuestRSVPStatus(_options: RSVPHandlerOptions): void {
+  // Status is stored in separate RSVP tables, not in GuestData
 }
 
-export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHandlerOptions, 'setGuestData'>): Promise<Response> {
-  // Split name into first and last name if provided in form, otherwise use from guestData
+export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHandlerOptions, 'setGuestData'>): Promise<{ success: boolean; new_guests_created?: NewGuestCreated[]; error?: string }> {
   const nameParts = formData.name ? formData.name.trim().split(' ') : [];
   const firstName = nameParts.length > 0 ? nameParts[0] : guestData.first_name;
   const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : guestData.last_name;
 
-  return fetch('/api/rsvp', {
+  const response = await fetch('/api/rsvp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -40,12 +35,20 @@ export async function submitRSVP({ guestData, formData, location }: Omit<RSVPHan
       attending: formData.rsvp === 'true',
       properties: {
         dietary_restrictions: formData.dietaryRestrictions,
-        guests_count: formData.guestCount,
+        guests_count: parseInt(formData.guestCount, 10),  // H1: store as number
         special_message: formData.message,
+        tentative_arrival_date: formData.arrivalDate || undefined,
+        event_attendance: formData.eventAttendance || undefined,
       },
       group_member_rsvps: formData.groupMemberRSVPs,
     }),
   });
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result.error || 'Failed to submit RSVP');
+  }
+  return result;
 }
 
 export function createEmailPromise(data: {
@@ -57,36 +60,6 @@ export function createEmailPromise(data: {
   return fetch('/api/send-rsvp-confirmation', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
-}
-
-export function handleRSVPPromiseChain(
-  response: Response,
-  emailPromise: Promise<Response>,
-  _guestData: GuestData,
-  formData: RSVPFormData
-): void {
-  response.json()
-    .then(result => {
-      if (result.success) {
-        // alert(MESSAGES.RSVP_SUCCESS(guestData.full_name, location));
-        return emailPromise;
-      } else {
-        // alert(MESSAGES.RSVP_ERROR(location));
-        return emailPromise;
-      }
-    })
-    .then(emailResponse => emailResponse.json())
-    .then(emailResult => {
-      if (emailResult.success) {
-        alert(MESSAGES.EMAIL_SUCCESS(formData.email));
-      } else {
-        alert(MESSAGES.EMAIL_ERROR(formData.email));
-      }
-    })
-    .catch(error => {
-      console.error('Error in promise chain:', error);
-      alert(MESSAGES.EMAIL_ERROR(formData.email));
-    });
 }

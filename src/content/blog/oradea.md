@@ -2,7 +2,7 @@
 title: "Oradea: Cata's Hometown"
 location: Oradea, Bihor, Romania
 tags: [Hometown, Wedding]
-image: /Oradea.png
+image: /Oradea.webp
 excerpt: See Oradea like a local - Cata's tips
 ---
 

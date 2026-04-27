@@ -58,6 +58,7 @@ export default function RSVPForm({
     rsvp: '',
     guestCount: '1',
     dietaryRestrictions: '',
+    arrivalDate: '',
     message: ''
   });
 

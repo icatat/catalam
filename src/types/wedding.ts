@@ -6,10 +6,13 @@ export interface ItineraryEvent {
   location: string;
   locationUrl?: string;
   description?: string;
+  type?: string;
+  date?: string;
 }
 
 // Day configuration for components
 export interface ItineraryDayData {
+  date: string;
   title: string;
   subtitle?: string;
   events: ItineraryEvent[];
@@ -23,13 +26,25 @@ export interface RSVPFormData {
   rsvp: string;
   guestCount: string;
   dietaryRestrictions: string;
+  arrivalDate: string;
   message: string;
+  eventAttendance?: Record<string, boolean>;
   groupMemberRSVPs?: Array<{
-    invite_id: string;
+    invite_id?: string;
     first_name: string;
     last_name: string;
     attending: boolean;
+    email?: string;
+    phone?: string;
+    arrival_date?: string;
+    is_new_guest?: boolean;
   }>;
+}
+
+export interface NewGuestCreated {
+  invite_id: string;
+  first_name: string;
+  last_name: string;
 }
 
 // RSVP option structure
