@@ -104,24 +104,27 @@ export default function AboutPage() {
         position: 'relative'
       }}
     >
-      {/* Fixed Background Layer */}
+      {/* Subtle textured background — image only */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, ${theme.palette.primary.light}25 0%, ${theme.palette.primary.light}20 25%, ${theme.palette.primary.light}30 50%, ${theme.palette.primary.light}15 75%, ${theme.palette.primary.light}20 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.5,
+          zIndex: -1,
+          pointerEvents: 'none',
         }}
       />
 
       <Navigation currentPage="about" showRomania={showRomania} showVietnam={showVietnam} />
       
-      <Container maxWidth="xl" sx={{ py: 10 }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 8, md: 10 } }}>
         {/* Header */}
         <Box
           component={motion.div}
@@ -131,18 +134,42 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <Typography
+            sx={{
+              fontFamily: '"Cormorant Garamond", serif',
+              fontStyle: 'italic',
+              color: '#a8916b',
+              fontSize: '1.25rem',
+              letterSpacing: '0.4em',
+              mb: 2,
+            }}
+          >
+            ·   ·   ·
+          </Typography>
+          <Typography
             variant="h1"
             component="h1"
-            gutterBottom
             sx={{
               fontFamily: '"Arizonia", cursive',
               color: theme.palette.primary.dark,
               fontWeight: 400,
-              mb: 3,
-              fontSize: { xs: '3rem', md: '4rem' }
+              mb: 1.5,
+              fontSize: { xs: '3.5rem', md: '5rem' },
+              lineHeight: 1.05,
             }}
           >
             Our Story
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: '"Thasadith", sans-serif',
+              color: '#8e645d',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.32em',
+            }}
+          >
+            A timeline of us
           </Typography>
         </Box>
 
@@ -159,42 +186,20 @@ export default function AboutPage() {
             startIcon={<ArrowUpDown />}
             variant="outlined"
             sx={{
-              borderRadius: 2,
-              px: 3,
-              py: 1.5,
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              borderColor: theme.palette.primary.main,
-              color: theme.palette.primary.main,
               backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              '&:hover': {
-                backgroundColor: theme.palette.primary.main,
-                color: 'white'
-              }
             }}
           >
             {reverseOrder ? 'Newest' : 'Oldest'} First
           </Button>
-          
+
           {guestData && (
             <Button
               onClick={() => setShowUpload(true)}
               startIcon={<Upload />}
               variant="contained"
-              sx={{
-                borderRadius: 2,
-                px: 3,
-                py: 1.5,
-                fontSize: '0.95rem',
-                fontWeight: 500,
-                backgroundColor: theme.palette.primary.main,
-                '&:hover': {
-                  backgroundColor: theme.palette.primary.dark
-                }
-              }}
               title="Have a memory together? Please share it on our timeline!"
             >
-              Share your memory!
+              Share a memory
             </Button>
           )}
         </Box>
@@ -215,33 +220,37 @@ export default function AboutPage() {
           ) : timelineEvents.length > 0 ? (
             <Timeline events={sortedEvents} />
           ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 8 }}>
-              <Heart 
-                size={48} 
-                style={{ 
-                  color: theme.palette.primary.main,
-                  marginBottom: theme.spacing(2)
-                }} 
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 10 }}>
+              <Heart
+                size={36}
+                style={{
+                  color: '#b88880',
+                  marginBottom: theme.spacing(3),
+                  strokeWidth: 1.25,
+                }}
               />
-              <Typography 
-                variant="h6" 
-                sx={{ 
-                  color: theme.palette.text.primary, 
-                  mb: 2,
-                  textAlign: 'center'
+              <Typography
+                sx={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontStyle: 'italic',
+                  color: theme.palette.primary.dark,
+                  fontSize: { xs: '1.5rem', md: '1.75rem' },
+                  fontWeight: 500,
+                  mb: 1.5,
+                  textAlign: 'center',
                 }}
               >
-                Our Story Begins Here
+                Our story begins here
               </Typography>
               <Typography
                 variant="body1"
                 sx={{
                   color: theme.palette.text.secondary,
                   textAlign: 'center',
-                  maxWidth: 400
+                  maxWidth: 420,
                 }}
               >
-                Check back soon for special moments and memories from our journey
+                Check back soon for moments and memories from our journey.
               </Typography>
             </Box>
           )}

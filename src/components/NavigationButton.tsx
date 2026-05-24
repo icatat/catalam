@@ -28,19 +28,22 @@ export function NavigationButton({
         whileTap={{ scale: 0.98 }}
         size="small"
         sx={{
-          color: theme.palette.primary.main,
+          color: theme.palette.primary.dark,
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          border: '1px solid rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(32, 72, 91, 0.12)',
           borderRadius: 1.5,
-          fontSize: { xs: '0.65rem', sm: '0.7rem', md: '0.75rem' },
-          fontWeight: 500,
+          fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.8rem' },
+          fontWeight: 600,
+          letterSpacing: '0.02em',
           backdropFilter: 'blur(15px)',
           textTransform: 'none',
-          px: { xs: 1.5, sm: 2 },
-          py: { xs: 0.5, sm: 0.75 },
+          px: { xs: 1.75, sm: 2.25 },
+          py: { xs: 0.6, sm: 0.85 },
           minWidth: 'auto',
+          transition: 'color 0.2s ease, background-color 0.2s ease',
           '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 1)'
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            color: '#b88880',
           }
         }}
       >

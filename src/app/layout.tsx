@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Thasadith, Arizonia } from "next/font/google";
+import { Thasadith, Arizonia, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import MuiThemeProvider from "@/components/MuiThemeProvider";
 import { NotificationProvider } from "@/components/NotificationSystem";
@@ -18,6 +18,14 @@ const arizonia = Arizonia({
   display: "swap",
 });
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 
 export const metadata: Metadata = {
   title: "Catalina & Lam Wedding",
@@ -32,13 +40,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet" />
         <script async src="//www.instagram.com/embed.js"></script>
       </head>
       <body
-        className={`${thasadith.variable} ${arizonia.variable} antialiased`}
+        className={`${thasadith.variable} ${arizonia.variable} ${cormorant.variable} antialiased`}
       >
         <MuiThemeProvider>
           <NotificationProvider>

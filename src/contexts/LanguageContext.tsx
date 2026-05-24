@@ -218,7 +218,7 @@ const translations: Record<Language, Record<string, string>> = {
     'itinerary.romania.day2.celebration.description': 'Traditional Romanian wedding reception',
     
     // Itinerary - Vietnam
-    'itinerary.vietnam.day1.title': 'Saturday, September 26th, 2026',
+    'itinerary.vietnam.day1.title': 'Saturday, September 25th, 2026',
     'itinerary.vietnam.day1.subtitle': 'Wedding Day',
     'itinerary.vietnam.day1.ceremony.title': 'Traditional Tea Ceremony',
     'itinerary.vietnam.day1.ceremony.location': 'Family Home, Hanoi',

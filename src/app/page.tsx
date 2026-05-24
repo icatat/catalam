@@ -9,8 +9,6 @@ import { MainPageCard } from '@/components/MainPageCard';
 import { InviteModal } from '@/components/InviteModal';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { Location } from '@/models/RSVP';
-
 interface GuestData {
   invite_id: string;
   first_name: string;
@@ -104,18 +102,21 @@ export default function Home() {
         position: 'relative'
       }}
     >
-      {/* Fixed Background Layer */}
+      {/* Subtle textured background — image only */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.5,
+          zIndex: -1,
+          pointerEvents: 'none',
         }}
       />
       {/* Top-right controls */}
@@ -248,17 +249,9 @@ export default function Home() {
                   variant="contained"
                   size="large"
                   sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    color: 'white',
-                    px: { xs: 3, sm: 4 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: '0.9rem', sm: '1rem' },
-                    fontWeight: 600,
-                    borderRadius: 2,
-                    textTransform: 'none',
-                    '&:hover': {
-                      backgroundColor: theme.palette.primary.dark
-                    }
+                    px: { xs: 4, sm: 5 },
+                    py: { xs: 1.25, sm: 1.5 },
+                    fontSize: { xs: '0.9rem', sm: '0.95rem' },
                   }}
                 >
                   Joining our wedding?
@@ -356,7 +349,7 @@ export default function Home() {
                   '&:hover': {
                     backgroundColor: 'transparent',
                     textDecoration: 'underline',
-                    color: theme.palette.primary.main,
+                    color: '#b88880',
                   },
                 }}
               >

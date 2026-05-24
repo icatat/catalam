@@ -362,14 +362,33 @@ export default function RSVPModal({
         }
       }}
     >
-      <DialogTitle sx={{ pb: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <DialogTitle sx={{ pb: 1.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
           <Box>
-            <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: 'primary.main' }}>
-              {newGuestCodes.length > 0 ? 'New Guest Invite Codes' : hasExistingRSVP ? 'Modify Your RSVP' : 'RSVP'}
+            <Typography
+              sx={{
+                fontFamily: '"Thasadith", sans-serif',
+                color: '#8e645d',
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.3em',
+                mb: 0.75,
+              }}
+            >
+              {locationName}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {`${locationName} Wedding RSVP`}
+            <Typography
+              component="div"
+              sx={{
+                fontFamily: '"Cormorant Garamond", serif',
+                fontWeight: 500,
+                fontSize: '1.75rem',
+                color: theme.palette.primary.dark,
+                lineHeight: 1.2,
+              }}
+            >
+              {newGuestCodes.length > 0 ? 'Invite codes' : hasExistingRSVP ? 'Modify your RSVP' : 'Please RSVP'}
             </Typography>
           </Box>
           <IconButton onClick={onClose} size="small" sx={{ color: 'text.secondary' }} aria-label="Close RSVP form">
@@ -477,13 +496,13 @@ export default function RSVPModal({
                     <FormControlLabel
                       value="true"
                       control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                      label="Yes, I&apos;ll be there!"
+                      label="Yes — I&apos;ll be there"
                       disabled={isSubmitting}
                     />
                     <FormControlLabel
                       value="false"
                       control={<Radio color={variant === 'primary' ? 'primary' : 'secondary'} />}
-                      label="Sorry, I can&apos;t make it"
+                      label="Sorry — can&apos;t make it"
                       disabled={isSubmitting}
                     />
                   </RadioGroup>

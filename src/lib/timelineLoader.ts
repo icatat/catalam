@@ -14,6 +14,13 @@ export function loadRomaniaTimeline(): TimelineData {
   return data;
 }
 
+export function loadVietnamTimeline(): TimelineData {
+  const filePath = path.join(process.cwd(), 'src/content/VietnamWeddingTimeline.yaml');
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const data = yaml.load(fileContents) as TimelineData;
+  return data;
+}
+
 export function flattenTimelineEvents(timeline: TimelineData): ItineraryEvent[] {
   return (timeline.days || []).flatMap(day => day.events || []);
 }

@@ -7,6 +7,10 @@ import { Box, useTheme, Container, Typography, IconButton } from '@mui/material'
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
+import { ItineraryDayData } from '@/types/wedding';
+import ItineraryDayBanner from '@/components/ItineraryDayBanner';
+import ItineraryTimeline from '@/components/ItineraryTimeline';
+import { isSubtitleRedundant } from '@/lib/itinerary';
 import { ArrowLeft } from 'lucide-react';
 
 export default function VietnamItinerary() {
@@ -14,6 +18,7 @@ export default function VietnamItinerary() {
   const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
+  const [days, setDays] = useState<ItineraryDayData[]>([]);
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -40,7 +45,7 @@ export default function VietnamItinerary() {
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
             group_members: data.group_members || [],
-          } as any);
+          });
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -51,6 +56,17 @@ export default function VietnamItinerary() {
         router.push('/');
       });
   }, [router]);
+
+  useEffect(() => {
+    fetch('/api/vietnam-timeline')
+      .then(response => response.json())
+      .then(data => {
+        setDays(data.days || []);
+      })
+      .catch(error => {
+        console.error('Error loading timeline:', error);
+      });
+  }, []);
 
   if (isVerifying || !guestData) {
     return (
@@ -67,50 +83,96 @@ export default function VietnamItinerary() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', overflow: 'hidden', position: 'relative' }}>
-      {/* Fixed Background Layer */}
+    <Box sx={{ minHeight: '100vh', position: 'relative', bgcolor: 'background.default' }}>
+      {/* Subtle textured background — image only, no color overlay */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.50,
+          zIndex: 0,
+          pointerEvents: 'none',
         }}
       />
 
-      <Navigation currentPage="vietnam" showRomania={(guestData as any)?.romania} showVietnam={true} />
+      <Navigation currentPage="vietnam" showRomania={guestData?.romania} showVietnam={true} />
 
-      <Container maxWidth="xl">
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ pt: { xs: 8, md: 10 }, pb: 2 }}>
           <IconButton
             onClick={() => router.push('/vietnam')}
-            sx={{ color: theme.palette.primary.main, mb: 2 }}
+            sx={{ color: theme.palette.primary.dark, mb: 2 }}
+            aria-label="Back to Vietnam"
           >
             <ArrowLeft />
           </IconButton>
         </Box>
 
         <ScrollReveal direction="up" delay={0.1}>
-          <section style={{ padding: theme.spacing(2, 0, 8, 0) }}>
-            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2, textAlign: 'center' }}>
-              <Typography variant="h2" component="h1" sx={{
-                fontFamily: '"Arizonia", cursive',
-                color: theme.palette.primary.dark,
-                fontWeight: 400,
-                mb: 4,
-                fontSize: { xs: '3rem', md: '4rem' }
-              }}>
-                Itinerary
-              </Typography>
-              <Typography variant="body1" sx={{
-                color: theme.palette.text.secondary,
-                fontSize: '1.1rem',
-                lineHeight: 1.8
-              }}>
-                Details for the Vietnam wedding day will be published here soon. Stay tuned!
-              </Typography>
+          <section style={{ padding: theme.spacing(1, 0, 10, 0) }}>
+            <Box sx={{ maxWidth: 820, mx: 'auto', px: { xs: 2, md: 3 } }}>
+              <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+                <Typography
+                  sx={{
+                    fontFamily: '"Cormorant Garamond", serif',
+                    fontStyle: 'italic',
+                    color: '#a8916b',
+                    fontSize: '1.25rem',
+                    letterSpacing: '0.4em',
+                    mb: 2,
+                  }}
+                >
+                  ·   ·   ·
+                </Typography>
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontFamily: '"Arizonia", cursive',
+                    color: theme.palette.primary.dark,
+                    fontWeight: 400,
+                    fontSize: { xs: '3.5rem', md: '5rem' },
+                    lineHeight: 1.05,
+                    mb: 1.5,
+                  }}
+                >
+                  Itinerary
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: '"Thasadith", sans-serif',
+                    color: '#8e645d',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.32em',
+                  }}
+                >
+                  Nha Trang, Vietnam
+                </Typography>
+              </Box>
+
+              {days.map((day, index) => {
+                const displaySubtitle = isSubtitleRedundant(day.subtitle, day.events)
+                  ? undefined
+                  : day.subtitle;
+                return (
+                  <Box key={index} sx={{ mb: { xs: 5, md: 7 } }}>
+                    <ItineraryDayBanner
+                      date={day.date}
+                      subtitle={displaySubtitle}
+                      location={day.location}
+                      locationUrl={day.locationUrl}
+                    />
+                    {day.events && day.events.length > 0 && (
+                      <ItineraryTimeline events={day.events} />
+                    )}
+                  </Box>
+                );
+              })}
             </Box>
           </section>
         </ScrollReveal>

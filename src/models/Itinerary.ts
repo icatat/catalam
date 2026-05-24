@@ -167,7 +167,7 @@ export class WeddingItineraryFactory {
 
     // Day 1 - Main Wedding
     const day1 = new ItineraryDay(
-      'Saturday, September 26th, 2026',
+      'Saturday, September 25th, 2026',
       [],
       undefined,
       'from-blue-50 to-blue-100',

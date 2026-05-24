@@ -44,7 +44,7 @@ export default function RomaniaDetails() {
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
             group_members: data.group_members || [],
-          } as any);
+          } as GuestData);
           setIsVerifying(false);
         } else {
           router.push('/');
@@ -82,91 +82,153 @@ export default function RomaniaDetails() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', overflow: 'hidden', position: 'relative' }}>
-      {/* Fixed Background Layer */}
+    <Box sx={{ minHeight: '100vh', position: 'relative', bgcolor: 'background.default' }}>
+      {/* Subtle textured background — image only */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.5,
+          zIndex: 0,
+          pointerEvents: 'none',
         }}
       />
 
-      <Navigation currentPage="romania" showRomania={true} showVietnam={(guestData as any)?.vietnam} />
+      <Navigation currentPage="romania" showRomania={true} showVietnam={guestData?.vietnam} />
 
-      <Container maxWidth="lg">
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ pt: { xs: 8, md: 10 }, pb: 2 }}>
           <IconButton
             onClick={() => router.push('/romania')}
-            sx={{ color: theme.palette.primary.main, mb: 2 }}
+            sx={{ color: theme.palette.primary.dark, mb: 2 }}
+            aria-label="Back to Romania"
           >
             <ArrowLeft />
           </IconButton>
         </Box>
 
         <ScrollReveal direction="up" delay={0.1}>
-          <Box sx={{ pb: 8 }}>
-            <Typography variant="h2" component="h1" sx={{
-              fontFamily: '"Arizonia", cursive',
-              color: theme.palette.primary.dark,
-              fontWeight: 400,
-              mb: 6,
-              textAlign: 'center',
-              fontSize: { xs: '3rem', md: '4rem' }
-            }}>
-              Details & FAQ
-            </Typography>
+          <Box sx={{ pb: 10 }}>
+            <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontStyle: 'italic',
+                  color: '#a8916b',
+                  fontSize: '1.25rem',
+                  letterSpacing: '0.4em',
+                  mb: 2,
+                }}
+              >
+                ·   ·   ·
+              </Typography>
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: '"Arizonia", cursive',
+                  color: theme.palette.primary.dark,
+                  fontWeight: 400,
+                  fontSize: { xs: '3.5rem', md: '5rem' },
+                  lineHeight: 1.05,
+                  mb: 1.5,
+                }}
+              >
+                Details &amp; FAQ
+              </Typography>
+              <Typography
+                sx={{
+                  color: '#8e645d',
+                  fontFamily: '"Thasadith", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.32em',
+                }}
+              >
+                Oradea, Romania
+              </Typography>
+            </Box>
 
             <Box
               sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                borderRadius: 3,
-                p: { xs: 3, md: 5 },
-                boxShadow: theme.shadows[4],
-                '& h1, & h2, & h3, & h4, & h5, & h6': {
-                  color: theme.palette.primary.main,
-                  fontWeight: 600,
+                bgcolor: 'background.paper',
+                borderRadius: '12px',
+                p: { xs: 3.5, md: 6 },
+                border: '1px solid rgba(32, 72, 91, 0.08)',
+                boxShadow: '0 1px 2px rgba(32, 72, 91, 0.04), 0 12px 28px -16px rgba(32, 72, 91, 0.18)',
+                '& h1, & h2, & h3': {
+                  fontFamily: '"Cormorant Garamond", serif',
+                  color: theme.palette.primary.dark,
+                  fontWeight: 500,
+                  mt: 4,
+                  mb: 1.5,
+                  lineHeight: 1.2,
+                  '&:first-of-type': { mt: 0 },
+                },
+                '& h2': { fontSize: { xs: '1.6rem', md: '1.9rem' } },
+                '& h3': { fontSize: { xs: '1.3rem', md: '1.5rem' } },
+                '& h4, & h5, & h6': {
+                  fontFamily: '"Thasadith", sans-serif',
+                  color: theme.palette.primary.dark,
+                  fontWeight: 700,
+                  fontSize: { xs: '1.05rem', md: '1.1rem' },
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
                   mt: 3,
-                  mb: 2,
+                  mb: 1,
                 },
                 '& p': {
+                  fontFamily: '"Thasadith", sans-serif',
                   color: theme.palette.text.primary,
-                  lineHeight: 1.8,
-                  mb: 2,
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.7,
+                  mb: 1.5,
                 },
                 '& a': {
-                  color: theme.palette.primary.main,
+                  color: '#b88880',
                   textDecoration: 'underline',
-                  '&:hover': { color: theme.palette.primary.dark },
+                  textDecorationColor: 'rgba(184, 136, 128, 0.4)',
+                  textUnderlineOffset: '3px',
+                  '&:hover': { color: '#8e645d', textDecorationColor: '#8e645d' },
                 },
                 '& ul, & ol': {
                   color: theme.palette.text.primary,
-                  lineHeight: 1.8,
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.7,
                   pl: 3,
                   mb: 2,
+                  '& li': { mb: 0.5 },
                 },
                 '& blockquote': {
-                  borderLeft: `4px solid ${theme.palette.primary.main}`,
-                  pl: 2,
+                  borderLeft: `3px solid #b88880`,
+                  pl: 2.5,
                   ml: 0,
-                  my: 2,
+                  my: 2.5,
+                  fontFamily: '"Cormorant Garamond", serif',
                   fontStyle: 'italic',
+                  fontSize: '1.2rem',
                   color: theme.palette.text.secondary,
                 },
+                '& hr': {
+                  border: 'none',
+                  borderTop: '1px solid #d8c8a8',
+                  my: 4,
+                },
                 '& code': {
-                  backgroundColor: theme.palette.grey[100],
+                  backgroundColor: '#f5f1ed',
                   padding: '2px 6px',
                   borderRadius: 1,
                   fontSize: '0.9em',
                   fontFamily: 'monospace',
                 },
                 '& pre': {
-                  backgroundColor: theme.palette.grey[100],
+                  backgroundColor: '#f5f1ed',
                   p: 2,
-                  borderRadius: 2,
+                  borderRadius: 1,
                   overflow: 'auto',
                   '& code': { backgroundColor: 'transparent', padding: 0 },
                 },

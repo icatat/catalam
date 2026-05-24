@@ -1,10 +1,11 @@
 'use client';
 
-import { Box, Card, Chip, Typography, Link, useTheme, Dialog, IconButton } from '@mui/material';
+import { Box, Chip, Typography, Link, useTheme, Dialog, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import { motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getUnifiedColors } from '@/lib/mui-theme';
 
 interface TimelineEvent {
   id: string;
@@ -23,6 +24,7 @@ interface TimelineProps {
 
 export default function Timeline({ events }: TimelineProps) {
   const theme = useTheme();
+  const colors = getUnifiedColors();
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
@@ -40,192 +42,200 @@ export default function Timeline({ events }: TimelineProps) {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
   };
 
-  const styles = {
-    container: {
-      position: 'relative',
-      maxWidth: { xs: '100%', sm: 600, md: 900 },
-      mx: 'auto',
-      px: { xs: 2, sm: 3, md: 0 }
-    },
-    timelineLine: {
-      position: 'absolute',
-      left: '50%',
-      top: 0,
-      bottom: 0,
-      width: '2px',
-      background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-      transform: 'translateX(-1px)',
-      zIndex: 0
-    },
-    eventsContainer: {
-      pt: 2,
-      pb: 2
-    }
-  };
-
   return (
     <>
-      <Box sx={styles.container}>
-        {/* Timeline Line */}
-        <Box sx={styles.timelineLine} />
+      <Box sx={{ maxWidth: 1180, mx: 'auto', px: { xs: 2, md: 3 } }}>
+        {events.map((event, index) => {
+          const hasImage = !!(event.image && !imageErrors.has(event.id));
+          const photoOnRight = index % 2 === 0;
+          const isLast = index === events.length - 1;
 
-        {/* Timeline Events */}
-        <Box sx={styles.eventsContainer}>
-          {events.map((event, index) => {
-            const side = index % 2 === 0 ? 'left' : 'right';
-            const hasImage = event.image && !imageErrors.has(event.id);
-
-            return (
-              <Box
-                key={event.id}
-                sx={{
-                  display: 'flex',
-                  mb: 6,
-                  position: 'relative',
-                  flexDirection: { xs: 'column', md: side === 'left' ? 'row' : 'row-reverse' },
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                {/* Date Badge */}
+          return (
+            <Box
+              key={event.id}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: hasImage
+                  ? { xs: '1fr', md: photoOnRight ? '4fr 5fr' : '5fr 4fr' }
+                  : '1fr',
+                gap: { xs: 3, md: 6 },
+                alignItems: 'center',
+                pb: { xs: 6, md: 8 },
+                pt: index === 0 ? 0 : { xs: 6, md: 8 },
+                borderBottom: isLast
+                  ? 'none'
+                  : `1px solid ${colors.ornament.light}`,
+              }}
+            >
+              {/* Photo */}
+              {hasImage && (
                 <Box
                   sx={{
-                    position: { xs: 'relative', md: 'absolute' },
-                    left: { md: '50%' },
-                    top: { md: 0 },
-                    transform: { md: 'translateX(-50%)' },
-                    zIndex: 2,
-                    mb: { xs: 2, md: 0 }
+                    order: { xs: 0, md: photoOnRight ? 2 : 1 },
+                    cursor: 'zoom-in',
+                    overflow: 'hidden',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(32, 72, 91, 0.04), 0 12px 28px -14px rgba(32, 72, 91, 0.22)',
+                    '& img': {
+                      transition: 'transform 0.6s ease, opacity 0.3s ease',
+                    },
+                    '&:hover img': {
+                      transform: 'scale(1.02)',
+                    },
                   }}
+                  onClick={() => setLightboxSrc(event.image!)}
                 >
-                  <Chip
-                    label={formatDate(event.date)}
-                    sx={{
-                      bgcolor: theme.palette.primary.main,
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: '0.8rem',
-                      height: 32,
-                      px: 2,
-                      border: 'none'
+                  <Image
+                    src={event.image!}
+                    alt={event.title}
+                    width={0}
+                    height={0}
+                    sizes="(max-width: 768px) 100vw, 55vw"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
                     }}
+                    onError={() => handleImageError(event.id)}
                   />
                 </Box>
+              )}
 
-                {/* Content Card */}
-                <Box
+              {/* Content */}
+              <Box
+                sx={{
+                  order: { xs: 1, md: hasImage ? (photoOnRight ? 1 : 2) : 1 },
+                  px: hasImage ? 0 : { xs: 0, md: 4 },
+                  maxWidth: hasImage ? 'none' : 640,
+                  mx: hasImage ? 0 : 'auto',
+                  textAlign: hasImage ? 'left' : 'center',
+                }}
+              >
+                {/* Date eyebrow */}
+                <Typography
                   sx={{
-                    width: { xs: '100%', sm: '90%', md: '45%' },
-                    mt: { xs: 0, md: 6 },
-                    ml: { xs: 0, md: side === 'left' ? 0 : 'auto' },
-                    mr: { xs: 0, md: side === 'left' ? 'auto' : 0 }
+                    fontFamily: '"Thasadith", sans-serif',
+                    color: colors.accent.dark,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.32em',
+                    mb: 1.5,
                   }}
                 >
-                  <Card
-                    component={motion.div}
-                    whileHover={{ y: -2 }}
+                  {formatDate(event.date)}
+                </Typography>
+
+                {/* Title */}
+                <Typography
+                  component="h3"
+                  sx={{
+                    fontFamily: '"Cormorant Garamond", serif',
+                    color: theme.palette.primary.dark,
+                    fontWeight: 500,
+                    fontSize: { xs: '1.75rem', md: '2.25rem' },
+                    lineHeight: 1.15,
+                    letterSpacing: '-0.005em',
+                    mb: event.description || event.location ? 2 : 0,
+                  }}
+                >
+                  {event.title}
+                </Typography>
+
+                {/* Description */}
+                {event.description && (
+                  <Typography
                     sx={{
-                      border: `1px solid ${theme.palette.grey[300]}`,
-                      borderRadius: 2,
-                      boxShadow: 'none',
-                      overflow: 'hidden',
-                      position: 'relative',
-                      zIndex: 1,
-                      backgroundColor: 'background.paper'
+                      fontFamily: '"Thasadith", sans-serif',
+                      color: theme.palette.text.primary,
+                      fontSize: '1.0625rem',
+                      lineHeight: 1.7,
+                      mb: event.location || event.tag || event.from ? 2 : 0,
                     }}
                   >
-                    {hasImage && (
-                      <Box
-                        onClick={() => setLightboxSrc(event.image!)}
-                        sx={{
-                          cursor: 'zoom-in',
-                          width: '100%',
-                          '&:hover img': { opacity: 0.92 },
-                        }}
-                      >
-                        <Image
-                          src={event.image!}
-                          alt={event.title}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, 45vw"
-                          style={{ width: '100%', height: 'auto', display: 'block' }}
-                          onError={() => handleImageError(event.id)}
-                        />
-                      </Box>
-                    )}
+                    {event.description}
+                  </Typography>
+                )}
 
-                    <Box sx={{ p: 3 }}>
-                      <Typography
-                        variant="h6"
-                        sx={{ color: theme.palette.primary.dark, fontWeight: 600, mb: 1 }}
-                      >
-                        {event.title}
-                      </Typography>
+                {/* Location */}
+                {event.location && (
+                  <Box
+                    sx={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 0.75,
+                      mb: event.tag || event.from ? 2 : 0,
+                    }}
+                  >
+                    <MapPin
+                      size={14}
+                      style={{ color: colors.accent.main, flexShrink: 0 }}
+                    />
+                    <Link
+                      href={generateGoogleMapsUrl(event.location)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
+                        fontFamily: '"Cormorant Garamond", serif',
+                        fontStyle: 'italic',
+                        fontSize: '1.05rem',
+                        color: theme.palette.primary.dark,
+                        textDecoration: 'none',
+                        borderBottom: `1px solid ${colors.accent.light}`,
+                        pb: '1px',
+                        '&:hover': {
+                          color: colors.accent.dark,
+                          borderBottomColor: colors.accent.main,
+                        },
+                      }}
+                    >
+                      {event.location}
+                    </Link>
+                  </Box>
+                )}
 
-                      {event.location && (
-                        <Link
-                          href={generateGoogleMapsUrl(event.location)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{
-                            color: theme.palette.primary.main,
-                            textDecoration: 'underline',
-                            display: 'block',
-                            mb: 1,
-                            fontSize: '0.9rem',
-                            fontWeight: 500,
-                            '&:hover': { color: theme.palette.primary.dark }
-                          }}
-                        >
-                          📍 {event.location}
-                        </Link>
-                      )}
+                {/* Tag */}
+                {event.tag && (
+                  <Box sx={{ mt: 1 }}>
+                    <Chip
+                      label={event.tag}
+                      size="small"
+                      sx={{
+                        bgcolor: colors.ornament.light,
+                        color: colors.ornament.dark,
+                        fontFamily: '"Thasadith", sans-serif',
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        height: 26,
+                        border: 'none',
+                      }}
+                    />
+                  </Box>
+                )}
 
-                      {event.description && (
-                        <Typography
-                          variant="body2"
-                          sx={{ color: theme.palette.text.secondary, fontSize: '0.95rem', lineHeight: 1.6, mt: 1.5 }}
-                        >
-                          {event.description}
-                        </Typography>
-                      )}
-
-                      {event.tag && (
-                        <Chip
-                          label={event.tag}
-                          size="small"
-                          sx={{
-                            mt: 2,
-                            bgcolor: theme.palette.primary.light + '30',
-                            color: theme.palette.primary.main,
-                            fontWeight: 500
-                          }}
-                        />
-                      )}
-
-                      {event.from && (
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            display: 'block',
-                            mt: 1.5,
-                            pt: 1.5,
-                            borderTop: `1px solid ${theme.palette.divider}`,
-                            color: theme.palette.text.secondary,
-                            fontStyle: 'italic'
-                          }}
-                        >
-                          Shared by {event.from}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Card>
-                </Box>
+                {/* From */}
+                {event.from && (
+                  <Typography
+                    sx={{
+                      display: 'block',
+                      mt: 2.5,
+                      pt: 1.5,
+                      borderTop: `1px solid ${colors.ornament.light}`,
+                      color: theme.palette.text.secondary,
+                      fontFamily: '"Cormorant Garamond", serif',
+                      fontStyle: 'italic',
+                      fontSize: '0.95rem',
+                    }}
+                  >
+                    Shared by {event.from}
+                  </Typography>
+                )}
               </Box>
-            );
-          })}
-        </Box>
+            </Box>
+          );
+        })}
       </Box>
 
       {/* Lightbox */}

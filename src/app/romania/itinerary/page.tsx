@@ -8,7 +8,9 @@ import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
 import { ItineraryDayData } from '@/types/wedding';
-import WeddingTimeline from '@/components/WeddingTimeline';
+import ItineraryDayBanner from '@/components/ItineraryDayBanner';
+import ItineraryTimeline from '@/components/ItineraryTimeline';
+import { isSubtitleRedundant } from '@/lib/itinerary';
 import { ArrowLeft } from 'lucide-react';
 
 export default function RomaniaItinerary() {
@@ -81,73 +83,96 @@ export default function RomaniaItinerary() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', overflow: 'hidden', position: 'relative' }}>
-      {/* Fixed Background Layer */}
+    <Box sx={{ minHeight: '100vh', position: 'relative', bgcolor: 'background.default' }}>
+      {/* Subtle textured background — image only, no color overlay */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(135deg, rgba(239, 217, 223, 0.15) 0%, rgba(239, 217, 223, 0.15) 25%, rgba(239, 217, 223, 0.2) 50%, rgba(239, 217, 223, 0.1) 75%, rgba(239, 217, 223, 0.15) 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.50,
+          zIndex: 0,
+          pointerEvents: 'none',
         }}
       />
 
       <Navigation currentPage="romania" showRomania={true} showVietnam={guestData?.vietnam} />
 
-      <Container maxWidth="xl">
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ pt: { xs: 8, md: 10 }, pb: 2 }}>
           <IconButton
             onClick={() => router.push('/romania')}
-            sx={{ color: theme.palette.primary.main, mb: 2 }}
+            sx={{ color: theme.palette.primary.dark, mb: 2 }}
+            aria-label="Back to Romania"
           >
             <ArrowLeft />
           </IconButton>
         </Box>
 
         <ScrollReveal direction="up" delay={0.1}>
-          <section style={{ padding: theme.spacing(2, 0, 8, 0) }}>
-            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
-              <Typography variant="h2" component="h1" sx={{
-                fontFamily: '"Arizonia", cursive',
-                color: theme.palette.primary.dark,
-                fontWeight: 400,
-                mb: 8,
-                textAlign: 'center',
-                fontSize: { xs: '3rem', md: '4rem' }
-              }}>
-                Itinerary
-              </Typography>
+          <section style={{ padding: theme.spacing(1, 0, 10, 0) }}>
+            <Box sx={{ maxWidth: 820, mx: 'auto', px: { xs: 2, md: 3 } }}>
+              <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+                <Typography
+                  sx={{
+                    fontFamily: '"Cormorant Garamond", serif',
+                    fontStyle: 'italic',
+                    color: '#a8916b',
+                    fontSize: '1.25rem',
+                    letterSpacing: '0.4em',
+                    mb: 2,
+                  }}
+                >
+                  ·   ·   ·
+                </Typography>
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontFamily: '"Arizonia", cursive',
+                    color: theme.palette.primary.dark,
+                    fontWeight: 400,
+                    fontSize: { xs: '3.5rem', md: '5rem' },
+                    lineHeight: 1.05,
+                    mb: 1.5,
+                  }}
+                >
+                  Itinerary
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: '"Thasadith", sans-serif',
+                    color: '#8e645d',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.32em',
+                  }}
+                >
+                  Oradea, Romania
+                </Typography>
+              </Box>
 
-              {days.map((day, index) => (
-                <Box key={index} sx={{ mb: 10 }}>
-                  {/* Day header */}
-                  <Box sx={{ textAlign: 'center', mb: 5 }}>
-                    <Typography variant="h4" sx={{
-                      fontFamily: '"Arizonia", cursive',
-                      color: theme.palette.primary.dark,
-                      fontWeight: 400,
-                      fontSize: { xs: '2rem', md: '2.8rem' },
-                      mb: 0.5,
-                    }}>
-                      {day.date}
-                    </Typography>
-                    {day.subtitle && (
-                      <Typography variant="h6" sx={{
-                        color: theme.palette.text.secondary,
-                        fontWeight: 400,
-                      }}>
-                        {day.subtitle}
-                      </Typography>
+              {days.map((day, index) => {
+                const displaySubtitle = isSubtitleRedundant(day.subtitle, day.events)
+                  ? undefined
+                  : day.subtitle;
+                return (
+                  <Box key={index} sx={{ mb: { xs: 5, md: 7 } }}>
+                    <ItineraryDayBanner
+                      date={day.date}
+                      subtitle={displaySubtitle}
+                      location={day.location}
+                      locationUrl={day.locationUrl}
+                    />
+                    {day.events && day.events.length > 0 && (
+                      <ItineraryTimeline events={day.events} />
                     )}
                   </Box>
-
-                  {day.events && day.events.length > 0 && (
-                    <WeddingTimeline events={day.events} />
-                  )}
-                </Box>
-              ))}
+                );
+              })}
             </Box>
           </section>
         </ScrollReveal>

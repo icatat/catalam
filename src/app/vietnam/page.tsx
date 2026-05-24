@@ -10,7 +10,6 @@ import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
-import { RSVPFormData, NewGuestCreated } from '@/types/wedding';
 import { useRSVPHandler } from '@/lib/useRSVPHandler';
 import { WEDDING_INFO } from '@/lib/constants';
 import CustomButton from '@/components/Button';
@@ -92,43 +91,68 @@ export default function VietnamWedding() {
         position: 'relative'
       }}
     >
-      {/* Fixed Background Layer */}
+      {/* Subtle textured background — image only */}
       <Box
+        aria-hidden="true"
         sx={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: `linear-gradient(135deg, rgba(194, 225, 238, 0.15) 0%, rgba(194, 225, 238, 0.15) 25%, rgba(194, 225, 238, 0.2) 50%, rgba(194, 225, 238, 0.1) 75%, rgba(194, 225, 238, 0.15) 100%), url(/background-main.webp)`,
+          backgroundImage: `url(/background-main.webp)`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
-          zIndex: -1
+          opacity: 0.5,
+          zIndex: -1,
+          pointerEvents: 'none',
         }}
       />
       <Navigation currentPage="vietnam" showRomania={guestData?.romania} showVietnam={true} />
       <Container maxWidth="xl" sx={{ height: '100%', display: 'flow' }}>
-        {/* Welcome Message */}
-        <Box sx={{ 
-          pt: { xs: 8, md: 10 }, 
-          pb: 4, 
+        {/* Hero */}
+        <Box sx={{
+          pt: { xs: 8, md: 10 },
+          pb: 4,
           textAlign: 'center'
         }}>
           <Typography
-            variant="h3"
+            sx={{
+              fontFamily: '"Cormorant Garamond", serif',
+              fontStyle: 'italic',
+              color: '#a8916b',
+              fontSize: '1.25rem',
+              letterSpacing: '0.4em',
+              mb: 2,
+            }}
+          >
+            ·   ·   ·
+          </Typography>
+          <Typography
             component="h1"
             sx={{
               fontFamily: '"Arizonia", cursive',
               color: theme.palette.primary.dark,
               fontWeight: 400,
-              mb: 2,
-              fontSize: { xs: '2.5rem', md: '3.5rem' }
+              mb: 1.5,
+              fontSize: { xs: '3.5rem', md: '5rem' },
+              lineHeight: 1.05,
             }}
           >
-            {guestData.has_rsvp_vietnam
-              ? `Welcome back, ${guestData.first_name}! Your RSVP for Vietnam has been confirmed.`
-              : `Welcome, ${guestData.first_name}! Please RSVP for our Vietnam wedding.`
-            }
+            Vietnam
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: '"Thasadith", sans-serif',
+              color: '#8e645d',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.32em',
+              mb: 2,
+            }}
+          >
+            {guestData.has_rsvp_vietnam ? 'Your RSVP is confirmed' : `Welcome, ${guestData.first_name}`}
           </Typography>
         </Box>
         
@@ -181,19 +205,9 @@ export default function VietnamWedding() {
               onClick={() => setShowRSVPModal(true)}
               variant={guestData.has_rsvp_vietnam ? "outlined" : "contained"}
               size="large"
-              sx={{
-                px: 6,
-                py: 2,
-                fontSize: '1.1rem',
-                fontWeight: 600,
-                borderRadius: 3,
-                textTransform: 'none'
-              }}
+              sx={{ px: 5, py: 1.5 }}
             >
-              {guestData.has_rsvp_vietnam
-                ? 'Update RSVP'
-                : 'RSVP Now'
-              }
+              {guestData.has_rsvp_vietnam ? 'Update RSVP' : 'RSVP'}
             </CustomButton>
           </Box>
         </Box>
@@ -205,65 +219,65 @@ export default function VietnamWedding() {
               <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-                gap: 3
+                gap: { xs: 2.5, md: 3 }
               }}>
                 {/* Itinerary Card */}
-                <Card
-                  sx={{
-                    border: `2px solid ${theme.palette.primary.main}`,
-                    borderRadius: 3,
-                    boxShadow: theme.shadows[2],
-                    transition: 'box-shadow 0.2s, transform 0.2s',
-                    '&:hover': {
-                      boxShadow: theme.shadows[8],
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
+                <Card sx={{ '&:hover': { transform: 'translateY(-2px)' } }}>
                   <CardActionArea onClick={() => router.push('/vietnam/itinerary')}>
-                    <CardContent sx={{ p: 4 }}>
-                      <Typography sx={{
-                        fontFamily: '"Arizonia", cursive',
-                        color: theme.palette.primary.dark,
-                        fontSize: '2rem',
-                        fontWeight: 400,
-                        mb: 1
-                      }}>
+                    <CardContent sx={{ p: { xs: 4, md: 5 }, textAlign: 'center' }}>
+                      <Typography
+                        sx={{
+                          fontFamily: '"Cormorant Garamond", serif',
+                          color: theme.palette.primary.dark,
+                          fontSize: '1.75rem',
+                          fontWeight: 500,
+                          mb: 0.75,
+                          letterSpacing: '-0.005em',
+                        }}
+                      >
                         Itinerary
                       </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        Coming soon
+                      <Typography
+                        sx={{
+                          color: '#8e645d',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.3em',
+                        }}
+                      >
+                        The schedule
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Card>
 
                 {/* Details & FAQ Card */}
-                <Card
-                  sx={{
-                    border: `2px solid ${theme.palette.primary.main}`,
-                    borderRadius: 3,
-                    boxShadow: theme.shadows[2],
-                    transition: 'box-shadow 0.2s, transform 0.2s',
-                    '&:hover': {
-                      boxShadow: theme.shadows[8],
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
+                <Card sx={{ '&:hover': { transform: 'translateY(-2px)' } }}>
                   <CardActionArea onClick={() => router.push('/vietnam/details')}>
-                    <CardContent sx={{ p: 4 }}>
-                      <Typography sx={{
-                        fontFamily: '"Arizonia", cursive',
-                        color: theme.palette.primary.dark,
-                        fontSize: '2rem',
-                        fontWeight: 400,
-                        mb: 1
-                      }}>
-                        Details & FAQ
+                    <CardContent sx={{ p: { xs: 4, md: 5 }, textAlign: 'center' }}>
+                      <Typography
+                        sx={{
+                          fontFamily: '"Cormorant Garamond", serif',
+                          color: theme.palette.primary.dark,
+                          fontSize: '1.75rem',
+                          fontWeight: 500,
+                          mb: 0.75,
+                          letterSpacing: '-0.005em',
+                        }}
+                      >
+                        Details &amp; FAQ
                       </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        Venue & Guest Guide
+                      <Typography
+                        sx={{
+                          color: '#8e645d',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.3em',
+                        }}
+                      >
+                        Venue &amp; Guide
                       </Typography>
                     </CardContent>
                   </CardActionArea>

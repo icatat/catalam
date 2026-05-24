@@ -15,6 +15,8 @@ export interface ItineraryDayData {
   date: string;
   title: string;
   subtitle?: string;
+  location?: string;
+  locationUrl?: string;
   events: ItineraryEvent[];
 }
 

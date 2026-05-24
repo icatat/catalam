@@ -1,11 +1,170 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+const PALETTE = {
+  bg: '#faf3f1',          // soft pink-cream, matches site bg.default
+  paper: '#ffffff',
+  paperWarm: '#eef2f4',
+  ink: '#20485b',
+  inkSoft: '#4a6a78',
+  text: '#1f2937',
+  textSoft: '#5a6b78',
+  accent: '#b88880',
+  brass: '#6a8593',
+  brassSoft: '#c4d0d8',
+  hairline: 'rgba(32, 72, 91, 0.10)',
+} as const;
+
+const FONT_SERIF =
+  '"Cormorant Garamond", "EB Garamond", "Garamond", Georgia, "Times New Roman", serif';
+const FONT_SCRIPT =
+  '"Arizonia", "Allura", "Pinyon Script", "Brush Script MT", "Lucida Handwriting", cursive';
+const FONT_SANS =
+  '"Thasadith", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif';
+
+const FONT_LINK = `<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Arizonia&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Thasadith:wght@400;700&display=swap" rel="stylesheet" />`;
+
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function wrapperOpen(backgroundImage: string): string {
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="${PALETTE.bg}" style="background-color:${PALETTE.bg};background-image:url('${backgroundImage}');background-repeat:repeat;background-size:480px;padding:40px 16px;">
+    <tr>
+      <td align="center">`;
+}
+
+const wrapperClose = `      </td>
+    </tr>
+  </table>`;
+
+function buildInternalEmail(name: string, email: string, subject: string, message: string, backgroundImage: string): string {
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>New contact message — ${escapeHtml(subject)}</title>
+  ${FONT_LINK}
+</head>
+<body style="margin:0;padding:0;background-color:${PALETTE.bg};font-family:${FONT_SERIF};color:${PALETTE.text};">
+  ${wrapperOpen(backgroundImage)}
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;width:100%;background-color:${PALETTE.paper};border-radius:6px;border:1px solid ${PALETTE.brassSoft};box-shadow:0 2px 4px rgba(32,72,91,0.06),0 24px 48px -20px rgba(32,72,91,0.22);overflow:hidden;">
+          <tr>
+            <td style="background-color:${PALETTE.brass};height:6px;line-height:6px;font-size:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:40px 40px 36px 40px;background-color:${PALETTE.paper};">
+              <p style="margin:0 0 10px 0;font-family:${FONT_SANS};font-size:11px;font-weight:700;color:${PALETTE.accent};letter-spacing:0.32em;text-transform:uppercase;">New message</p>
+              <h1 style="margin:0 0 28px 0;font-family:${FONT_SERIF};font-weight:500;font-size:28px;line-height:1.2;color:${PALETTE.ink};">${escapeHtml(subject)}</h1>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 28px 0;">
+                <tr><td style="padding:10px 0;border-bottom:1px solid ${PALETTE.hairline};font-family:${FONT_SANS};font-size:10px;font-weight:700;color:${PALETTE.brass};letter-spacing:0.25em;text-transform:uppercase;width:80px;">From</td><td style="padding:10px 0;border-bottom:1px solid ${PALETTE.hairline};font-family:${FONT_SERIF};font-style:italic;font-size:17px;color:${PALETTE.ink};">${escapeHtml(name)}</td></tr>
+                <tr><td style="padding:10px 0;border-bottom:1px solid ${PALETTE.hairline};font-family:${FONT_SANS};font-size:10px;font-weight:700;color:${PALETTE.brass};letter-spacing:0.25em;text-transform:uppercase;">Email</td><td style="padding:10px 0;border-bottom:1px solid ${PALETTE.hairline};font-family:${FONT_SERIF};font-style:italic;font-size:17px;color:${PALETTE.ink};"><a href="mailto:${escapeHtml(email)}" style="color:${PALETTE.accent};text-decoration:none;border-bottom:1px solid ${PALETTE.brassSoft};">${escapeHtml(email)}</a></td></tr>
+              </table>
+
+              <p style="margin:0 0 10px 0;font-family:${FONT_SANS};font-size:10px;font-weight:700;color:${PALETTE.brass};letter-spacing:0.25em;text-transform:uppercase;">Message</p>
+              <div style="font-family:${FONT_SERIF};font-style:italic;font-size:18px;line-height:1.7;color:${PALETTE.text};border-left:2px solid ${PALETTE.accent};padding:4px 0 4px 20px;">${safeMessage}</div>
+
+              <p style="margin:32px 0 0 0;font-family:${FONT_SANS};font-size:12px;color:${PALETTE.textSoft};">Reply directly to this email to respond.</p>
+            </td>
+          </tr>
+        </table>
+${wrapperClose}
+</body>
+</html>`;
+}
+
+function buildAutoReply(name: string, subject: string, message: string, backgroundImage: string, nameHeaderImage: string): string {
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank you — Cătălina &amp; Lam</title>
+  ${FONT_LINK}
+</head>
+<body style="margin:0;padding:0;background-color:${PALETTE.bg};font-family:${FONT_SERIF};color:${PALETTE.text};">
+  ${wrapperOpen(backgroundImage)}
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;width:100%;background-color:${PALETTE.paper};border-radius:6px;border:1px solid ${PALETTE.brassSoft};box-shadow:0 2px 4px rgba(32,72,91,0.06),0 24px 48px -20px rgba(32,72,91,0.22);overflow:hidden;">
+          <tr>
+            <td style="background-color:${PALETTE.brass};height:6px;line-height:6px;font-size:0;">&nbsp;</td>
+          </tr>
+
+          <!-- Name header band -->
+          <tr>
+            <td style="background-color:${PALETTE.paper};padding:28px 24px 18px 24px;text-align:center;border-bottom:1px solid ${PALETTE.brassSoft};">
+              <img src="${nameHeaderImage}" alt="Cătălina &amp; Lam" width="260" style="display:inline-block;width:auto;max-width:260px;height:auto;border:0;outline:none;text-decoration:none;" />
+              <p style="margin:10px 0 0 0;font-family:${FONT_SANS};font-size:9px;font-weight:700;color:${PALETTE.brass};letter-spacing:0.5em;text-transform:uppercase;">September 2026</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:48px 44px 44px 44px;text-align:center;background-color:${PALETTE.paper};">
+
+              <div style="font-family:${FONT_SERIF};font-style:italic;color:${PALETTE.brass};font-size:18px;letter-spacing:0.4em;margin:0 0 18px 0;line-height:1;">·&nbsp;&nbsp;&nbsp;❦&nbsp;&nbsp;&nbsp;·</div>
+
+              <p style="margin:0 0 14px 0;font-family:${FONT_SANS};font-size:11px;font-weight:700;color:${PALETTE.accent};letter-spacing:0.34em;text-transform:uppercase;">Thank you</p>
+
+              <h1 style="margin:0 0 30px 0;font-family:${FONT_SERIF};font-weight:500;font-size:38px;line-height:1.1;color:${PALETTE.ink};letter-spacing:-0.005em;">We received your note</h1>
+
+              <!-- Decorative double-rule -->
+              <table role="presentation" width="80" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px auto;">
+                <tr><td style="height:1px;line-height:1px;background-color:${PALETTE.brass};font-size:0;">&nbsp;</td></tr>
+                <tr><td style="height:3px;line-height:3px;font-size:0;">&nbsp;</td></tr>
+                <tr><td style="height:1px;line-height:1px;background-color:${PALETTE.brassSoft};font-size:0;">&nbsp;</td></tr>
+              </table>
+
+              <p style="margin:0 auto 18px auto;max-width:440px;font-family:${FONT_SERIF};font-style:italic;font-size:22px;line-height:1.55;color:${PALETTE.ink};">Dear ${escapeHtml(name)},</p>
+
+              <p style="margin:0 auto 30px auto;max-width:440px;font-family:${FONT_SANS};font-size:17px;line-height:1.65;color:${PALETTE.text};">Thank you for reaching out — we&rsquo;ll reply as soon as we can.</p>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:30px 0;">
+                <tr>
+                  <td style="padding:28px 24px;background-color:${PALETTE.paperWarm};border:1px solid ${PALETTE.brassSoft};border-radius:4px;text-align:left;">
+                    <p style="margin:0 0 8px 0;font-family:${FONT_SANS};font-size:10px;font-weight:700;color:${PALETTE.brass};letter-spacing:0.3em;text-transform:uppercase;">Your message</p>
+                    <p style="margin:0 0 14px 0;font-family:${FONT_SERIF};font-size:15px;color:${PALETTE.inkSoft};font-style:italic;">Re: ${escapeHtml(subject)}</p>
+                    <div style="font-family:${FONT_SERIF};font-style:italic;font-size:17px;line-height:1.7;color:${PALETTE.text};">${safeMessage}</div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Sign-off divider -->
+              <table role="presentation" width="60" cellspacing="0" cellpadding="0" border="0" style="margin:30px auto 24px auto;">
+                <tr><td style="height:1px;line-height:1px;background-color:${PALETTE.brass};font-size:0;">&nbsp;</td></tr>
+              </table>
+
+              <p style="margin:0 0 8px 0;font-family:${FONT_SANS};font-size:14px;color:${PALETTE.inkSoft};letter-spacing:0.02em;">With love,</p>
+              <p style="margin:0;font-family:${FONT_SCRIPT};font-size:48px;line-height:1.1;color:${PALETTE.ink};">Cătălina &amp; Lam</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background-color:${PALETTE.brass};height:3px;line-height:3px;font-size:0;">&nbsp;</td>
+          </tr>
+        </table>
+
+        <p style="margin:22px 0 0 0;font-family:${FONT_SANS};font-size:11px;color:${PALETTE.textSoft};letter-spacing:0.05em;">
+          Automated reply — please don&rsquo;t reply to this address. For anything urgent, write to catalam@catalam.com.
+        </p>
+${wrapperClose}
+</body>
+</html>`;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, subject, message } = await request.json();
 
-    // Validate required fields
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
         { success: false, error: 'All fields are required' },
@@ -13,7 +172,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create transporter
+    const origin =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      request.headers.get('origin') ||
+      `https://${request.headers.get('host') || 'catalam.com'}`;
+    const backgroundImage = `${origin}/background-main.webp`;
+    const nameHeaderImage = `${origin}/NameHeader.png`;
+
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
@@ -24,118 +189,25 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Email content to Cata & Lam
-    const mailOptions = {
+    const internalMail = {
       from: process.env.EMAIL_USER,
       to: 'catalam@catalam.com',
-      subject: `Contact Form: ${subject}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #efd9df; border-bottom: 2px solid #efd9df; padding-bottom: 10px;">
-            New Contact Form Message
-          </h2>
-          
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>From:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Subject:</strong> ${subject}</p>
-          </div>
-          
-          <div style="background: white; padding: 20px; border-left: 4px solid #efd9df; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #374151;">Message:</h3>
-            <p style="line-height: 1.6; color: #4b5563;">${message.replace(/\n/g, '<br>')}</p>
-          </div>
-          
-          <div style="margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 8px; text-align: center;">
-            <p style="margin: 0; font-size: 14px; color: #6b7280;">
-              Reply directly to this email to respond to ${name} at ${email}
-            </p>
-          </div>
-          
-          <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #9ca3af;">
-            <p>Sent from CataLam Wedding Website Contact Form</p>
-          </div>
-        </div>
-      `,
-      replyTo: email, // Allow direct reply to the sender
+      subject: `Contact form — ${subject}`,
+      html: buildInternalEmail(name, email, subject, message, backgroundImage),
+      replyTo: email,
     };
+    await transporter.sendMail(internalMail);
 
-    // Send email
-    await transporter.sendMail(mailOptions);
-
-    // Send auto-reply to sender
-    const autoReplyOptions = {
+    await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Thank you for contacting us - Cata & Lam Wedding',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #efd9df; font-family: Georgia, serif;">Cata & Lam</h1>
-            <p style="color: #059669; font-style: italic;">Wedding Celebration 2026</p>
-          </div>
-          
-          <h2 style="color: #374151; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">
-            Thank you for your message! 💕
-          </h2>
-          
-          <p style="line-height: 1.6; color: #4b5563;">
-            Dear ${name},
-          </p>
-          
-          <p style="line-height: 1.6; color: #4b5563;">
-            Thank you for reaching out to us! We've received your message about "<strong>${subject}</strong>" 
-            and we'll get back to you as soon as possible.
-          </p>
-          
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #efd9df;">Your Message:</h3>
-            <p style="line-height: 1.6; color: #4b5563; font-style: italic;">${message.replace(/\n/g, '<br>')}</p>
-          </div>
-          
-          <p style="line-height: 1.6; color: #4b5563;">
-            In the meantime, feel free to explore our wedding pages:
-          </p>
-          
-          <div style="margin: 20px 0;">
-            <p style="margin: 8px 0;">
-              🇷🇴 <a href="https://catalam.com/romania" style="color: #efd9df; text-decoration: none;">
-                Romania Wedding - September 11-12, 2026
-              </a>
-            </p>
-            <p style="margin: 8px 0;">
-              🇻🇳 <a href="https://catalam.com/vietnam" style="color: #059669; text-decoration: none;">
-                Vietnam Wedding - September 22 - September 24, 2026
-              </a>
-            </p>
-          </div>
-          
-          <p style="line-height: 1.6; color: #4b5563;">
-            We're so excited to celebrate with you! 
-          </p>
-          
-          <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 100%); border-radius: 8px;">
-            <p style="margin: 10px 0 0 0; font-weight: bold; color: #374151;">
-              With love,<br />
-              Cata & Lam ❤️
-            </p>
-          </div>
-          
-          <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 15px;">
-            <p>
-              This is an automated response. Please don't reply to this email directly.<br />
-              For urgent matters, contact us at catalam@catalam.com
-            </p>
-          </div>
-        </div>
-      `,
-    };
+      subject: 'Thank you for your message — Cătălina & Lam',
+      html: buildAutoReply(name, subject, message, backgroundImage, nameHeaderImage),
+    });
 
-    await transporter.sendMail(autoReplyOptions);
-
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Message sent successfully' 
+    return NextResponse.json({
+      success: true,
+      message: 'Message sent successfully'
     });
 
   } catch (error) {

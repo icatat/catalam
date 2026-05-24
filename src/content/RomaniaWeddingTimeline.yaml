@@ -52,7 +52,7 @@ days:
         locationUrl: 'https://maps.app.goo.gl/PPzuFJcAspypUd5r5'
         description: 'Congratulations & group photos'
 
-      - time: '17:30'
+      - time: '17:00'
         title: 'Welcoming Reception'
         subtitle: 'Arrival at venue'
         type: 'Event'
@@ -60,7 +60,7 @@ days:
         locationUrl: 'https://maps.app.goo.gl/sY44tKJrQNpnuD7f7'
         description: 'Welcome drinks (Prosecco/pălincă) & assigned seating'
 
-      - time: '18:30 (tentative)'
+      - time: '17:30 (tentative)'
         title: 'Grand entrance & first dance'
         type: 'Itinerary/Details'
         subtitle: 'Cata and Lam enter together with the godparents, bridesmaids, groomsmen. They perform the first dance.'
