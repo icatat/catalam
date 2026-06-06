@@ -29,14 +29,22 @@ days:
         title: 'Cocktail hour'
         type: 'Itinerary/Details'
 
-      - time: '18:30'
+      - time: '18:00'
         title: 'Reception'
         type: 'Itinerary/Details'
 
-      - time: '19:00'
+      - time: '18:50'
         title: 'Dinner'
         type: 'Itinerary/Details'
 
+      - time: '20:15'
+        title: 'Dance'
+        type: 'Itinerary/Details'
+
       - time: '21:30'
-        title: 'Party'
+        title: 'After-Party'
+        type: 'Itinerary/Details'
+
+      - time: 00:00
+        title: 'End of the night'
         type: 'Itinerary/Details'
