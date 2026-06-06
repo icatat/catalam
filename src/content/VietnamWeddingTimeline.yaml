@@ -44,7 +44,3 @@ days:
       - time: '21:30'
         title: 'After-Party'
         type: 'Itinerary/Details'
-
-      - time: 00:00
-        title: 'End of the night'
-        type: 'Itinerary/Details'
