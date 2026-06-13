@@ -7,6 +7,9 @@ import { Box, useTheme, Container, Typography, IconButton } from '@mui/material'
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { GuestData } from '@/models/RSVP';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { ArrowLeft } from 'lucide-react';
 
 export default function VietnamDetails() {
@@ -14,6 +17,7 @@ export default function VietnamDetails() {
   const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
+  const [faqContent, setFaqContent] = useState<string>('');
 
   useEffect(() => {
     const savedInviteId = Cookies.get('invite_id');
@@ -51,6 +55,17 @@ export default function VietnamDetails() {
         router.push('/');
       });
   }, [router]);
+
+  useEffect(() => {
+    fetch('/api/vietnam-faq')
+      .then(response => response.json())
+      .then(data => {
+        setFaqContent(data.content || '');
+      })
+      .catch(error => {
+        console.error('Error loading FAQ:', error);
+      });
+  }, []);
 
   if (isVerifying || !guestData) {
     return (
@@ -122,7 +137,7 @@ export default function VietnamDetails() {
                   mb: 1.5,
                 }}
               >
-                The Venue
+                Details &amp; FAQ
               </Typography>
               <Typography
                 sx={{
@@ -204,7 +219,7 @@ export default function VietnamDetails() {
                     Axi Plaza
                   </Typography>
                   <Typography sx={{ color: theme.palette.text.secondary, fontSize: '0.95rem' }}>
-                    Further details to come soon.
+                    Long Beach, Cam Ranh
                   </Typography>
                 </Box>
               </Box>
@@ -231,20 +246,91 @@ export default function VietnamDetails() {
               </Box>
             </Box>
 
-            <Box sx={{ mt: 5, textAlign: 'center' }}>
-              <Typography
-                sx={{
+            <Box
+              sx={{
+                mt: 5,
+                bgcolor: 'background.paper',
+                borderRadius: '12px',
+                p: { xs: 3.5, md: 6 },
+                border: '1px solid rgba(32, 72, 91, 0.08)',
+                boxShadow: '0 1px 2px rgba(32, 72, 91, 0.04), 0 12px 28px -16px rgba(32, 72, 91, 0.18)',
+                '& h1, & h2, & h3': {
+                  fontFamily: '"Cormorant Garamond", serif',
+                  color: theme.palette.primary.dark,
+                  fontWeight: 500,
+                  mt: 4,
+                  mb: 1.5,
+                  lineHeight: 1.2,
+                  '&:first-of-type': { mt: 0 },
+                },
+                '& h2': { fontSize: { xs: '1.6rem', md: '1.9rem' } },
+                '& h3': { fontSize: { xs: '1.3rem', md: '1.5rem' } },
+                '& h4, & h5, & h6': {
+                  fontFamily: '"Thasadith", sans-serif',
+                  color: theme.palette.primary.dark,
+                  fontWeight: 700,
+                  fontSize: { xs: '1.05rem', md: '1.1rem' },
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  mt: 3,
+                  mb: 1,
+                },
+                '& p': {
+                  fontFamily: '"Thasadith", sans-serif',
+                  color: theme.palette.text.primary,
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.7,
+                  mb: 1.5,
+                },
+                '& a': {
+                  color: '#b88880',
+                  textDecoration: 'underline',
+                  textDecorationColor: 'rgba(184, 136, 128, 0.4)',
+                  textUnderlineOffset: '3px',
+                  '&:hover': { color: '#8e645d', textDecorationColor: '#8e645d' },
+                },
+                '& ul, & ol': {
+                  color: theme.palette.text.primary,
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.7,
+                  pl: 3,
+                  mb: 2,
+                  '& li': { mb: 0.5 },
+                },
+                '& blockquote': {
+                  borderLeft: `3px solid #b88880`,
+                  pl: 2.5,
+                  ml: 0,
+                  my: 2.5,
                   fontFamily: '"Cormorant Garamond", serif',
                   fontStyle: 'italic',
-                  fontSize: '1.05rem',
+                  fontSize: '1.2rem',
                   color: theme.palette.text.secondary,
-                  maxWidth: 520,
-                  mx: 'auto',
-                  lineHeight: 1.6,
-                }}
-              >
-                A full guest guide, accommodation recommendations and FAQ are on the way.
-              </Typography>
+                },
+                '& hr': {
+                  border: 'none',
+                  borderTop: '1px solid #d8c8a8',
+                  my: 4,
+                },
+                '& code': {
+                  backgroundColor: '#f5f1ed',
+                  padding: '2px 6px',
+                  borderRadius: 1,
+                  fontSize: '0.9em',
+                  fontFamily: 'monospace',
+                },
+                '& pre': {
+                  backgroundColor: '#f5f1ed',
+                  p: 2,
+                  borderRadius: 1,
+                  overflow: 'auto',
+                  '& code': { backgroundColor: 'transparent', padding: 0 },
+                },
+              }}
+            >
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {faqContent}
+              </ReactMarkdown>
             </Box>
           </Box>
         </ScrollReveal>

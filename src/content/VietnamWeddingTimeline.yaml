@@ -45,6 +45,6 @@ days:
         title: 'After-Party'
         type: 'Itinerary/Details'
 
-      - time: 00:00
+      - time: 02:00
         title: 'End of the night'
         type: 'Itinerary/Details'

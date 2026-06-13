@@ -19,7 +19,7 @@ Welcome! We are so thrilled you're joining us in Oradea — Cătă's home city �
 
 ### When should I arrive?
 
-**Please arrive the day before the wedding.** The wedding day will be long and packed and pulling an all-nighter the day before is not wise. Besides, Oradea is worth exploring  even if just for a day. 
+**Please arrive the day before the wedding.** The wedding day will be long and packed and pulling an all-nighter the day before is not wise. Besides, Oradea is worth exploring, even if just for a day. 
 
 
 ### What does the day look like?
