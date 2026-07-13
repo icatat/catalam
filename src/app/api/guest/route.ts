@@ -4,41 +4,69 @@ import { GroupMemberData } from '@/models/RSVP';
 
 export async function POST(request: Request) {
   try {
-    const { invite_id } = await request.json();
-    console.log(invite_id)
-    if (!invite_id) {
+    const { invite_id, first_name, last_name } = await request.json();
+
+    if (!invite_id && !(first_name && last_name)) {
       return NextResponse.json(
-        { error: 'Invite ID is required' },
+        { error: 'Provide either an invite code or a first name and last name.' },
         { status: 400 }
       );
     }
 
-    // Normalize the input invite_id
-    const normalizedInviteId = invite_id.trim().toUpperCase();
-    console.log("NOMRALIZE:", normalizedInviteId);
-    // Query Supabase guests table for the guest with this invite_id
-    const { data: guest, error } = await supabase
-      .from('guests')
-      .select('*')
-      .eq('invite_id', normalizedInviteId)
-      .single();
+    let guest: {
+      invite_id: string;
+      first_name: string | null;
+      last_name: string | null;
+      vietnam: boolean | null;
+      romania: boolean | null;
+      group: string | null;
+    } | null = null;
+    let lookupError: unknown = null;
 
-    console.log("GUEST DATA:", guest);
+    if (invite_id) {
+      const normalizedInviteId = invite_id.trim().toUpperCase();
+      const { data, error } = await supabase
+        .from('guests')
+        .select('*')
+        .eq('invite_id', normalizedInviteId)
+        .single();
+      guest = data;
+      lookupError = error;
+    } else {
+      const normalizedFirst = first_name.trim();
+      const normalizedLast = last_name.trim();
+      const { data, error } = await supabase
+        .from('guests')
+        .select('*')
+        .ilike('first_name', normalizedFirst)
+        .ilike('last_name', normalizedLast);
+
+      if (error) {
+        lookupError = error;
+      } else if (!data || data.length === 0) {
+        guest = null;
+      } else if (data.length > 1) {
+        return NextResponse.json(
+          {
+            error:
+              'Multiple guests share that name. Please use your invite code instead, or contact Cata and Lam.',
+          },
+          { status: 409 }
+        );
+      } else {
+        guest = data[0];
+      }
+    }
+
     if (!guest) {
-      console.error('Could not find guest:', error);
+      console.error('Could not find guest:', lookupError);
       return NextResponse.json(
-        { error: 'Invalid invite code. Please check and try again or contact Cata and Lam.' },
+        { error: 'We could not find a matching invite. Please check and try again or contact Cata and Lam.' },
         { status: 404 }
       );
     }
 
-    if (error) {
-      console.error('Error fetching guest:', error);
-      return NextResponse.json(
-        { error: 'Failed to verify invite code...that might be on us, so please contact us!' },
-        { status: 500 }
-      );
-    }
+    const normalizedInviteId = guest.invite_id;
 
     // Check RSVP status in both tables
     const { data: romaniaRsvp } = await supabase

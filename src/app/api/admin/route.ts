@@ -136,6 +136,112 @@ export async function DELETE(request: Request) {
   }
 }
 
+// PATCH /api/admin — admin-set an RSVP for a guest at a location
+export async function PATCH(request: Request) {
+  try {
+    const {
+      admin_invite_id,
+      target_invite_id,
+      location,
+      status,
+    }: {
+      admin_invite_id: string;
+      target_invite_id: string;
+      location: 'vietnam' | 'romania';
+      status: 'attending' | 'declined' | 'none';
+    } = await request.json();
+
+    if (!admin_invite_id || !(await verifyAdmin(admin_invite_id))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (!target_invite_id?.trim() || !location || !status) {
+      return NextResponse.json(
+        { error: 'target_invite_id, location, and status are required.' },
+        { status: 400 }
+      );
+    }
+
+    if (location !== 'vietnam' && location !== 'romania') {
+      return NextResponse.json({ error: 'Invalid location.' }, { status: 400 });
+    }
+    if (status !== 'attending' && status !== 'declined' && status !== 'none') {
+      return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
+    }
+
+    const targetId = target_invite_id.trim().toUpperCase();
+    const rsvpTable = location === 'romania' ? 'rsvp_romania' : 'rsvp_vietnam';
+    const locationCol = location === 'romania' ? 'romania' : 'vietnam';
+
+    const { data: guest, error: guestError } = await supabase
+      .from('guests')
+      .select('*')
+      .eq('invite_id', targetId)
+      .single();
+
+    if (guestError || !guest) {
+      return NextResponse.json({ error: 'Guest not found.' }, { status: 404 });
+    }
+
+    if (!guest[locationCol]) {
+      return NextResponse.json(
+        { error: `Guest is not invited to the ${location} wedding.` },
+        { status: 400 }
+      );
+    }
+
+    if (status === 'none') {
+      const { error: deleteError } = await supabase
+        .from(rsvpTable)
+        .delete()
+        .eq('invite_id', targetId);
+      if (deleteError) {
+        console.error('Admin RSVP clear error:', deleteError);
+        return NextResponse.json({ error: 'Failed to clear RSVP.' }, { status: 500 });
+      }
+      return NextResponse.json({ success: true, status: 'none' });
+    }
+
+    const confirmed = status === 'attending';
+
+    const { data: existing } = await supabase
+      .from(rsvpTable)
+      .select('properties, email, phone')
+      .eq('invite_id', targetId)
+      .single();
+
+    const nowIso = new Date().toISOString();
+
+    if (existing) {
+      const { error: updateError } = await supabase
+        .from(rsvpTable)
+        .update({ confirmed, updated_at: nowIso })
+        .eq('invite_id', targetId);
+      if (updateError) {
+        console.error('Admin RSVP update error:', updateError);
+        return NextResponse.json({ error: 'Failed to update RSVP.' }, { status: 500 });
+      }
+    } else {
+      const { error: insertError } = await supabase.from(rsvpTable).insert({
+        invite_id: targetId,
+        first_name: guest.first_name,
+        last_name: guest.last_name,
+        confirmed,
+        properties: { rsvp_on_behalf: 'admin' },
+        updated_at: nowIso,
+      });
+      if (insertError) {
+        console.error('Admin RSVP insert error:', insertError);
+        return NextResponse.json({ error: 'Failed to create RSVP.' }, { status: 500 });
+      }
+    }
+
+    return NextResponse.json({ success: true, status });
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
+
 // POST /api/admin — add a primary guest + named plus-ones
 export async function POST(request: Request) {
   try {

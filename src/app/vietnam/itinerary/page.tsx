@@ -151,7 +151,7 @@ export default function VietnamItinerary() {
                     letterSpacing: '0.32em',
                   }}
                 >
-                  Nha Trang, Vietnam
+                  Cam Ranh, Vietnam
                 </Typography>
               </Box>
 

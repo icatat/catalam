@@ -12,8 +12,11 @@ import {
   CircularProgress,
   Dialog,
   IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
-import { Location, GuestData } from '@/models/RSVP';
+import Cookies from 'js-cookie';
+import { GuestData } from '@/models/RSVP';
 import CustomButton from '@/components/Button';
 
 interface InviteModalProps {
@@ -25,16 +28,24 @@ interface InviteModalProps {
   }) => void;
 }
 
+type LookupMode = 'code' | 'name';
+
 export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
   const theme = useTheme();
+  const [mode, setMode] = useState<LookupMode>('code');
   const [inviteId, setInviteId] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const canSubmit =
+    mode === 'code' ? inviteId.trim().length > 0 : firstName.trim().length > 0 && lastName.trim().length > 0;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inviteId.trim()) {
-      setError('Please enter your invite code');
+    if (!canSubmit) {
+      setError(mode === 'code' ? 'Please enter your access code' : 'Please enter your first and last name');
       return;
     }
 
@@ -42,24 +53,31 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
     setError('');
 
     try {
+      const body =
+        mode === 'code'
+          ? { invite_id: inviteId.trim() }
+          : { first_name: firstName.trim(), last_name: lastName.trim() };
+
       const response = await fetch('/api/guest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ invite_id: inviteId.trim() }),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError('Invalid access code. Please check and try again.');
+        setError(data.error || 'We could not find that invitation. Please check and try again.');
         setLoading(false);
         return;
       }
 
+      Cookies.set('invite_id', data.invite_id, { expires: 30 });
+
       onVerified({
-        invite_id: inviteId.trim(),
+        invite_id: data.invite_id,
         first_name: data.first_name,
         last_name: data.last_name,
         vietnam: data.vietnam,
@@ -69,8 +87,8 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
         has_rsvp_vietnam: data.has_rsvp_vietnam,
         group_members: data.group_members || [],
       });
-    } catch (err) {
-      setError('Invalid access code. Please check and try again.');
+    } catch {
+      setError('We could not verify your invitation. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -110,34 +128,78 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
             Welcome to Our Wedding!
           </Typography>
 
-          <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 4 }}>
-            Please enter your access code to view wedding details and RSVP
+          <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 3 }}>
+            Please enter your access code or your name to view wedding details and RSVP
           </Typography>
 
+          <ToggleButtonGroup
+            value={mode}
+            exclusive
+            onChange={(_, next: LookupMode | null) => {
+              if (!next) return;
+              setMode(next);
+              setError('');
+            }}
+            size="small"
+            sx={{ mb: 3 }}
+          >
+            <ToggleButton value="code" sx={{ textTransform: 'none', px: 3 }}>
+              Access code
+            </ToggleButton>
+            <ToggleButton value="name" sx={{ textTransform: 'none', px: 3 }}>
+              Name & surname
+            </ToggleButton>
+          </ToggleButtonGroup>
+
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <TextField
-              type="text"
-              value={inviteId}
-              onChange={(e) => setInviteId(e.target.value.toUpperCase())}
-              placeholder="Enter your access code"
-              disabled={loading}
-              variant="outlined"
-              fullWidth
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  textAlign: 'center',
-                  fontSize: '1.125rem',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.1em',
-                  '& fieldset': {
-                    borderRadius: 2,
+            {mode === 'code' ? (
+              <TextField
+                type="text"
+                value={inviteId}
+                onChange={(e) => setInviteId(e.target.value.toUpperCase())}
+                placeholder="Enter your access code"
+                disabled={loading}
+                variant="outlined"
+                fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    textAlign: 'center',
+                    fontSize: '1.125rem',
+                    fontFamily: 'monospace',
+                    letterSpacing: '0.1em',
+                    '& fieldset': {
+                      borderRadius: 2,
+                    },
                   },
-                },
-                '& .MuiOutlinedInput-input': {
-                  padding: '12px 16px',
-                },
-              }}
-            />
+                  '& .MuiOutlinedInput-input': {
+                    padding: '12px 16px',
+                  },
+                }}
+              />
+            ) : (
+              <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                <TextField
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="First name"
+                  disabled={loading}
+                  variant="outlined"
+                  fullWidth
+                  autoComplete="given-name"
+                />
+                <TextField
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Last name"
+                  disabled={loading}
+                  variant="outlined"
+                  fullWidth
+                  autoComplete="family-name"
+                />
+              </Box>
+            )}
 
             <AnimatePresence>
               {error && (
@@ -159,7 +221,7 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
             >
               <CustomButton
                 type="submit"
-                disabled={loading || !inviteId.trim()}
+                disabled={loading || !canSubmit}
                 variant="contained"
                 size="large"
                 weddingVariant="primary"
@@ -177,7 +239,7 @@ export function InviteModal({ isOpen, onClose, onVerified }: InviteModalProps) {
           </Box>
 
           <Typography variant="caption" sx={{ color: 'text.disabled', mt: 3, display: 'block' }}>
-            Don't have an access code? Contact us for assistance
+            Don&apos;t have an access code? Contact us for assistance
           </Typography>
         </Box>
       </Box>

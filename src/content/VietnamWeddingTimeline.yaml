@@ -44,3 +44,10 @@ days:
       - time: '21:30'
         title: 'After-Party'
         type: 'Itinerary/Details'
+<<<<<<< HEAD
+=======
+
+      - time: 02:00
+        title: 'End of the night'
+        type: 'Itinerary/Details'
+>>>>>>> 99bb102e81f07c455810d0544069120e51fe661a

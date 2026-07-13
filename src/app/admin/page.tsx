@@ -20,6 +20,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Alert,
   CircularProgress,
   Chip,
@@ -34,6 +35,7 @@ import {
   FormControlLabel,
   FormGroup,
   useTheme,
+  Menu,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import AddIcon from '@mui/icons-material/Add';
@@ -141,7 +143,15 @@ function RSVPDetail({ label, rsvp }: { label: string; rsvp: RSVPRecord | null })
   );
 }
 
-function GuestRow({ guest, onDelete }: { guest: Guest; onDelete: (id: string) => Promise<void> }) {
+function GuestRow({
+  guest,
+  onDelete,
+  onSetRsvp,
+}: {
+  guest: Guest;
+  onDelete: (id: string) => Promise<void>;
+  onSetRsvp: (id: string, location: 'vietnam' | 'romania', status: 'attending' | 'declined' | 'none') => Promise<void>;
+}) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -183,14 +193,20 @@ function GuestRow({ guest, onDelete }: { guest: Guest; onDelete: (id: string) =>
         </TableCell>
         <TableCell>
           {guest.vietnam ? (
-            <RsvpChip rsvp={guest.rsvp_vietnam} />
+            <RsvpChip
+              rsvp={guest.rsvp_vietnam}
+              onSetStatus={(status) => onSetRsvp(guest.invite_id, 'vietnam', status)}
+            />
           ) : (
             <Typography variant="caption" sx={{ color: 'text.disabled' }}>—</Typography>
           )}
         </TableCell>
         <TableCell>
           {guest.romania ? (
-            <RsvpChip rsvp={guest.rsvp_romania} />
+            <RsvpChip
+              rsvp={guest.rsvp_romania}
+              onSetStatus={(status) => onSetRsvp(guest.invite_id, 'romania', status)}
+            />
           ) : (
             <Typography variant="caption" sx={{ color: 'text.disabled' }}>—</Typography>
           )}
@@ -251,16 +267,60 @@ function GuestRow({ guest, onDelete }: { guest: Guest; onDelete: (id: string) =>
   );
 }
 
-function RsvpChip({ rsvp }: { rsvp: RSVPRecord | null }) {
-  if (!rsvp) return <Chip label="No RSVP" size="small" variant="outlined" sx={{ fontSize: '0.7rem', height: 20 }} />;
+function RsvpChip({
+  rsvp,
+  onSetStatus,
+}: {
+  rsvp: RSVPRecord | null;
+  onSetStatus: (status: 'attending' | 'declined' | 'none') => Promise<void>;
+}) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const currentStatus: 'attending' | 'declined' | 'none' = !rsvp
+    ? 'none'
+    : rsvp.confirmed
+    ? 'attending'
+    : 'declined';
+
+  const label = !rsvp ? 'No RSVP' : rsvp.confirmed ? 'Attending' : 'Declined';
+  const color: 'success' | 'error' | 'default' = !rsvp ? 'default' : rsvp.confirmed ? 'success' : 'error';
+
+  const handleSelect = async (next: 'attending' | 'declined' | 'none') => {
+    setAnchorEl(null);
+    if (next === currentStatus) return;
+    setBusy(true);
+    try {
+      await onSetStatus(next);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
-    <Chip
-      label={rsvp.confirmed ? 'Attending' : 'Declined'}
-      size="small"
-      color={rsvp.confirmed ? 'success' : 'error'}
-      variant="outlined"
-      sx={{ fontSize: '0.7rem', height: 20 }}
-    />
+    <>
+      <Chip
+        label={busy ? '…' : label}
+        size="small"
+        color={color}
+        variant="outlined"
+        clickable
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        disabled={busy}
+        sx={{ fontSize: '0.7rem', height: 20, cursor: 'pointer' }}
+      />
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+        <MenuItem selected={currentStatus === 'attending'} onClick={() => handleSelect('attending')}>
+          Attending
+        </MenuItem>
+        <MenuItem selected={currentStatus === 'declined'} onClick={() => handleSelect('declined')}>
+          Declined
+        </MenuItem>
+        <MenuItem selected={currentStatus === 'none'} onClick={() => handleSelect('none')}>
+          No RSVP
+        </MenuItem>
+      </Menu>
+    </>
   );
 }
 
@@ -282,6 +342,18 @@ export default function AdminPage() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [loadingGuests, setLoadingGuests] = useState(false);
   const [filter, setFilter] = useState<'all' | 'vietnam' | 'romania'>('all');
+  const [rsvpFilter, setRsvpFilter] = useState<'all' | 'attending' | 'declined' | 'no_rsvp'>('all');
+  const [sortBy, setSortBy] = useState<'invite_id' | 'name' | 'group' | 'vietnam' | 'romania'>('invite_id');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+
+  const handleSort = (column: typeof sortBy) => {
+    if (sortBy === column) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(column);
+      setSortDir('asc');
+    }
+  };
 
   const fetchGuests = useCallback(async (inviteId: string) => {
     setLoadingGuests(true);
@@ -472,11 +544,82 @@ export default function AdminPage() {
     fetchGuests(adminInviteId!);
   };
 
+  const handleSetRsvp = async (
+    targetId: string,
+    location: 'vietnam' | 'romania',
+    status: 'attending' | 'declined' | 'none'
+  ) => {
+    await fetch('/api/admin', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        admin_invite_id: adminInviteId,
+        target_invite_id: targetId,
+        location,
+        status,
+      }),
+    });
+    fetchGuests(adminInviteId!);
+  };
+
+  const rsvpStatus = (rsvp: RSVPRecord | null): 'attending' | 'declined' | 'no_rsvp' => {
+    if (!rsvp) return 'no_rsvp';
+    return rsvp.confirmed ? 'attending' : 'declined';
+  };
+
+  const matchesRsvpFilter = (g: Guest): boolean => {
+    if (rsvpFilter === 'all') return true;
+    const relevantRsvps: Array<RSVPRecord | null> = [];
+    if ((filter === 'all' || filter === 'vietnam') && g.vietnam) relevantRsvps.push(g.rsvp_vietnam);
+    if ((filter === 'all' || filter === 'romania') && g.romania) relevantRsvps.push(g.rsvp_romania);
+    if (relevantRsvps.length === 0) return false;
+    return relevantRsvps.some((r) => rsvpStatus(r) === rsvpFilter);
+  };
+
   const filteredGuests = guests.filter((g) => {
-    if (filter === 'vietnam') return g.vietnam;
-    if (filter === 'romania') return g.romania;
-    return true;
+    if (filter === 'vietnam' && !g.vietnam) return false;
+    if (filter === 'romania' && !g.romania) return false;
+    return matchesRsvpFilter(g);
   });
+
+  const rsvpSortRank: Record<'attending' | 'declined' | 'no_rsvp' | 'na', number> = {
+    attending: 0,
+    declined: 1,
+    no_rsvp: 2,
+    na: 3,
+  };
+  const compareRsvpCell = (invited: boolean, rsvp: RSVPRecord | null): number => {
+    if (!invited) return rsvpSortRank.na;
+    return rsvpSortRank[rsvpStatus(rsvp)];
+  };
+
+  const sortedGuests = useMemo(() => {
+    const arr = [...filteredGuests];
+    arr.sort((a, b) => {
+      let cmp = 0;
+      switch (sortBy) {
+        case 'invite_id':
+          cmp = a.invite_id.localeCompare(b.invite_id);
+          break;
+        case 'name':
+          cmp = `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`);
+          break;
+        case 'group':
+          cmp = (a.group ?? '￿').localeCompare(b.group ?? '￿');
+          break;
+        case 'vietnam':
+          cmp = compareRsvpCell(a.vietnam, a.rsvp_vietnam) - compareRsvpCell(b.vietnam, b.rsvp_vietnam);
+          break;
+        case 'romania':
+          cmp = compareRsvpCell(a.romania, a.rsvp_romania) - compareRsvpCell(b.romania, b.rsvp_romania);
+          break;
+      }
+      if (cmp === 0) cmp = a.invite_id.localeCompare(b.invite_id);
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+    return arr;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredGuests, sortBy, sortDir]);
 
   const vnCount = guests.filter((g) => g.vietnam).length;
   const roCount = guests.filter((g) => g.romania).length;
@@ -646,7 +789,7 @@ export default function AdminPage() {
             Guests
           </Typography>
 
-          {/* Filter chips */}
+          {/* Location filter chips */}
           {(
             [
               { key: 'all', label: `All (${guests.length})` },
@@ -677,6 +820,34 @@ export default function AdminPage() {
           </Box>
         </Box>
 
+        {/* RSVP status filter chips */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5, mr: 1 }}>
+            RSVP:
+          </Typography>
+          {(
+            [
+              { key: 'all', label: 'All' },
+              { key: 'attending', label: 'Attending' },
+              { key: 'declined', label: 'Declined' },
+              { key: 'no_rsvp', label: 'No RSVP' },
+            ] as const
+          ).map(({ key, label }) => (
+            <Chip
+              key={key}
+              label={label}
+              size="small"
+              onClick={() => setRsvpFilter(key)}
+              variant={rsvpFilter === key ? 'filled' : 'outlined'}
+              color={rsvpFilter === key ? 'primary' : 'default'}
+              sx={{ cursor: 'pointer', fontWeight: rsvpFilter === key ? 700 : 400 }}
+            />
+          ))}
+          <Typography variant="caption" sx={{ color: 'text.secondary', ml: 'auto', fontWeight: 500 }}>
+            Showing {filteredGuests.length} of {guests.length}
+          </Typography>
+        </Box>
+
         {loadingGuests ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
             <CircularProgress />
@@ -691,19 +862,59 @@ export default function AdminPage() {
               <TableHead>
                 <TableRow sx={{ '& th': { fontWeight: 700, fontSize: '0.78rem' } }}>
                   <TableCell sx={{ width: 28, pr: 0 }} />
-                  <TableCell>Invite ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Group</TableCell>
-                  <TableCell>Vietnam RSVP</TableCell>
-                  <TableCell>Romania RSVP</TableCell>
+                  <TableCell sortDirection={sortBy === 'invite_id' ? sortDir : false}>
+                    <TableSortLabel
+                      active={sortBy === 'invite_id'}
+                      direction={sortBy === 'invite_id' ? sortDir : 'asc'}
+                      onClick={() => handleSort('invite_id')}
+                    >
+                      Invite ID
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell sortDirection={sortBy === 'name' ? sortDir : false}>
+                    <TableSortLabel
+                      active={sortBy === 'name'}
+                      direction={sortBy === 'name' ? sortDir : 'asc'}
+                      onClick={() => handleSort('name')}
+                    >
+                      Name
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell sortDirection={sortBy === 'group' ? sortDir : false}>
+                    <TableSortLabel
+                      active={sortBy === 'group'}
+                      direction={sortBy === 'group' ? sortDir : 'asc'}
+                      onClick={() => handleSort('group')}
+                    >
+                      Group
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell sortDirection={sortBy === 'vietnam' ? sortDir : false}>
+                    <TableSortLabel
+                      active={sortBy === 'vietnam'}
+                      direction={sortBy === 'vietnam' ? sortDir : 'asc'}
+                      onClick={() => handleSort('vietnam')}
+                    >
+                      Vietnam RSVP
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell sortDirection={sortBy === 'romania' ? sortDir : false}>
+                    <TableSortLabel
+                      active={sortBy === 'romania'}
+                      direction={sortBy === 'romania' ? sortDir : 'asc'}
+                      onClick={() => handleSort('romania')}
+                    >
+                      Romania RSVP
+                    </TableSortLabel>
+                  </TableCell>
                   <TableCell sx={{ width: 40 }} />
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredGuests.map((g) => (
-                  <GuestRow key={g.invite_id} guest={g} onDelete={handleDelete} />
+                {sortedGuests.map((g) => (
+                  <GuestRow key={g.invite_id} guest={g} onDelete={handleDelete} onSetRsvp={handleSetRsvp} />
                 ))}
-                {filteredGuests.length === 0 && (
+                {sortedGuests.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={7} align="center" sx={{ py: 4, color: 'text.secondary' }}>
                       No guests.
@@ -751,11 +962,9 @@ export default function AdminPage() {
               {allSelected ? 'Deselect all' : 'Select all'}
             </Button>
 
-            {selectedIds.size > 0 && (
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {selectedIds.size} selected
-              </Typography>
-            )}
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {selectedIds.size} of {poolWithEmail.length} selected
+            </Typography>
           </Box>
 
           {/* Recipient checkboxes */}

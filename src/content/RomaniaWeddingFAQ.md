@@ -19,14 +19,14 @@ Welcome! We are so thrilled you're joining us in Oradea — Cătă's home city �
 
 ### When should I arrive?
 
-**Please arrive the day before the wedding.** The wedding day will be long and packed and pulling an all-nighter the day before is not wise. Besides, Oradea is worth exploring  even if just for a day. 
+**Please arrive the day before the wedding.** The wedding day will be long and packed and pulling an all-nighter the day before is not wise. Besides, Oradea is worth exploring, even if just for a day. 
 
 
 ### What does the day look like?
 
 **Church ceremony → Photos around the city → Reception at Camelot Resort → Sunrise**
 
-That last part is not a typo. Romanian weddings go until everyone drops. To quote our DJ "I will e at your wedding whether you will be there or not...and I will be playing for as long as one of you is still standing". Come ready for a full, joyful, ridiculous amount of fun. There will be multiple courses of food, toasts, open bar, candy bar, dancing, more food, more dancing, more games. Do not book an early checkout. Do not schedule anything the next morning.
+That last part is not a typo. Romanian weddings go until everyone drops. To quote our DJ "I will be at your wedding whether you will be there or not...and I will be playing for as long as one of you is still standing". Come ready for a full, joyful, ridiculous amount of fun. There will be multiple courses of food, toasts, open bar, candy bar, dancing, more food, more dancing, more games. Do not book an early checkout. Do not schedule anything the next morning.
 
 ### What should I wear?
 
