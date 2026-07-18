@@ -6,7 +6,7 @@ import Navigation from '@/components/Navigation';
 import { MainPageCard } from '@/components/MainPageCard';
 import RSVPModal from '@/components/RSVPModal';
 import RSVPConfirmation from '@/components/RSVPConfirmation';
-import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent } from '@mui/material';
+import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent, Modal } from '@mui/material';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
@@ -15,6 +15,47 @@ import { useRSVPHandler } from '@/lib/useRSVPHandler';
 import { WEDDING_INFO } from '@/lib/constants';
 import CustomButton from '@/components/Button';
 
+const ROMANIA_INVITE = {
+  en: {
+    label: 'English',
+    opening:
+      "Fueled by boarding passes, late-night calls, and a little bit of stubbornness, we're beginning our journey together.",
+    familiesLabel: 'Together with our families',
+    godparentsLabel: 'With our godparents',
+    closing:
+      'we invite you to celebrate a love story built across miles, time zones, and years of waiting.',
+    bride: 'Cătălina Ionescu',
+    groom: 'Lâm Nguyễn',
+    brideParents: ['Ana Filip Ionescu', 'Lucian Ionescu'],
+    groomParents: ['Hồng Hạnh Nguyễn', 'Phú Kiều Nguyễn'],
+    godparents: ['Ingrid Mayer', 'Alex Pop'],
+    roleMother: "Cătălina's mother",
+    roleFather: "Cătălina's father",
+    roleGroomFamily: "Lâm's family",
+    roleGodparents: 'Our godparents',
+  },
+  ro: {
+    label: 'Română',
+    opening:
+      'Alimentată de bilete de îmbarcare, convorbiri până noaptea târziu și puțină încăpățânare, ne începem călătoria împreună.',
+    familiesLabel: 'Alături de familiile noastre',
+    godparentsLabel: 'Împreună cu nașii noștri',
+    closing:
+      'vă invităm să sărbătoriți o poveste de dragoste clădită peste kilometri, fusuri orare și ani de așteptare.',
+    bride: 'Ionescu Cătălina',
+    groom: 'Nguyễn Lâm',
+    brideParents: ['Filip Ionescu Ana', 'Ionescu Lucian'],
+    groomParents: ['Nguyễn Hồng Hạnh', 'Nguyễn Phú Kiều'],
+    godparents: ['Mayer Ingrid', 'Pop Alex'],
+    roleMother: 'Mama Cătălinei',
+    roleFather: 'Tatăl Cătălinei',
+    roleGroomFamily: 'Familia lui Lâm',
+    roleGodparents: 'Nașii noștri',
+  },
+} as const;
+
+type RomaniaInviteLang = keyof typeof ROMANIA_INVITE;
+
 export default function RomaniaWedding() {
   const theme = useTheme();
   const router = useRouter();
@@ -22,6 +63,27 @@ export default function RomaniaWedding() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [rsvpableEvents, setRsvpableEvents] = useState<ItineraryEvent[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
+  const [inviteLang, setInviteLang] = useState<RomaniaInviteLang>('en');
+  const [openPhoto, setOpenPhoto] = useState<{ src: string; name: string; role: string } | null>(null);
+  const invite = ROMANIA_INVITE[inviteLang];
+  const parentNameSx = {
+    fontFamily: '"Cormorant Garamond", serif',
+    color: theme.palette.primary.dark,
+    fontWeight: 600,
+    fontSize: { xs: '1.2rem', md: '1.5rem' },
+    lineHeight: 1.7,
+    letterSpacing: '0.01em',
+  };
+  const familyPhotos = [
+    { src: '/LamCataMom.png', name: invite.brideParents[0], role: invite.roleMother },
+    { src: '/LamCataDad.png', name: invite.brideParents[1], role: invite.roleFather },
+    { src: '/LamFamily.png', name: invite.roleGroomFamily, role: '' },
+    {
+      src: '/CataLamIngridAlex.jpeg',
+      name: `${invite.godparents[0]} & ${invite.godparents[1]}`,
+      role: invite.roleGodparents,
+    },
+  ];
 
   const location = Location.ROMANIA;
   const weddingInfo = WEDDING_INFO[location];
@@ -170,50 +232,378 @@ export default function RomaniaWedding() {
             {guestData.has_rsvp_romania ? 'Your RSVP is confirmed' : `Welcome, ${guestData.first_name}`}
           </Typography>
         </Box>
-        
-        {/* Centered Polaroid Container */}
+
+        {/* Invitation postcard */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            pb: 6
+            pb: 6,
           }}
         >
-          {/* Romania Polaroid with location/date */}
-          <MainPageCard
-            polaroid={true}
-            imageSrc="/photo_3.webp"
-            alt="Romania Wedding Photo"
-            animationDelay={0.1}
-            bottomContent={
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
-                    color: '#333',
-                    fontWeight: 600,
-                    mb: 0.5
-                  }}
-                >
-                  {weddingInfo.location}
-                </Typography>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
-                    color: '#666',
-                    fontWeight: 400
-                  }}
-                >
-                  {weddingInfo.date}
-                </Typography>
+          {/* Postcard — polaroid on the left, message on the right */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: 'center',
+              gap: { xs: 3, md: 5 },
+              maxWidth: 1080,
+              width: '100%',
+              mx: 'auto',
+              p: { xs: 3, md: 5 },
+              borderRadius: 3,
+              backgroundColor: '#f6e9e4',
+              border: '1px solid rgba(184, 136, 128, 0.22)',
+              boxShadow: '0 20px 55px rgba(120, 90, 60, 0.13)',
+            }}
+          >
+            {/* Polaroid photo (left) */}
+            <Box sx={{ flexShrink: 0 }}>
+              <MainPageCard
+                polaroid
+                imageSrc="/photo_3.webp"
+                alt="Cătălina and Lâm in Romania"
+                animationDelay={0.1}
+                sx={{ maxWidth: { xs: 240, md: 300 } }}
+                bottomContent={
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography
+                      sx={{
+                        fontFamily: '"Thasadith", sans-serif',
+                        color: '#333',
+                        fontWeight: 700,
+                        fontSize: '0.78rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.16em',
+                      }}
+                    >
+                      {weddingInfo.location}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontFamily: '"Cormorant Garamond", serif',
+                        fontStyle: 'italic',
+                        color: '#666',
+                        fontSize: '0.95rem',
+                        mt: 0.5,
+                      }}
+                    >
+                      {weddingInfo.date}
+                    </Typography>
+                  </Box>
+                }
+              />
+            </Box>
+
+            {/* Message (right) */}
+            <Box
+              sx={{
+                flex: 1,
+                width: '100%',
+                textAlign: 'center',
+                borderTop: { xs: '1px dashed rgba(184, 136, 128, 0.35)', md: 'none' },
+                borderLeft: { md: '1px dashed rgba(184, 136, 128, 0.35)' },
+                pt: { xs: 3, md: 0 },
+                pl: { md: 5 },
+              }}
+            >
+              {/* Language toggle */}
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  gap: '4px',
+                  mb: 3,
+                  p: '3px',
+                  borderRadius: 999,
+                  border: '1px solid rgba(184, 136, 128, 0.4)',
+                }}
+              >
+                {(Object.keys(ROMANIA_INVITE) as RomaniaInviteLang[]).map((lng) => (
+                  <Box
+                    key={lng}
+                    component="button"
+                    onClick={() => setInviteLang(lng)}
+                    sx={{
+                      cursor: 'pointer',
+                      border: 'none',
+                      borderRadius: 999,
+                      px: 2,
+                      py: 0.5,
+                      fontFamily: '"Thasadith", sans-serif',
+                      fontSize: '0.7rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      color: inviteLang === lng ? '#fff' : '#8e645d',
+                      backgroundColor: inviteLang === lng ? '#b88880' : 'transparent',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {ROMANIA_INVITE[lng].label}
+                  </Box>
+                ))}
               </Box>
-            }
-          />
-          
+
+              {/* Opening */}
+              <Typography
+                sx={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontStyle: 'italic',
+                  color: '#4a3a32',
+                  fontSize: { xs: '1.2rem', md: '1.4rem' },
+                  lineHeight: 1.85,
+                  mb: 3.5,
+                }}
+              >
+                {invite.opening}
+              </Typography>
+
+              {/* Families label */}
+              <Typography
+                sx={{
+                  fontFamily: '"Thasadith", sans-serif',
+                  color: '#8e645d',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.28em',
+                  mb: 2,
+                }}
+              >
+                {invite.familiesLabel}
+              </Typography>
+
+              {/* Names + parents in two aligned columns */}
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr auto 1fr',
+                  columnGap: { xs: 1, md: 2 },
+                  rowGap: 1.25,
+                  alignItems: 'start',
+                  mb: 3.5,
+                }}
+              >
+                {/* Row 1 — names */}
+                <Typography
+                  sx={{
+                    fontFamily: '"Arizonia", cursive',
+                    color: theme.palette.primary.dark,
+                    fontSize: { xs: '1.7rem', md: '2.4rem' },
+                    lineHeight: 1.15,
+                    textAlign: 'center',
+                  }}
+                >
+                  {invite.bride}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: '"Cormorant Garamond", serif',
+                    fontStyle: 'italic',
+                    color: '#a8916b',
+                    fontSize: { xs: '1.25rem', md: '1.75rem' },
+                    alignSelf: 'center',
+                  }}
+                >
+                  &amp;
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: '"Arizonia", cursive',
+                    color: theme.palette.primary.dark,
+                    fontSize: { xs: '1.7rem', md: '2.4rem' },
+                    lineHeight: 1.15,
+                    textAlign: 'center',
+                  }}
+                >
+                  {invite.groom}
+                </Typography>
+
+                {/* Row 2 — parents (aligned under each name) */}
+                <Box>
+                  <Typography sx={parentNameSx}>{invite.brideParents[0]}</Typography>
+                  <Typography sx={parentNameSx}>{invite.brideParents[1]}</Typography>
+                </Box>
+                <Box />
+                <Box>
+                  <Typography sx={parentNameSx}>{invite.groomParents[0]}</Typography>
+                  <Typography sx={parentNameSx}>{invite.groomParents[1]}</Typography>
+                </Box>
+              </Box>
+
+              {/* Godparents */}
+              <Typography
+                sx={{
+                  fontFamily: '"Thasadith", sans-serif',
+                  color: '#8e645d',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.28em',
+                  mb: 1,
+                }}
+              >
+                {invite.godparentsLabel}
+              </Typography>
+              <Typography sx={{ ...parentNameSx, mb: 3.5 }}>
+                {invite.godparents[0]} &amp; {invite.godparents[1]}
+              </Typography>
+
+              {/* Closing */}
+              <Typography
+                sx={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontStyle: 'italic',
+                  color: '#4a3a32',
+                  fontSize: { xs: '1.2rem', md: '1.4rem' },
+                  lineHeight: 1.85,
+                }}
+              >
+                {invite.closing}
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Family polaroids */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'nowrap',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: 'flex-start',
+              gap: { xs: 2, md: 3 },
+              mt: { xs: 5, md: 6 },
+              maxWidth: 1080,
+              mx: 'auto',
+              px: 2,
+              overflowX: 'auto',
+            }}
+          >
+            {familyPhotos.map((p) => (
+              <Box
+                key={p.src}
+                onClick={() => setOpenPhoto(p)}
+                sx={{
+                  width: { xs: 170, md: 230 },
+                  flexShrink: 0,
+                  backgroundColor: '#fff',
+                  p: 1,
+                  pb: 1.5,
+                  borderRadius: '2px',
+                  boxShadow: '0 10px 26px rgba(120, 90, 60, 0.16)',
+                  cursor: 'pointer',
+                }}
+              >
+                <Box
+                  component="img"
+                  src={p.src}
+                  alt={p.role || p.name}
+                  sx={{
+                    display: 'block',
+                    width: '100%',
+                    aspectRatio: '1 / 1',
+                    objectFit: 'contain',
+                  }}
+                />
+                <Box sx={{ textAlign: 'center', pt: 1.25, px: 0.5 }}>
+                  <Typography
+                    sx={{
+                      fontFamily: '"Cormorant Garamond", serif',
+                      color: theme.palette.primary.dark,
+                      fontWeight: 600,
+                      fontSize: { xs: '0.9rem', md: '1rem' },
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    {p.name}
+                  </Typography>
+                  {p.role && (
+                    <Typography
+                      sx={{
+                        fontFamily: '"Thasadith", sans-serif',
+                        color: '#8e645d',
+                        fontSize: '0.6rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.16em',
+                        mt: 0.5,
+                      }}
+                    >
+                      {p.role}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Enlarged photo */}
+          <Modal
+            open={Boolean(openPhoto)}
+            onClose={() => setOpenPhoto(null)}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}
+          >
+            <Box
+              onClick={() => setOpenPhoto(null)}
+              sx={{
+                outline: 'none',
+                cursor: 'pointer',
+                backgroundColor: '#fff',
+                p: { xs: 1.5, md: 2 },
+                pb: { xs: 2.5, md: 3 },
+                borderRadius: '2px',
+                boxShadow: '0 30px 80px rgba(0, 0, 0, 0.4)',
+                maxWidth: { xs: '90vw', md: 520 },
+              }}
+            >
+              {openPhoto && (
+                <>
+                  <Box
+                    component="img"
+                    src={openPhoto.src}
+                    alt={openPhoto.role || openPhoto.name}
+                    sx={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                      maxHeight: '72vh',
+                      objectFit: 'contain',
+                    }}
+                  />
+                  <Box sx={{ textAlign: 'center', pt: 2 }}>
+                    <Typography
+                      sx={{
+                        fontFamily: '"Cormorant Garamond", serif',
+                        color: theme.palette.primary.dark,
+                        fontWeight: 600,
+                        fontSize: '1.3rem',
+                      }}
+                    >
+                      {openPhoto.name}
+                    </Typography>
+                    {openPhoto.role && (
+                      <Typography
+                        sx={{
+                          fontFamily: '"Thasadith", sans-serif',
+                          color: '#8e645d',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.18em',
+                          mt: 0.5,
+                        }}
+                      >
+                        {openPhoto.role}
+                      </Typography>
+                    )}
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Modal>
+
           {/* RSVP Button */}
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <CustomButton
