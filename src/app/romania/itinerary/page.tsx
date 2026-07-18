@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import { Box, useTheme, Container, Typography, IconButton } from '@mui/material';
@@ -44,6 +44,7 @@ export default function RomaniaItinerary() {
             group: data.group,
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
+            invited_events: data.invited_events_romania,
             group_members: data.group_members || [],
           });
           setIsVerifying(false);
@@ -67,6 +68,21 @@ export default function RomaniaItinerary() {
         console.error('Error loading timeline:', error);
       });
   }, []);
+
+  // Hide sub-events this guest isn't invited to. Non-'Event' itinerary items
+  // (details, logistics) always show; `invited_events` null/undefined = all.
+  const displayDays = useMemo(() => {
+    const invited = guestData?.invited_events;
+    if (!invited) return days;
+    return days
+      .map((day) => ({
+        ...day,
+        events: (day.events || []).filter(
+          (e) => e.type !== 'Event' || invited.includes(e.title)
+        ),
+      }))
+      .filter((day) => (day.events?.length ?? 0) > 0);
+  }, [days, guestData?.invited_events]);
 
   if (isVerifying || !guestData) {
     return (
@@ -155,7 +171,7 @@ export default function RomaniaItinerary() {
                 </Typography>
               </Box>
 
-              {days.map((day, index) => {
+              {displayDays.map((day, index) => {
                 const displaySubtitle = isSubtitleRedundant(day.subtitle, day.events)
                   ? undefined
                   : day.subtitle;

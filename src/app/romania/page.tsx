@@ -65,6 +65,7 @@ export default function RomaniaWedding() {
             group: data.group,
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
+            invited_events: data.invited_events_romania,
             group_members: data.group_members || [],
           });
           setIsVerifying(false);

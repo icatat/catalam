@@ -68,18 +68,25 @@ export async function POST(request: Request) {
 
     const normalizedInviteId = guest.invite_id;
 
-    // Check RSVP status in both tables
+    // Check RSVP status in both tables. A row that only carries admin-set
+    // invitation data (properties.invitation_only) is NOT a real response.
     const { data: romaniaRsvp } = await supabase
       .from('rsvp_romania')
-      .select('confirmed')
+      .select('confirmed, properties')
       .eq('invite_id', normalizedInviteId)
       .single();
 
     const { data: vietnamRsvp } = await supabase
       .from('rsvp_vietnam')
-      .select('confirmed')
+      .select('confirmed, properties')
       .eq('invite_id', normalizedInviteId)
       .single();
+
+    const hasResponded = (rsvp: { properties?: { invitation_only?: boolean } | null } | null) =>
+      !!rsvp && rsvp.properties?.invitation_only !== true;
+    const invitedEventsOf = (
+      rsvp: { properties?: { invited_events?: string[] } | null } | null
+    ): string[] | null => rsvp?.properties?.invited_events ?? null;
 
     // Fetch group members if guest has a group
     let groupMembers: GroupMemberData[] = [];
@@ -95,13 +102,13 @@ export async function POST(request: Request) {
           groupGuests.map(async (member) => {
             const { data: memberRomaniaRsvp } = await supabase
               .from('rsvp_romania')
-              .select('confirmed')
+              .select('confirmed, properties')
               .eq('invite_id', member.invite_id)
               .single();
 
             const { data: memberVietnamRsvp } = await supabase
               .from('rsvp_vietnam')
-              .select('confirmed')
+              .select('confirmed, properties')
               .eq('invite_id', member.invite_id)
               .single();
 
@@ -112,8 +119,8 @@ export async function POST(request: Request) {
               vietnam: member.vietnam || false,
               romania: member.romania || false,
               group: member.group,
-              has_rsvp_romania: !!memberRomaniaRsvp,
-              has_rsvp_vietnam: !!memberVietnamRsvp,
+              has_rsvp_romania: hasResponded(memberRomaniaRsvp),
+              has_rsvp_vietnam: hasResponded(memberVietnamRsvp),
             };
           })
         );
@@ -128,8 +135,10 @@ export async function POST(request: Request) {
       vietnam: guest.vietnam || false,
       romania: guest.romania || false,
       group: guest.group,
-      has_rsvp_romania: !!romaniaRsvp,
-      has_rsvp_vietnam: !!vietnamRsvp,
+      has_rsvp_romania: hasResponded(romaniaRsvp),
+      has_rsvp_vietnam: hasResponded(vietnamRsvp),
+      invited_events_romania: invitedEventsOf(romaniaRsvp),
+      invited_events_vietnam: invitedEventsOf(vietnamRsvp),
       group_members: groupMembers,
     });
   } catch (error) {

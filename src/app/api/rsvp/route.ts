@@ -68,22 +68,33 @@ export async function POST(request: Request) {
 
     const rsvpTable = location === Location.ROMANIA ? 'rsvp_romania' : 'rsvp_vietnam';
 
-    const rsvpData: Partial<RsvpData> = {
-      invite_id: normalizedInviteId,
-      first_name: first_name,
-      last_name: last_name,
-      confirmed: attending,
-      properties: properties,
-      phone: phone,
-      email: email,
-      updated_at: new Date().toISOString(),
-    };
-
     const { data: existingRsvp } = await supabase
       .from(rsvpTable)
       .select('*')
       .eq('invite_id', normalizedInviteId)
       .single();
+
+    // Carry forward the admin-set event invitation list (which may live on an
+    // invitation-only placeholder row); this is a real response now, so the
+    // invitation_only flag is dropped by not re-setting it.
+    const existingInvitedEvents = existingRsvp?.properties?.invited_events;
+    const mergedProperties = {
+      ...properties,
+      ...(existingInvitedEvents !== undefined && properties?.invited_events === undefined
+        ? { invited_events: existingInvitedEvents }
+        : {}),
+    };
+
+    const rsvpData: Partial<RsvpData> = {
+      invite_id: normalizedInviteId,
+      first_name: first_name,
+      last_name: last_name,
+      confirmed: attending,
+      properties: mergedProperties,
+      phone: phone,
+      email: email,
+      updated_at: new Date().toISOString(),
+    };
 
     let result;
     if (existingRsvp) {

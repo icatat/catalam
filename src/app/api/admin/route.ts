@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { RSVPProperties } from '@/models/RSVP';
 
 const ADMINS = [
   { first_name: 'Catalina', last_name: 'Ionescu' },
@@ -136,40 +137,119 @@ export async function DELETE(request: Request) {
   }
 }
 
-// PATCH /api/admin — admin-set an RSVP for a guest at a location
+// PATCH /api/admin — admin management of a guest.
+// Supports these actions:
+//   • set_status         — { location, status: 'attending' | 'declined' | 'none' }  (default; back-compat)
+//   • set_invited_events — { location, invited_events: string[] | null }  (null = invited to all events)
+//   • edit               — { location, fields: { confirmed?, email?, phone?, properties? } }  (full on-behalf edit)
+//   • edit_guest         — { guest_fields: { first_name?, last_name?, group? } }  (rename / regroup)
 export async function PATCH(request: Request) {
   try {
-    const {
-      admin_invite_id,
-      target_invite_id,
-      location,
-      status,
-    }: {
-      admin_invite_id: string;
-      target_invite_id: string;
-      location: 'vietnam' | 'romania';
-      status: 'attending' | 'declined' | 'none';
+    const body: {
+      admin_invite_id?: string;
+      target_invite_id?: string;
+      location?: 'vietnam' | 'romania';
+      action?: 'set_status' | 'set_invited_events' | 'edit' | 'edit_guest';
+      status?: 'attending' | 'declined' | 'none';
+      invited_events?: string[] | null;
+      fields?: {
+        confirmed?: boolean;
+        email?: string | null;
+        phone?: string | null;
+        properties?: Partial<RSVPProperties>;
+      };
+      guest_fields?: {
+        first_name?: string;
+        last_name?: string;
+        group?: string | null;
+      };
     } = await request.json();
+
+    const { admin_invite_id, target_invite_id, location, status, invited_events, fields, guest_fields } = body;
+    // Default to the original status-toggle behaviour when no action is given.
+    const action = body.action ?? 'set_status';
 
     if (!admin_invite_id || !(await verifyAdmin(admin_invite_id))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    if (!target_invite_id?.trim() || !location || !status) {
-      return NextResponse.json(
-        { error: 'target_invite_id, location, and status are required.' },
-        { status: 400 }
+    if (!target_invite_id?.trim()) {
+      return NextResponse.json({ error: 'target_invite_id is required.' }, { status: 400 });
+    }
+
+    const targetId = target_invite_id.trim().toUpperCase();
+
+    // ── edit_guest — rename / regroup (no location required) ────────────────
+    if (action === 'edit_guest') {
+      const { data: existingGuest, error: fetchErr } = await supabase
+        .from('guests')
+        .select('first_name, last_name')
+        .eq('invite_id', targetId)
+        .single();
+      if (fetchErr || !existingGuest) {
+        return NextResponse.json({ error: 'Guest not found.' }, { status: 404 });
+      }
+
+      const isAdminTarget = ADMINS.some(
+        (a) =>
+          a.first_name.toLowerCase() === existingGuest.first_name?.toLowerCase() &&
+          a.last_name.toLowerCase() === existingGuest.last_name?.toLowerCase()
       );
+      if (isAdminTarget) {
+        return NextResponse.json({ error: 'Cannot rename an admin account.' }, { status: 403 });
+      }
+
+      const update: { first_name?: string; last_name?: string; group?: string | null } = {};
+      if (guest_fields?.first_name !== undefined) {
+        if (!guest_fields.first_name.trim()) {
+          return NextResponse.json({ error: 'first_name cannot be blank.' }, { status: 400 });
+        }
+        update.first_name = guest_fields.first_name.trim();
+      }
+      if (guest_fields?.last_name !== undefined) {
+        if (!guest_fields.last_name.trim()) {
+          return NextResponse.json({ error: 'last_name cannot be blank.' }, { status: 400 });
+        }
+        update.last_name = guest_fields.last_name.trim();
+      }
+      if (guest_fields?.group !== undefined) {
+        update.group = guest_fields.group?.trim() ? guest_fields.group.trim() : null;
+      }
+
+      if (Object.keys(update).length === 0) {
+        return NextResponse.json({ error: 'No fields to update.' }, { status: 400 });
+      }
+
+      const { error: updateErr } = await supabase
+        .from('guests')
+        .update(update)
+        .eq('invite_id', targetId);
+      if (updateErr) {
+        console.error('Admin edit_guest update error:', updateErr);
+        return NextResponse.json({ error: 'Failed to update guest.' }, { status: 500 });
+      }
+
+      // Propagate the new name to any existing RSVP rows.
+      if (update.first_name !== undefined || update.last_name !== undefined) {
+        const rsvpNameUpdate: { first_name?: string; last_name?: string } = {};
+        if (update.first_name !== undefined) rsvpNameUpdate.first_name = update.first_name;
+        if (update.last_name !== undefined) rsvpNameUpdate.last_name = update.last_name;
+        await Promise.all([
+          supabase.from('rsvp_vietnam').update(rsvpNameUpdate).eq('invite_id', targetId),
+          supabase.from('rsvp_romania').update(rsvpNameUpdate).eq('invite_id', targetId),
+        ]);
+      }
+
+      return NextResponse.json({ success: true });
+    }
+
+    if (!location) {
+      return NextResponse.json({ error: 'location is required for this action.' }, { status: 400 });
     }
 
     if (location !== 'vietnam' && location !== 'romania') {
       return NextResponse.json({ error: 'Invalid location.' }, { status: 400 });
     }
-    if (status !== 'attending' && status !== 'declined' && status !== 'none') {
-      return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
-    }
-
-    const targetId = target_invite_id.trim().toUpperCase();
     const rsvpTable = location === 'romania' ? 'rsvp_romania' : 'rsvp_vietnam';
     const locationCol = location === 'romania' ? 'romania' : 'vietnam';
 
@@ -190,7 +270,147 @@ export async function PATCH(request: Request) {
       );
     }
 
+    const { data: existing } = await supabase
+      .from(rsvpTable)
+      .select('confirmed, properties, email, phone')
+      .eq('invite_id', targetId)
+      .single();
+
+    const existingProps: RSVPProperties = (existing?.properties as RSVPProperties) ?? {};
+    const nowIso = new Date().toISOString();
+
+    // Upsert a row for the target guest with the given confirmed/properties/email/phone.
+    const upsertRow = async (row: {
+      confirmed: boolean;
+      properties: RSVPProperties;
+      email?: string | null;
+      phone?: string | null;
+    }) => {
+      if (existing) {
+        return supabase.from(rsvpTable).update({ ...row, updated_at: nowIso }).eq('invite_id', targetId);
+      }
+      return supabase.from(rsvpTable).insert({
+        invite_id: targetId,
+        first_name: guest.first_name,
+        last_name: guest.last_name,
+        updated_at: nowIso,
+        ...row,
+      });
+    };
+
+    // ── set_invited_events ──────────────────────────────────────────────────
+    if (action === 'set_invited_events') {
+      if (invited_events !== null && !Array.isArray(invited_events)) {
+        return NextResponse.json({ error: 'invited_events must be an array or null.' }, { status: 400 });
+      }
+
+      const nextProps: RSVPProperties = { ...existingProps };
+      if (invited_events === null) {
+        delete nextProps.invited_events;
+      } else {
+        nextProps.invited_events = invited_events;
+      }
+
+      const isPlaceholder = existingProps.invitation_only === true;
+
+      // A placeholder row that no longer restricts any events has no reason to exist.
+      if (isPlaceholder && nextProps.invited_events === undefined) {
+        if (existing) await supabase.from(rsvpTable).delete().eq('invite_id', targetId);
+        return NextResponse.json({ success: true });
+      }
+
+      if (!existing) {
+        // No response yet — create an invitation-only placeholder to hold the list.
+        if (nextProps.invited_events === undefined) {
+          return NextResponse.json({ success: true }); // nothing to store (invited to all)
+        }
+        const { error } = await supabase.from(rsvpTable).insert({
+          invite_id: targetId,
+          first_name: guest.first_name,
+          last_name: guest.last_name,
+          confirmed: false,
+          properties: { ...nextProps, invitation_only: true, rsvp_on_behalf: 'admin' },
+          updated_at: nowIso,
+        });
+        if (error) {
+          console.error('Admin invited_events insert error:', error);
+          return NextResponse.json({ error: 'Failed to save invited events.' }, { status: 500 });
+        }
+        return NextResponse.json({ success: true });
+      }
+
+      // Existing row — merge without changing response/placeholder status.
+      const { error } = await supabase
+        .from(rsvpTable)
+        .update({ properties: nextProps, updated_at: nowIso })
+        .eq('invite_id', targetId);
+      if (error) {
+        console.error('Admin invited_events update error:', error);
+        return NextResponse.json({ error: 'Failed to save invited events.' }, { status: 500 });
+      }
+      return NextResponse.json({ success: true });
+    }
+
+    // ── edit (full on-behalf response) ──────────────────────────────────────
+    if (action === 'edit') {
+      if (!fields || typeof fields.confirmed !== 'boolean') {
+        return NextResponse.json(
+          { error: 'fields.confirmed (boolean) is required for edit.' },
+          { status: 400 }
+        );
+      }
+      // Merge submitted properties over existing, preserve invited_events, and
+      // mark it a real response (drop invitation_only).
+      const mergedProps: RSVPProperties = {
+        ...existingProps,
+        ...fields.properties,
+        invited_events: fields.properties?.invited_events ?? existingProps.invited_events,
+        rsvp_on_behalf: existingProps.rsvp_on_behalf ?? 'admin',
+      };
+      delete mergedProps.invitation_only;
+      if (mergedProps.invited_events === undefined) delete mergedProps.invited_events;
+
+      const { error } = await upsertRow({
+        confirmed: fields.confirmed,
+        properties: mergedProps,
+        email: fields.email ?? existing?.email ?? null,
+        phone: fields.phone ?? existing?.phone ?? null,
+      });
+      if (error) {
+        console.error('Admin RSVP edit error:', error);
+        return NextResponse.json({ error: 'Failed to save RSVP.' }, { status: 500 });
+      }
+      return NextResponse.json({ success: true });
+    }
+
+    // ── set_status (default / back-compat) ──────────────────────────────────
+    if (status !== 'attending' && status !== 'declined' && status !== 'none') {
+      return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
+    }
+
     if (status === 'none') {
+      // Clearing the response: keep the row as an invitation-only placeholder if
+      // it still carries an invited-events restriction; otherwise remove it.
+      if (existing && existingProps.invited_events !== undefined) {
+        const { error } = await supabase
+          .from(rsvpTable)
+          .update({
+            confirmed: false,
+            properties: {
+              invited_events: existingProps.invited_events,
+              invitation_only: true,
+              rsvp_on_behalf: existingProps.rsvp_on_behalf ?? 'admin',
+            },
+            updated_at: nowIso,
+          })
+          .eq('invite_id', targetId);
+        if (error) {
+          console.error('Admin RSVP clear error:', error);
+          return NextResponse.json({ error: 'Failed to clear RSVP.' }, { status: 500 });
+        }
+        return NextResponse.json({ success: true, status: 'none' });
+      }
+
       const { error: deleteError } = await supabase
         .from(rsvpTable)
         .delete()
@@ -202,38 +422,15 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: true, status: 'none' });
     }
 
+    // attending / declined — real response; preserve invited_events, drop placeholder flag.
     const confirmed = status === 'attending';
+    const nextProps: RSVPProperties = { ...existingProps, rsvp_on_behalf: existingProps.rsvp_on_behalf ?? 'admin' };
+    delete nextProps.invitation_only;
 
-    const { data: existing } = await supabase
-      .from(rsvpTable)
-      .select('properties, email, phone')
-      .eq('invite_id', targetId)
-      .single();
-
-    const nowIso = new Date().toISOString();
-
-    if (existing) {
-      const { error: updateError } = await supabase
-        .from(rsvpTable)
-        .update({ confirmed, updated_at: nowIso })
-        .eq('invite_id', targetId);
-      if (updateError) {
-        console.error('Admin RSVP update error:', updateError);
-        return NextResponse.json({ error: 'Failed to update RSVP.' }, { status: 500 });
-      }
-    } else {
-      const { error: insertError } = await supabase.from(rsvpTable).insert({
-        invite_id: targetId,
-        first_name: guest.first_name,
-        last_name: guest.last_name,
-        confirmed,
-        properties: { rsvp_on_behalf: 'admin' },
-        updated_at: nowIso,
-      });
-      if (insertError) {
-        console.error('Admin RSVP insert error:', insertError);
-        return NextResponse.json({ error: 'Failed to create RSVP.' }, { status: 500 });
-      }
+    const { error: statusError } = await upsertRow({ confirmed, properties: nextProps });
+    if (statusError) {
+      console.error('Admin RSVP status error:', statusError);
+      return NextResponse.json({ error: 'Failed to update RSVP.' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, status });

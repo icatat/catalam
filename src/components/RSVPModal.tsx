@@ -147,6 +147,14 @@ export default function RSVPModal({
     );
   }, [guestData.group_members, guestData.invite_id, location]);
 
+  // Only offer the sub-events this guest is invited to. `null`/`undefined`
+  // means invited to everything (backward-compatible default).
+  const visibleEvents = useMemo(() => {
+    const invited = guestData.invited_events;
+    if (!invited) return rsvpableEvents;
+    return rsvpableEvents.filter((e) => invited.includes(e.title));
+  }, [rsvpableEvents, guestData.invited_events]);
+
   useEffect(() => {
     if (isOpen) {
       const fullName = `${guestData.first_name} ${guestData.last_name}`;
@@ -173,12 +181,13 @@ export default function RSVPModal({
       setAdditionalGuestErrors({});
       setNewGuestCodes([]);
 
-      // Default all rsvpable events to attending (true)
+      // Default all invited events to attending (true)
       const initialAttendance: Record<string, boolean> = {};
-      rsvpableEvents.forEach(e => { initialAttendance[e.title] = true; });
+      visibleEvents.forEach(e => { initialAttendance[e.title] = true; });
       setEventAttendance(initialAttendance);
     }
-  }, [isOpen, guestData.first_name, guestData.last_name, location]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, guestData.first_name, guestData.last_name, location, visibleEvents]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -330,7 +339,7 @@ export default function RSVPModal({
         phone: formData.phone ? `${phonePrefix} ${formData.phone}` : '',
         guestCount: String(computedGuestCount),
         groupMemberRSVPs: allGroupMemberRSVPs.length > 0 ? allGroupMemberRSVPs : undefined,
-        eventAttendance: rsvpableEvents.length > 0 && formData.rsvp === 'true' ? eventAttendance : undefined,
+        eventAttendance: visibleEvents.length > 0 && formData.rsvp === 'true' ? eventAttendance : undefined,
       };
 
       const result = await onSubmit(formDataWithFullPhone);
@@ -770,7 +779,7 @@ export default function RSVPModal({
                   </Paper>
                 )}
 
-                {formData.rsvp === 'true' && rsvpableEvents.length > 0 && (
+                {formData.rsvp === 'true' && visibleEvents.length > 0 && (
                   <Paper
                     elevation={0}
                     sx={{
@@ -789,7 +798,7 @@ export default function RSVPModal({
                       Let us know your tentative plans — you can always update later
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                      {rsvpableEvents.map((event) => (
+                      {visibleEvents.map((event) => (
                         <Box
                           key={event.title}
                           sx={{

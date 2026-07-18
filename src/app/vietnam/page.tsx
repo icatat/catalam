@@ -10,6 +10,7 @@ import { Box, useTheme, Container, Typography, Card, CardActionArea, CardContent
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import Cookies from 'js-cookie';
 import { Location, GuestData } from '@/models/RSVP';
+import { ItineraryEvent } from '@/types/wedding';
 import { useRSVPHandler } from '@/lib/useRSVPHandler';
 import { WEDDING_INFO } from '@/lib/constants';
 import CustomButton from '@/components/Button';
@@ -19,6 +20,7 @@ export default function VietnamWedding() {
   const router = useRouter();
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [isVerifying, setIsVerifying] = useState(true);
+  const [rsvpableEvents, setRsvpableEvents] = useState<ItineraryEvent[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
 
   const location = Location.VIETNAM;
@@ -35,6 +37,16 @@ export default function VietnamWedding() {
       router.push('/');
       return;
     }
+
+    fetch('/api/vietnam-timeline')
+      .then(r => r.json())
+      .then(data => {
+        const allEvents = (data.days || []).flatMap((d: { date?: string; events?: ItineraryEvent[] }) =>
+          (d.events || []).map((e: ItineraryEvent) => ({ ...e, date: d.date }))
+        );
+        setRsvpableEvents(allEvents.filter((e: ItineraryEvent) => e.type === 'Event'));
+      })
+      .catch(() => {});
 
     fetch('/api/guest', {
       method: 'POST',
@@ -53,6 +65,7 @@ export default function VietnamWedding() {
             group: data.group,
             has_rsvp_romania: data.has_rsvp_romania,
             has_rsvp_vietnam: data.has_rsvp_vietnam,
+            invited_events: data.invited_events_vietnam,
             group_members: data.group_members || [],
           });
           setIsVerifying(false);
@@ -297,6 +310,7 @@ export default function VietnamWedding() {
           guestData={guestData}
           location={location}
           variant="primary"
+          rsvpableEvents={rsvpableEvents}
         />
       )}
 

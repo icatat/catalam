@@ -57,6 +57,10 @@ export function useRSVPHandler(
               group: updated.group,
               has_rsvp_romania: updated.has_rsvp_romania,
               has_rsvp_vietnam: updated.has_rsvp_vietnam,
+              invited_events:
+                location === Location.ROMANIA
+                  ? updated.invited_events_romania
+                  : updated.invited_events_vietnam,
               group_members: updated.group_members || [],
             });
           }
