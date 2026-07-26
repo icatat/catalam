@@ -23,9 +23,9 @@ const VIETNAM_INVITE = {
     familiesLabel: 'Together with our families',
     closing:
       'we invite you to celebrate a love story built across miles, time zones, and years of waiting.',
-    groom: 'Lâm Nguyễn',
+    groom: 'Nguyễn Phú Lâm',
     bride: 'Cătălina Ionescu',
-    groomParents: ['Hồng Hạnh Nguyễn', 'Phú Kiều Nguyễn'],
+    groomParents: ['Nguyễn Hồng Hạnh', 'Nguyễn Phú Kiều'],
     brideParents: ['Ana Filip Ionescu', 'Lucian Ionescu'],
     roleMother: "Cătălina's mother",
     roleFather: "Cătălina's father",
@@ -34,7 +34,7 @@ const VIETNAM_INVITE = {
   vi: {
     label: 'Tiếng Việt',
     opening:
-      'Được tiếp thêm động lực từ những tấm vé máy bay, những cuộc gọi lúc nửa đêm và một chút bướng bỉnh, chúng tôi bắt đầu hành trình chung của cuộc đời.',
+      'Sau những chuyến bay vượt đại dương và những cuộc gọi lúc nửa đêm, chúng tôi vô cùng hạnh phúc được bắt đầu chương tiếp theo của cuộc đời.',
     familiesLabel: 'Cùng với gia đình hai bên',
     closing:
       'chúng tôi trân trọng kính mời quý vị đến chung vui và chứng kiến một chuyện tình được vun đắp qua bao dặm đường, những múi giờ cách biệt và những năm tháng đợi chờ.',

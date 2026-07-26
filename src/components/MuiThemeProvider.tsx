@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { muiTheme } from '@/lib/mui-theme';
 import { ReactNode } from 'react';
+import EmotionCacheProvider from '@/components/EmotionCacheProvider';
 
 interface MuiThemeProviderProps {
   children: ReactNode;
@@ -11,9 +12,11 @@ interface MuiThemeProviderProps {
 
 export default function MuiThemeProvider({ children }: MuiThemeProviderProps) {
   return (
-    <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <EmotionCacheProvider options={{ key: 'mui' }}>
+      <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </EmotionCacheProvider>
   );
 }
