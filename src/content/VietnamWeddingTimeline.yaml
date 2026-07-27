@@ -1,0 +1,50 @@
+days:
+  - date: 'September 24th, 2026'
+    title: 'Itinerary'
+    subtitle: 'International Welcome Dinner'
+    events:
+      - time: '18:30 (tentative)'
+        title: 'Welcome Dinner'
+        type: 'Event'
+        subtitle: 'Get together, meet & greet with friends.'
+        location: '📍 Nhà Hàng Hải Sản Minh Bãi Dài'
+        locationUrl: 'https://maps.app.goo.gl/NiSLYskXykMHhDdHA'
+        description: 'Enjoy a very casual and traditional dinner.'
+
+  - date: 'September 25th, 2026'
+    title: 'Itinerary'
+    subtitle: 'Wedding Day'
+    location: '📍 Axi Plaza'
+    locationUrl: 'https://maps.app.goo.gl/2uNmNBYpcpAziFVg8'
+    events:
+      - time: '16:00'
+        title: 'Welcome guests'
+        type: 'Itinerary/Details'
+
+      - time: '16:30'
+        title: 'Wedding ceremony'
+        type: 'Itinerary/Details'
+
+      - time: '17:00'
+        title: 'Cocktail hour'
+        type: 'Itinerary/Details'
+
+      - time: '18:00'
+        title: 'Reception'
+        type: 'Itinerary/Details'
+
+      - time: '18:50'
+        title: 'Dinner'
+        type: 'Itinerary/Details'
+
+      - time: '20:15'
+        title: 'Dance'
+        type: 'Itinerary/Details'
+
+      - time: '21:30'
+        title: 'After-Party'
+        type: 'Itinerary/Details'
+
+      - time: 02:00
+        title: 'End of the night'
+        type: 'Itinerary/Details'
