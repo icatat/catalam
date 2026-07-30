@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(export:*)",
+      "Bash(npm update:*)",
+      "Bash(npm install:*)",
+      "Bash(echo $SHELL)",
+      "Bash(ls:*)",
+      "Bash(ln:*)",
+      "Bash(npm --version)",
+      "Bash(node:*)",
+      "Bash(npm run build:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(rm -rf .next)",
+      "Bash(npx next *)",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/romania/itinerary)",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/vietnam/itinerary)",
+      "Bash(timeout 25 curl -sS -o /tmp/itinerary-romania.html -w \"Romania: %{http_code} %{size_download}b\\\\n\" \"http://localhost:3000/romania/itinerary\")",
+      "Bash(timeout 25 curl -sS -o /tmp/itinerary-vietnam.html -w \"Vietnam: %{http_code} %{size_download}b\\\\n\" \"http://localhost:3000/vietnam/itinerary\")",
+      "Bash(curl *)"
+    ],
+    "deny": []
+  }
+}
