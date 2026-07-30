@@ -65,6 +65,14 @@ A few more that will earn you goodwill:
 - *La mulți ani!* — "To many years!" — a catch-all greeting used for everything from New Year's Eve to birthdays and weddings
 - *Sărutmâna!* — "I kiss your hand" — a greeting for elders, or a very polite way for a man to greet a woman he doesn't know well
 
+### Is there a wedding registry?
+
+**We have no expectations here.** Having you with us on the day is what we value most, and many of you are travelling a long way to be there — that is already the gift. Please don't feel any pressure to give anything more than your company.
+
+If you would still like to contribute, we've set up a fund to help us start married life with a few unforgettable memories. We're grateful either way.
+
+> 🎁 [Our honeymoon fund](https://www.honeyfund.com/site/ionescu-nguyen-09-11-2026)
+
 ---
 
 ## 🚗 Getting to the Venue
