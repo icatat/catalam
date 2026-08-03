@@ -143,6 +143,8 @@ One of Europe's most beautiful cities, and easy to fold into the trip since many
 ![Cătă and Lam above the Danube in Budapest, with the Hungarian Parliament across the river](/Budapest_2018.jpeg)
 *Us in Budapest back in 2018, up on the Buda side with Parliament across the river. Climb up to the Castle District and Fisherman's Bastion for this view — it's the one that sells the city.*
 
+We've written it up properly: **[Budapest in Two Days](/blog/Budapest)** covers both banks, the Ottoman baths, where to eat, and how to carry on to Oradea afterwards.
+
 [📍 Map](https://www.google.com/maps/search/?api=1&query=Budapest%20Hungary)
 
 ### Vienna, Austria — *~6 hr from Oradea, or ~2.5–3 hr on from Budapest*

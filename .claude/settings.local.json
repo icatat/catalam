@@ -21,7 +21,8 @@
       "Bash(curl -sS -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/vietnam/itinerary)",
       "Bash(timeout 25 curl -sS -o /tmp/itinerary-romania.html -w \"Romania: %{http_code} %{size_download}b\\\\n\" \"http://localhost:3000/romania/itinerary\")",
       "Bash(timeout 25 curl -sS -o /tmp/itinerary-vietnam.html -w \"Vietnam: %{http_code} %{size_download}b\\\\n\" \"http://localhost:3000/vietnam/itinerary\")",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "WebSearch"
     ],
     "deny": []
   }

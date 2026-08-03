@@ -116,6 +116,15 @@ Both are comfortable, cheap and very doable.
 - **Bus** — [FlixBus](https://www.flixbus.com), plus regional operators [Infobus](https://infobus.eu) and President Tour. Budapest ↔ Oradea is ~5–5.5 hrs (from ~€15–25), Cluj ↔ Oradea ~2.5–3 hrs (from ~€7), Bucharest ↔ Oradea ~9–10 hrs (from ~€20).
 - **Train** — from Budapest (~4 hrs) or Cluj-Napoca (~2–2.5 hrs). Booking directly with [CFR Călători](https://www.cfrcalatori.ro) or [MÁV](https://www.mavcsoport.hu) is usually cheapest.
 
+### Is there a shuttle or private transfer?
+
+Yes — **[Airbus Trans](https://airbustrans.ro/contact/)** is an Oradea-based company doing airport transfers and minibus hire. Contact them directly to reserve a seat or book a vehicle, which is often the easiest option if you're landing at Budapest, Debrecen or Cluj and don't fancy the bus with luggage.
+
+- 📧 office@airbustrans.ro
+- 📞 (+40) 744 576 589 / (+40) 259 437 702
+
+> 🇷🇴 Their website is in Romanian, but **you can write to them in English** and they'll reply. If you hit a wall, [message Cătă](/contact) and she'll sort it out for you.
+
 ### Do I need a car?
 
 Central Oradea is very walkable, so not for the city itself — but you will need a car, Bolt or taxi on the wedding day either way. A rental is worth it if you're planning to explore beyond Oradea.
