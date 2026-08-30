@@ -22,7 +22,7 @@ export function ScrollReveal({
   once = true,
 }: ScrollRevealProps) {
   const { ref, inView } = useInView({
-    threshold: 0.1,
+    threshold: 0,
     triggerOnce: once,
   });
 

@@ -38,10 +38,10 @@ const VIETNAM_INVITE = {
     familiesLabel: 'Cùng với gia đình hai bên',
     closing:
       'chúng tôi trân trọng kính mời quý vị đến chung vui và chứng kiến một chuyện tình được vun đắp qua bao dặm đường, những múi giờ cách biệt và những năm tháng đợi chờ.',
-    groom: 'Nguyễn Lâm',
-    bride: 'Ionescu Cătălina',
+    groom: 'Nguyễn Phú Lâm',
+    bride: 'Cătălina Ionescu',
     groomParents: ['Nguyễn Hồng Hạnh', 'Nguyễn Phú Kiều'],
-    brideParents: ['Filip Ionescu Ana', 'Ionescu Lucian'],
+    brideParents: ['Ana Filip Ionescu', 'Lucian Ionescu'],
     roleMother: 'Mẹ của Cătălina',
     roleFather: 'Bố của Cătălina',
     roleGroomFamily: 'Gia đình của Lâm',
