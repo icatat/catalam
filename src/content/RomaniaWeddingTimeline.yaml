@@ -19,23 +19,24 @@ days:
         title: '👰 Bride Getting Ready'
         type: 'Itinerary/Details'
         subtitle: 'Hair & makeup, preparations with family'
-        location: "📍 Cătă's home"
-        locationUrl: 'https://maps.app.goo.gl/xEgKkuybLgu5mF7s9'
+        location: '📍 Hotel Astoria'
+        locationUrl: 'https://www.google.com/maps/search/?api=1&query=Hotel%20Astoria%2C%20Strada%20Teatrului%201-2%2C%20410020%20Oradea'
         description: 'Photos with family and friends'
 
       - time: '- 13:30 (tentative)'
         title: '🤵 Groom Getting Ready'
         type: 'Itinerary/Details'
         subtitle: 'Relaxed preparation with groomsmen'
-        location: '📍 Hotel (TBD)'
+        location: '📍 Hotel Astoria'
+        locationUrl: 'https://www.google.com/maps/search/?api=1&query=Hotel%20Astoria%2C%20Strada%20Teatrului%201-2%2C%20410020%20Oradea'
         description: 'Photos and celebratory toast'
 
       - time: '14:00 (tentative)'
         title: '🚪 Bride Pickup Ceremony'
         type: 'Event'
         subtitle: 'Luarea Miresei - Traditional proposal ceremony'
-        location: "📍 Cătă's home"
-        locationUrl: 'https://maps.app.goo.gl/xEgKkuybLgu5mF7s9'
+        location: '📍 Hotel Astoria'
+        locationUrl: 'https://www.google.com/maps/search/?api=1&query=Hotel%20Astoria%2C%20Strada%20Teatrului%201-2%2C%20410020%20Oradea'
         description: 'Groom arrives with procession, traditional bread ritual'
 
       - time: '14:30 (tentative)'
