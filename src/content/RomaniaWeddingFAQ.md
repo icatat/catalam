@@ -30,7 +30,7 @@ In Romania, the invitation is formally for the **church ceremony and the party**
 
 That part isn't formally included in the invitation, but we would absolutely love to have you there — especially if you're not originally from Romania and have never seen anything like it.
 
-> ⏰ **Please be ready by 2:00 pm in the city centre.** We'll share the exact location closer to the date. The full running order is on our [itinerary](/romania/itinerary).
+> ⏰ **Please be at Hotel Astoria (Strada Teatrului 1-2, 410020 Oradea) at 2:00 pm.** Please also keep an eye on the Whatsapp group, in case there are any last minute changes. The full itinerary for the day can be found [here](/romania/itinerary).
 
 ### What should I wear?
 
